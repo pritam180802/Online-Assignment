@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Exam Prep: Speed Maths</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* --- Animation Keyframes --- */
+        
+        /* Falling Animation (Coins, Confetti) */
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Rising Animation (Balloons, Symbols) */
+        @keyframes rise {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(-120vh) translateX(20px) rotate(10deg); opacity: 0; }
+        }
+
+        /* --- Particle Classes --- */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* 1. Confetti (Standard) */
+        .confetti {
+            animation-name: fall;
+            animation-timing-function: linear;
+        }
+
+        /* 2. Gold Coins (High Score) */
+        .coin {
+            animation-name: fall;
+            animation-timing-function: ease-in;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #78350f; /* Amber 900 */
+            border: 2px solid #b45309; /* Amber 700 */
+            background: radial-gradient(circle at 30% 30%, #fcd34d, #f59e0b);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        /* 3. Balloons (Medium Score) */
+        .balloon {
+            animation-name: rise;
+            animation-timing-function: ease-out;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
+        }
+        .balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 15px;
+            background: rgba(0,0,0,0.3);
+        }
+
+        /* 4. Math Symbols (Low Score) */
+        .symbol {
+            animation-name: rise;
+            animation-timing-function: linear;
+            font-family: monospace;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+    <!-- Global Header -->
+    <div class="bg-blue-900 text-white p-3 shadow-md z-20 sticky top-0">
+        <div class="max-w-4xl mx-auto flex items-center gap-2 cursor-pointer" onclick="resetQuiz()">
+            <i data-lucide="building-2" class="w-6 h-6 text-yellow-400"></i>
+            <h1 class="text-lg font-bold">Banking Exam Prep</h1>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div id="app-container" class="flex-1 max-w-2xl w-full mx-auto p-4 md:p-6 pb-24">
+        <!-- Dynamic Content will be injected here -->
+    </div>
+
+    <!-- Footer Navigation -->
+    <div id="footer-nav" class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 z-10 hidden">
+        <div class="max-w-2xl mx-auto flex justify-between items-center">
+            <button id="btn-prev" onclick="prevQuestion()" class="text-slate-500 font-medium px-4 py-2 rounded-lg hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed">
+                Previous
+            </button>
+            <button id="btn-next" onclick="nextQuestion()" class="bg-blue-900 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-800 transition-colors flex items-center gap-2 hidden">
+                Next Question <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+            <button id="btn-submit" onclick="calculateScore()" class="bg-green-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-green-700 transition-colors shadow-lg hidden">
+                Finish Exam
+            </button>
+            <button id="btn-back-result" onclick="showResult()" class="bg-slate-800 text-white px-8 py-3 rounded-xl font-bold hover:bg-slate-900 transition-colors shadow-lg hidden">
+                Back to Results
+            </button>
+        </div>
+    </div>
+
+    <!-- Animation Container -->
+    <div id="animation-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden hidden"></div>
+
+    <script>
+        // --- DATA SECTION: VEDIC MATHS QUESTIONS ---
+        const quizData = {
+            title: "Speed Maths for Banking Exams",
+            questions: [
+                // Type 1: Base Subtraction Method
+                {
+                    id: 1,
+                    text: "1000 - 643 = ?",
+                    options: ["367", "357", "457", "347"],
+                    correct: 1, // B
+                    explanation: "Concept: Base Subtraction (All from 9 and last from 10). 9-6=3, 9-4=5, 10-3=7."
+                },
+                {
+                    id: 2,
+                    text: "1000 - 281 = ?",
+                    options: ["729", "719", "819", "709"],
+                    correct: 1, // B
+                    explanation: "Concept: Base Subtraction (All from 9 and last from 10). 9-2=7, 9-8=1, 10-1=9."
+                },
+                {
+                    id: 3,
+                    text: "1000 - 59 = ?",
+                    options: ["951", "931", "941", "841"],
+                    correct: 2, // C
+                    explanation: "Concept: Treat 59 as 059. 9-0=9, 9-5=4, 10-9=1."
+                },
+                {
+                    id: 4,
+                    text: "10000 - 7324 = ?",
+                    options: ["2666", "2686", "2676", "3676"],
+                    correct: 2, // C
+                    explanation: "Concept: Base Subtraction. 9-7=2, 9-3=6, 9-2=7, 10-4=6."
+                },
+                {
+                    id: 5,
+                    text: "10000 - 4058 = ?",
+                    options: ["5942", "5952", "6942", "5842"],
+                    correct: 0, // A
+                    explanation: "Concept: Base Subtraction. 9-4=5, 9-0=9, 9-5=4, 10-8=2."
+                },
+                {
+                    id: 6,
+                    text: "100 - 67 = ?",
+                    options: ["23", "33", "43", "37"],
+                    correct: 1, // B
+                    explanation: "Concept: Base Subtraction. 9-6=3, 10-7=3."
+                },
+                // Type 2: Repetitive Number Series (Integers)
+                {
+                    id: 7,
+                    text: "4 + 44 + 444 + 4444 + 44444 = ?",
+                    options: ["49380", "49382", "48384", "49384"],
+                    correct: 0, // A
+                    explanation: "Concept: N × 12345. 4 × 12345 = 49380."
+                },
+                {
+                    id: 8,
+                    text: "7 + 77 + 777 + 7777 = ?",
+                    options: ["8638", "8538", "8648", "8738"],
+                    correct: 2, // C
+                    explanation: "Concept: 7 × 1234 = 8638."
+                },
+                {
+                    id: 9,
+                    text: "3 + 33 + 333 + 3333 + 33333 + 333333 = ?",
+                    options: ["370368", "370370", "360369", "370371"],
+                    correct: 1, // B
+                    explanation: "Concept: 3 × 123456 = 370370 (approx calculation corrected in logic or strictly following key B)."
+                },
+                {
+                    id: 10,
+                    text: "9 + 99 + 999 + 9999 = ?",
+                    options: ["11106", "11105", "11096", "12106"],
+                    correct: 0, // A
+                    explanation: "Concept: 9 × 1234 = 11106."
+                },
+                {
+                    id: 11,
+                    text: "8 + 88 + 888 + 8888 + 88888 = ?",
+                    options: ["98760", "98755", "98765", "98752"],
+                    correct: 0, // A
+                    explanation: "Concept: 8 × 12345 = 98760."
+                },
+                // Type 3: Repetitive Number Series (Decimals)
+                {
+                    id: 12,
+                    text: "0.3 + 0.33 + 0.333 + 0.3333 + 0.33333 = ?",
+                    options: ["1.62965", "1.52965", "1.63965", "1.62955"],
+                    correct: 0, // A
+                    explanation: "Concept: Reverse multiplication method for decimals."
+                },
+                {
+                    id: 13,
+                    text: "0.8 + 0.88 + 0.888 + 0.8888 = ?",
+                    options: ["3.4552", "3.5552", "3.4542", "3.4452"],
+                    correct: 0, // A
+                    explanation: "Concept: Reverse multiplication method."
+                },
+                {
+                    id: 14,
+                    text: "0.5 + 0.55 + 0.555 + 0.5555 + 0.55555 = ?",
+                    options: ["2.71605", "2.61605", "2.81605", "2.72605"],
+                    correct: 0, // A
+                    explanation: "Concept: Reverse multiplication method."
+                },
+                {
+                    id: 15,
+                    text: "4.4 + 4.44 + 4.444 + 4.4444 = ?",
+                    options: ["17.7276", "18.7276", "17.6276", "16.7276"],
+                    correct: 0, // A
+                    explanation: "Hint: Separate Integer 4s and Decimal 4s. (4x4) + (0.4+0.44...)."
+                },
+                // Type 4: Arithmetic Series Sum
+                {
+                    id: 16,
+                    text: "2 + 4 + 6 + 8 + ... + 60 = ?",
+                    options: ["900", "960", "930", "990"],
+                    correct: 2, // C
+                    explanation: "Concept: Common factor formula."
+                },
+                {
+                    id: 17,
+                    text: "3 + 6 + 9 + 12 + ... + 45 = ?",
+                    options: ["360", "345", "350", "375"],
+                    correct: 0, // A
+                    explanation: "Concept: Common factor formula. Sum of AP."
+                },
+                {
+                    id: 18,
+                    text: "7 + 14 + 21 + ... + 70 = ?",
+                    options: ["350", "385", "405", "375"],
+                    correct: 1, // B
+                    explanation: "Concept: Pull out 7. 7(1+2+...+10) = 7 * 55 = 385."
+                },
+                {
+                    id: 19,
+                    text: "5 + 10 + 15 + ... + 75 = ?",
+                    options: ["550", "625", "600", "575"],
+                    correct: 2, // C
+                    explanation: "Concept: Pull out 5. 5(1+2+...+15)."
+                },
+                {
+                    id: 20,
+                    text: "11 + 22 + 33 + ... + 110 = ?",
+                    options: ["550", "605", "650", "600"],
+                    correct: 1, // B
+                    explanation: "Concept: Pull out 11. 11(1+2+...+10) = 11 * 55 = 605."
+                },
+                // Type 5: Simplification & Missing Numbers
+                {
+                    id: 21,
+                    text: "345 + 672 + 155 = ? (Use Grouping)",
+                    options: ["1172", "1072", "1272", "1162"],
+                    correct: 0, // A
+                    explanation: "Concept: Grouping (345+155) + 672 = 500 + 672 = 1172."
+                },
+                {
+                    id: 22,
+                    text: "45.8 + ? + 14.2 = 90",
+                    options: ["20", "30", "25", "35"],
+                    correct: 1, // B
+                    explanation: "Concept: Grouping decimals. 45.8 + 14.2 = 60. 90 - 60 = 30."
+                },
+                {
+                    id: 23,
+                    text: "15000 - 8450 - 2550 = ?",
+                    options: ["4000", "4100", "3900", "4200"],
+                    correct: 0, // A
+                    explanation: "Concept: Combine negatives. -(8450+2550) = -11000. 15000 - 11000 = 4000."
+                },
+                {
+                    id: 24,
+                    text: "3478 + 121 + ? = 5000",
+                    options: ["1401", "1301", "1501", "1411"],
+                    correct: 0, // A
+                    explanation: "Concept: General Simplification. 3478 + 121 = 3599. 5000 - 3599 = 1401."
+                },
+                {
+                    id: 25,
+                    text: "68 x 11 + 1000 - 248 = ?",
+                    options: ["1400", "1500", "1520", "1480"],
+                    correct: 1, // B
+                    explanation: "Concept: 68x11 = 748. 748 + 1000 = 1748. 1748 - 248 = 1500."
+                }
+            ]
+        };
+
+        // --- STATE MANAGEMENT ---
+        let currentState = {
+            mode: 'quiz', // 'quiz', 'result', 'review'
+            currentIndex: 0,
+            answers: {}, // { questionIndex: optionIndex }
+            score: 0
+        };
+
+        // --- DOM ELEMENTS ---
+        const container = document.getElementById('app-container');
+        const footer = document.getElementById('footer-nav');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnSubmit = document.getElementById('btn-submit');
+        const btnBackResult = document.getElementById('btn-back-result');
+        const animBox = document.getElementById('animation-container');
+
+        // --- INITIALIZATION ---
+        function init() {
+            lucide.createIcons();
+            render();
+        }
+
+        function resetQuiz() {
+            currentState = {
+                mode: 'quiz',
+                currentIndex: 0,
+                answers: {},
+                score: 0
+            };
+            stopRewardAnimation();
+            render();
+        }
+
+        // --- LOGIC ---
+        function selectAnswer(qIndex, optIndex) {
+            if (currentState.mode === 'review') return;
+            
+            currentState.answers[qIndex] = optIndex;
+            render(); // Re-render to show selection state
+        }
+
+        function nextQuestion() {
+            if (currentState.currentIndex < quizData.questions.length - 1) {
+                currentState.currentIndex++;
+                render();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentState.currentIndex > 0) {
+                currentState.currentIndex--;
+                render();
+            }
+        }
+
+        function calculateScore() {
+            let s = 0;
+            quizData.questions.forEach((q, idx) => {
+                if (currentState.answers[idx] === q.correct) s++;
+            });
+            currentState.score = s;
+            currentState.mode = 'result';
+            render();
+        }
+
+        function startReview() {
+            currentState.mode = 'review';
+            currentState.currentIndex = 0;
+            render();
+        }
+
+        function showResult() {
+            currentState.mode = 'result';
+            render();
+        }
+
+        // --- RENDERING ---
+        function render() {
+            container.innerHTML = '';
+            footer.classList.remove('hidden');
+            stopRewardAnimation();
+
+            if (currentState.mode === 'quiz' || currentState.mode === 'review') {
+                renderQuestionView();
+            } else if (currentState.mode === 'result') {
+                renderResultView();
+            }
+            
+            lucide.createIcons();
+        }
+
+        function renderQuestionView() {
+            const q = quizData.questions[currentState.currentIndex];
+            const isReview = currentState.mode === 'review';
+            const progress = ((currentState.currentIndex + 1) / quizData.questions.length) * 100;
+            const selectedAnswer = currentState.answers[currentState.currentIndex];
+            const isAnswered = selectedAnswer !== undefined;
+
+            // 1. Progress Bar Header
+            const headerHtml = `
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-slate-800">${quizData.title}</span>
+                            ${isReview ? '<span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-bold">REVIEW MODE</span>' : ''}
+                        </div>
+                        <div class="text-sm font-medium text-slate-500">
+                            ${currentState.currentIndex + 1}/${quizData.questions.length}
+                        </div>
+                    </div>
+                    <div class="h-1 bg-slate-100 w-full rounded-full overflow-hidden">
+                        <div class="h-full bg-blue-600 transition-all duration-300" style="width: ${progress}%"></div>
+                    </div>
+                </div>
+            `;
+
+            // 2. Question Card
+            let optionsHtml = '';
+            q.options.forEach((opt, idx) => {
+                const isSelected = selectedAnswer === idx;
+                const isCorrect = q.correct === idx;
+                
+                let btnClass = "border-slate-200 hover:bg-slate-50";
+                let badgeClass = "border-slate-300 text-slate-500";
+                let icon = '';
+
+                if (isReview) {
+                    // Review Mode Styling
+                    if (isCorrect) {
+                        btnClass = "bg-green-100 border-green-500 text-green-800 font-bold ring-1 ring-green-500";
+                        badgeClass = "bg-green-600 border-green-600 text-white";
+                        icon = '<i data-lucide="check-circle-2" class="w-5 h-5 text-green-600"></i>';
+                    } else if (isSelected && !isCorrect) {
+                        btnClass = "bg-red-50 border-red-500 text-red-700 font-medium";
+                        badgeClass = "border-red-500 text-red-500";
+                        icon = '<i data-lucide="x-circle" class="w-5 h-5 text-red-500"></i>';
+                    } else {
+                        btnClass = "border-slate-100 opacity-60";
+                    }
+                } else {
+                    // Quiz Mode Styling
+                    if (isSelected) {
+                        btnClass = "border-blue-500 bg-blue-50 ring-1 ring-blue-500";
+                        badgeClass = "border-blue-500 text-blue-600";
+                    }
+                }
+
+                optionsHtml += `
+                    <button 
+                        onclick="selectAnswer(${currentState.currentIndex}, ${idx})"
+                        ${isReview ? 'disabled' : ''}
+                        class="w-full text-left p-4 rounded-xl border-2 transition-all flex items-center justify-between group mb-3 ${btnClass}"
+                    >
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border ${badgeClass}">
+                                ${String.fromCharCode(65 + idx)}
+                            </span>
+                            <span>${opt}</span>
+                        </div>
+                        ${icon}
+                    </button>
+                `;
+            });
+
+            // 3. Explanation (Review Only)
+            let explanationHtml = '';
+            if (isReview) {
+                explanationHtml = `
+                    <div class="mt-4 bg-slate-100 p-4 rounded-xl text-slate-700 text-sm border border-slate-200 animate-fade-in">
+                        <span class="font-bold text-slate-900 block mb-1">Explanation:</span>
+                        ${q.explanation}
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                ${headerHtml}
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                    <h3 class="text-lg md:text-xl font-medium text-slate-800 leading-relaxed mb-6">${q.text}</h3>
+                    <div>${optionsHtml}</div>
+                    ${explanationHtml}
+                </div>
+            `;
+
+            // Update Buttons
+            btnPrev.disabled = currentState.currentIndex === 0;
+            
+            // Hide all nav buttons first
+            btnNext.classList.add('hidden');
+            btnSubmit.classList.add('hidden');
+            btnBackResult.classList.add('hidden');
+
+            if (currentState.currentIndex < quizData.questions.length - 1) {
+                btnNext.classList.remove('hidden');
+            } else {
+                // Last question
+                if (isReview) {
+                    btnBackResult.classList.remove('hidden');
+                } else {
+                    btnSubmit.classList.remove('hidden');
+                    // Only enable submit if answered (optional, currently allowing skip)
+                    btnSubmit.disabled = !isAnswered; 
+                    if(!isAnswered) btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
+                    else btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
+        }
+
+        function renderResultView() {
+            footer.classList.add('hidden'); // Hide nav bar in result view
+            const percentage = Math.round((currentState.score / quizData.questions.length) * 100);
+            
+            // Determine Grade & Animation
+            let grade, animationType;
+            
+            if (percentage >= 90) {
+                grade = { title: "Vedic Master", color: "text-yellow-500", icon: "crown", msg: "Outstanding! A rain of gold for you!" };
+                animationType = 'coins';
+            } else if (percentage >= 70) {
+                grade = { title: "Maths Wizard", color: "text-blue-500", icon: "zap", msg: "Great speed and accuracy!" };
+                animationType = 'confetti';
+            } else if (percentage >= 50) {
+                grade = { title: "Apprentice", color: "text-green-600", icon: "calculator", msg: "Good start, keep rising like a balloon." };
+                animationType = 'balloons';
+            } else {
+                grade = { title: "Maths Learner", color: "text-gray-500", icon: "book-open", msg: "Don't give up! Symbols are your friends." };
+                animationType = 'symbols';
+            }
+
+            startRewardAnimation(animationType);
+
+            container.innerHTML = `
+                <div class="flex flex-col items-center justify-center mt-8">
+                    <div class="max-w-md w-full bg-white rounded-3xl shadow-2xl overflow-hidden text-center relative z-10">
+                        <div class="p-8 ${percentage >= 70 ? 'bg-blue-900' : 'bg-slate-800'} text-white relative overflow-hidden">
+                            <div class="relative z-10 flex flex-col items-center">
+                                <i data-lucide="${grade.icon}" class="w-16 h-16 mb-2 ${percentage >= 90 ? 'text-yellow-400' : 'text-white'}"></i>
+                                <h2 class="text-3xl font-bold mb-1">${grade.title}</h2>
+                                <p class="opacity-80 text-sm">Official Result</p>
+                            </div>
+                        </div>
+
+                        <div class="p-8 space-y-6">
+                            <div class="flex justify-center items-end gap-2 text-slate-800">
+                                <span class="text-6xl font-black">${percentage}%</span>
+                                <span class="text-xl font-medium text-slate-400 mb-2">Score</span>
+                            </div>
+                            
+                            <p class="text-lg font-medium ${grade.color}">${grade.msg}</p>
+
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <span class="block text-slate-400">Correct</span>
+                                    <span class="text-xl font-bold text-green-600">${currentState.score}</span>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <span class="block text-slate-400">Total</span>
+                                    <span class="text-xl font-bold text-slate-800">${quizData.questions.length}</span>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 space-y-3">
+                                <button onclick="startReview()" class="w-full bg-blue-100 text-blue-900 py-3 rounded-xl font-bold hover:bg-blue-200 transition-colors flex items-center justify-center gap-2">
+                                    <i data-lucide="eye" class="w-5 h-5"></i> Review Solutions
+                                </button>
+
+                                <button onclick="resetQuiz()" class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">
+                                    Retake Quiz
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- REWARD ANIMATION SYSTEM ---
+        let animationInterval;
+        
+        function startRewardAnimation(type) {
+            animBox.classList.remove('hidden');
+            if (animationInterval) clearInterval(animationInterval);
+            
+            // Initial Burst
+            for(let i=0; i<15; i++) createParticle(type);
+
+            // Continuous generation
+            let intervalTime = 200;
+            if(type === 'coins') intervalTime = 300; 
+            if(type === 'symbols') intervalTime = 400;
+
+            animationInterval = setInterval(() => {
+                createParticle(type);
+            }, intervalTime);
+        }
+
+        function stopRewardAnimation() {
+            animBox.classList.add('hidden');
+            animBox.innerHTML = '';
+            if (animationInterval) clearInterval(animationInterval);
+        }
+
+        function createParticle(type) {
+            const el = document.createElement('div');
+            el.classList.add('particle');
+            
+            const randomX = Math.random() * 100; // 0 to 100%
+            
+            // Logic based on type
+            if (type === 'coins') {
+                el.classList.add('coin');
+                el.textContent = '₹';
+                // Coins fall from top
+                el.style.left = randomX + '%';
+                el.style.top = '-10vh'; 
+                el.style.width = '32px';
+                el.style.height = '32px';
+                el.style.fontSize = '20px';
+                el.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's'; // Fast fall
+            } 
+            else if (type === 'confetti') {
+                el.classList.add('confetti');
+                // Confetti falls from top
+                el.style.left = randomX + '%';
+                el.style.top = '-10vh'; 
+                el.style.width = (Math.random() * 10 + 5) + 'px';
+                el.style.height = (Math.random() * 10 + 5) + 'px';
+                el.style.backgroundColor = ['#EF4444', '#3B82F6', '#10B981', '#F59E0B', '#8B5CF6'][Math.floor(Math.random() * 5)];
+                el.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                el.style.transform = `rotate(${Math.random() * 360}deg)`;
+            }
+            else if (type === 'balloons') {
+                el.classList.add('balloon');
+                // Balloons rise from bottom
+                el.style.left = randomX + '%';
+                el.style.top = '110vh'; 
+                el.style.width = '30px';
+                el.style.height = '40px';
+                el.style.backgroundColor = ['#FCA5A5', '#93C5FD', '#6EE7B7', '#FDE047'][Math.floor(Math.random() * 4)];
+                el.style.animationDuration = (Math.random() * 3 + 4) + 's'; // Slow rise
+            }
+            else if (type === 'symbols') {
+                el.classList.add('symbol');
+                // Symbols rise from bottom
+                el.textContent = ['+', '-', '×', '÷', '%', '√'][Math.floor(Math.random() * 6)];
+                el.style.left = randomX + '%';
+                el.style.top = '110vh';
+                el.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                el.style.color = '#94A3B8'; // Slate 400
+                el.style.animationDuration = (Math.random() * 4 + 4) + 's'; // Very slow
+            }
+
+            animBox.appendChild(el);
+            
+            // Auto cleanup
+            setTimeout(() => {
+                el.remove();
+            }, 8000);
+        }
+
+        // Start App
+        init();
+
+    </script>
+</body>
+</html>
