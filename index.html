@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banking Exam Prep: Multiplication Tricks</title>
+    <title>Banking Exam Prep: Vedic Maths Tricks</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -115,187 +115,152 @@
     <script>
         // --- DATA SECTION: UPDATE YOUR QUESTIONS HERE ---
         const quizData = {
-            title: "Speed Maths: Multiplication Tricks",
+            title: "Vedic Maths: Base Method & Special Tricks",
             questions: [
-                // Type 1: Table Tricks (Split & Merge)
+                // Type 1: Base Method (Near 100)
                 {
                     id: 1,
-                    text: "68 × 7 = ?",
-                    options: ["466", "476", "486", "456"],
-                    correct: 1, // B
-                    explanation: "Split & Merge: 60×7=420, 8×7=56. 420+56=476."
+                    text: "94 × 97 = ?",
+                    options: ["9118", "9128", "9018", "9218"],
+                    correct: 0, // A
+                    explanation: "Base 100 Method: 94(-6) and 97(-3). Left: 94-3=91. Right: (-6)×(-3)=18. Result: 9118."
                 },
                 {
                     id: 2,
-                    text: "84 × 6 = ?",
-                    options: ["494", "504", "514", "484"],
-                    correct: 1, // B
-                    explanation: "Split & Merge: 80×6=480, 4×6=24. 480+24=504."
+                    text: "106 × 109 = ?",
+                    options: ["11554", "11454", "11564", "11654"],
+                    correct: 0, // A
+                    explanation: "Base 100 Method: 106(+6) and 109(+9). Left: 106+9=115. Right: 6×9=54. Result: 11554."
                 },
                 {
                     id: 3,
-                    text: "47 × 8 = ?",
-                    options: ["366", "386", "376", "396"],
-                    correct: 2, // C
-                    explanation: "Split & Merge: 40×8=320, 7×8=56. 320+56=376."
+                    text: "92 × 108 = ?",
+                    options: ["9936", "9836", "9916", "10036"],
+                    correct: 0, // A
+                    explanation: "Base 100 Method: 92(-8) and 108(+8). Left: 92+8=100. Right: -64. 10000 - 64 = 9936."
                 },
                 {
                     id: 4,
-                    text: "93 × 4 = ?",
-                    options: ["362", "372", "382", "392"],
-                    correct: 1, // B
-                    explanation: "Split & Merge: 90×4=360, 3×4=12. 360+12=372."
+                    text: "88 × 96 = ?",
+                    options: ["8448", "8348", "8548", "8438"],
+                    correct: 0, // A
+                    explanation: "Base 100 Method: 88(-12) and 96(-4). Left: 88-4=84. Right: 12×4=48. Result: 8448."
                 },
                 {
                     id: 5,
-                    text: "58 × 9 = ?",
-                    options: ["512", "532", "522", "542"],
-                    correct: 2, // C
-                    explanation: "Split & Merge: 50×9=450, 8×9=72. 450+72=522."
+                    text: "112 × 105 = ?",
+                    options: ["11760", "11660", "11750", "11860"],
+                    correct: 0, // A
+                    explanation: "Base 100 Method: 112(+12) and 105(+5). Left: 112+5=117. Right: 12×5=60. Result: 11760."
                 },
-                // Type 2: 5 Base Method (x5, x25)
+                // Type 2: Base Method (Near 200/300)
                 {
                     id: 6,
-                    text: "2486 × 5 = ?",
-                    options: ["12430", "12440", "12330", "12530"],
+                    text: "204 × 207 = ?",
+                    options: ["42228", "42128", "42238", "41228"],
                     correct: 0, // A
-                    explanation: "Rule for x5: Halve the number and multiply by 10. Half of 2486 is 1243 -> 12430."
+                    explanation: "Base 200 Method: (+4, +7). Base Sum: 211. Multiply by 2: 422. Right: 4×7=28. Result: 42228."
                 },
                 {
                     id: 7,
-                    text: "468 × 5 = ?",
-                    options: ["2350", "2340", "2240", "2440"],
-                    correct: 1, // B
-                    explanation: "Rule for x5: Half of 468 is 234 -> 2340."
+                    text: "196 × 192 = ?",
+                    options: ["37632", "37532", "37622", "38632"],
+                    correct: 0, // A
+                    explanation: "Base 200 Method: (-4, -8). Base Sum: 188. Multiply by 2: 376. Right: 4×8=32. Result: 37632."
                 },
                 {
                     id: 8,
-                    text: "724 × 25 = ?",
-                    options: ["18000", "18200", "18100", "17900"],
-                    correct: 2, // C
-                    explanation: "Rule for x25: Divide by 4 and x100. 724/4 = 181 -> 18100."
+                    text: "305 × 308 = ?",
+                    options: ["93940", "93930", "92940", "94040"],
+                    correct: 0, // A
+                    explanation: "Base 300 Method: (+5, +8). Base Sum: 313. Multiply by 3: 939. Right: 5×8=40. Result: 93940."
                 },
                 {
                     id: 9,
-                    text: "368 × 25 = ?",
-                    options: ["9100", "9300", "9200", "9400"],
-                    correct: 2, // C
-                    explanation: "Rule for x25: 368/4 = 92 -> 9200."
+                    text: "209 × 204 = ?",
+                    options: ["42636", "42536", "42646", "42436"],
+                    correct: 0, // A
+                    explanation: "Base 200 Method: (+9, +4). Base Sum: 213. Multiply by 2: 426. Right: 9×4=36. Result: 42636."
                 },
                 {
                     id: 10,
-                    text: "1248 × 25 = ?",
-                    options: ["31200", "31400", "32100", "30200"],
+                    text: "295 × 304 = ?",
+                    options: ["89680", "89780", "88680", "89580"],
                     correct: 0, // A
-                    explanation: "Rule for x25: 1248/4 = 312 -> 31200."
+                    explanation: "Base 300 Method: (-5, +4). Base Sum: 299. x3 = 897. Right: -20. 89700-20=89680."
                 },
-                // Type 3: Consecutive & Even/Odd (n(n+1) or Middle^2 - 1)
+                // Type 3: Special Multiplication
                 {
                     id: 11,
-                    text: "14 × 15 = ?",
-                    options: ["210", "220", "230", "240"],
+                    text: "51 × 28 = ?",
+                    options: ["1428", "1328", "1528", "1418"],
                     correct: 0, // A
-                    explanation: "Consecutive Rule: Small number squared + Small number. 14² + 14 = 196 + 14 = 210."
+                    explanation: "x51 Trick: Half of 28 is 14. Append 28. Result: 1428."
                 },
                 {
                     id: 12,
-                    text: "24 × 25 = ?",
-                    options: ["575", "625", "600", "650"],
-                    correct: 2, // C
-                    explanation: "Consecutive Rule: 24² + 24 = 576 + 24 = 600. Or use x25 trick (24/4=6 -> 600)."
+                    text: "51 × 64 = ?",
+                    options: ["3264", "3164", "3364", "3254"],
+                    correct: 0, // A
+                    explanation: "x51 Trick: Half of 64 is 32. Append 64. Result: 3264."
                 },
                 {
                     id: 13,
-                    text: "19 × 21 = ?",
-                    options: ["401", "399", "398", "402"],
+                    text: "15 × 126 = ?",
+                    options: ["1790", "1890", "1980", "1880"],
                     correct: 1, // B
-                    explanation: "Middle Number Rule: Middle is 20. 20² - 1 = 400 - 1 = 399."
+                    explanation: "x15 Trick: Number + Half. 126 + 63 = 189. Multiply by 10. Result: 1890."
                 },
+                // Type 4: Unit Digit Sum 10
                 {
                     id: 14,
-                    text: "24 × 26 = ?",
-                    options: ["623", "626", "624", "625"],
-                    correct: 2, // C
-                    explanation: "Middle Number Rule: Middle is 25. 25² - 1 = 625 - 1 = 624."
+                    text: "42 × 48 = ?",
+                    options: ["2016", "2116", "1916", "2026"],
+                    correct: 0, // A
+                    explanation: "Tens digits same (4), units sum to 10 (2+8). 4×(4+1)=20. 2×8=16. Result: 2016."
                 },
                 {
                     id: 15,
-                    text: "49 × 51 = ?",
-                    options: ["2499", "2501", "2491", "2509"],
+                    text: "113 × 117 = ?",
+                    options: ["13221", "13121", "13321", "12221"],
                     correct: 0, // A
-                    explanation: "Middle Number Rule: Middle is 50. 50² - 1 = 2500 - 1 = 2499."
+                    explanation: "Same prefix 11, units sum to 10. 11×12=132. 3×7=21. Result: 13221."
                 },
-                // Type 4: Multiplication by 11, 22, 33...
+                // Type 5: Repetitive Patterns & Misc
                 {
                     id: 16,
-                    text: "524 × 11 = ?",
-                    options: ["5664", "5764", "5864", "5754"],
-                    correct: 1, // B
-                    explanation: "x11 Rule: Write 4. 4+2=6. 2+5=7. Write 5. -> 5764."
+                    text: "1001 × 843 = ?",
+                    options: ["843843", "843438", "834843", "843348"],
+                    correct: 0, // A
+                    explanation: "1001 × abc = abcabc. Result: 843843."
                 },
                 {
                     id: 17,
-                    text: "2364 × 11 = ?",
-                    options: ["26004", "25004", "26104", "25904"],
+                    text: "If 592abc is divisible by 7, 11, 13, what is a + b + c?",
+                    options: ["16", "14", "15", "18"],
                     correct: 0, // A
-                    explanation: "x11 Rule: Write 4. 6+4=10 (carry 1). 3+6+1=10 (carry 1). 2+3+1=6. Write 2. -> 26004."
+                    explanation: "Divisible by 7, 11, 13 means divisible by 1001. Pattern is xyzxyz. So abc=592. 5+9+2=16."
                 },
                 {
                     id: 18,
-                    text: "32 × 22 = ?",
-                    options: ["714", "694", "704", "724"],
-                    correct: 2, // C
-                    explanation: "Factorize 22 as 2 x 11. 32 x 2 = 64. 64 x 11 = 704."
+                    text: "16666 × 4 = ?",
+                    options: ["66664", "66666", "64664", "66644"],
+                    correct: 0, // A
+                    explanation: "Pattern multiplication. 16666 × 4 = 66664."
                 },
                 {
                     id: 19,
-                    text: "18 × 33 = ?",
-                    options: ["584", "594", "604", "574"],
-                    correct: 1, // B
-                    explanation: "Factorize 33 as 3 x 11. 18 x 3 = 54. 54 x 11 = 594."
+                    text: "1999 × 5 = ?",
+                    options: ["9995", "9955", "9999", "9599"],
+                    correct: 0, // A
+                    explanation: "(2000 - 1) × 5 = 10000 - 5 = 9995."
                 },
                 {
                     id: 20,
-                    text: "44 × 24 = ?",
-                    options: ["1056", "1066", "1046", "1036"],
-                    correct: 0, // A
-                    explanation: "Factorize 44 as 4 x 11. 24 x 4 = 96. 96 x 11 = 1056."
-                },
-                // Type 5: Special Tricks (51, 45, Patterns)
-                {
-                    id: 21,
-                    text: "51 × 24 = ?",
-                    options: ["1244", "1224", "1234", "1254"],
+                    text: "1.25 × 48 = ?",
+                    options: ["58", "60", "62", "56"],
                     correct: 1, // B
-                    explanation: "x51 Trick: (Number/2) | Number. 24/2 = 12. Append 24. -> 1224."
-                },
-                {
-                    id: 22,
-                    text: "51 × 46 = ?",
-                    options: ["2346", "2336", "2356", "2366"],
-                    correct: 0, // A
-                    explanation: "x51 Trick: (Number/2) | Number. 46/2 = 23. Append 46. -> 2346."
-                },
-                {
-                    id: 23,
-                    text: "45 × 32 = ?",
-                    options: ["1420", "1440", "1460", "1480"],
-                    correct: 1, // B
-                    explanation: "Double/Half Method: Double 45 (90), Halve 32 (16). 90 x 16 = 1440."
-                },
-                {
-                    id: 24,
-                    text: "1666 × 4 = ?",
-                    options: ["6666", "6464", "6664", "6646"],
-                    correct: 2, // C
-                    explanation: "Direct Calculation or Pattern: 16x4=64... easier to just multiply 1666 x 4 = 6664."
-                },
-                {
-                    id: 25,
-                    text: "1999 × 5 = ?",
-                    options: ["9999", "9955", "9995", "9595"],
-                    correct: 2, // C
-                    explanation: "Round method: (2000 - 1) x 5 = 10000 - 5 = 9995."
+                    explanation: "1.25 is 5/4. (48 / 4) × 5 = 12 × 5 = 60."
                 }
             ]
         };
