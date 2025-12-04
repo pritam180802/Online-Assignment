@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banking Exam Prep: Squaring Tricks</title>
+    <title>Banking Exam Prep: 2-Digit Multiplication</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -115,153 +115,77 @@
     <script>
         // --- DATA SECTION: UPDATE YOUR QUESTIONS HERE ---
         const quizData = {
-            title: "Vedic Maths: Squaring Tricks",
+            title: "Speed Maths: 2-Digit Multiplication",
             questions: [
-                // Type 1: Numbers ending in 5
                 {
                     id: 1,
-                    text: "65² = ?",
-                    options: ["4125", "4225", "4325", "4025"],
-                    correct: 1, // B
-                    explanation: "Trick: Ends in 5. First part is 6×(6+1) = 6×7 = 42. Append 25. Result: 4225."
+                    text: "43 × 24 = ?",
+                    options: ["1032", "1022", "1132", "1042"],
+                    correct: 0, // A
+                    explanation: "Split Method: 43×20=860, 43×4=172. 860+172=1032."
                 },
                 {
                     id: 2,
-                    text: "115² = ?",
-                    options: ["12225", "13225", "12325", "14225"],
+                    text: "56 × 32 = ?",
+                    options: ["1782", "1792", "1802", "1692"],
                     correct: 1, // B
-                    explanation: "Trick: Ends in 5. First part is 11×12 = 132. Append 25. Result: 13225."
+                    explanation: "Split Method: 56×30=1680, 56×2=112. 1680+112=1792."
                 },
                 {
                     id: 3,
-                    text: "8.5² = ?",
-                    options: ["72.25", "70.25", "71.25", "73.25"],
+                    text: "72 × 28 = ?",
+                    options: ["2016", "2006", "2116", "1916"],
                     correct: 0, // A
-                    explanation: "Trick: Treat as 85. 8×9 = 72. Append 25 -> 7225. Put decimal -> 72.25."
+                    explanation: "Rounding Method: 72×30=2160, subtract 72×2=144. 2160-144=2016."
                 },
                 {
                     id: 4,
-                    text: "195² = ?",
-                    options: ["37025", "39025", "38025", "36025"],
-                    correct: 2, // C
-                    explanation: "Trick: Ends in 5. 19×20 = 380. Append 25. Result: 38025."
+                    text: "64 × 35 = ?",
+                    options: ["2240", "2140", "2340", "2250"],
+                    correct: 0, // A
+                    explanation: "Double/Half Method: Double 35 to 70, Halve 64 to 32. 32×70 = 2240."
                 },
-                // Type 2: Base 50 Method (25 ± Diff)
                 {
                     id: 5,
-                    text: "54² = ?",
-                    options: ["2916", "2816", "2716", "2616"],
+                    text: "81 × 26 = ?",
+                    options: ["2106", "2116", "2006", "2206"],
                     correct: 0, // A
-                    explanation: "Base 50 (+4). First part: 25 + 4 = 29. Second part: 4² = 16. Result: 2916."
+                    explanation: "Split Method: 81×20=1620, 81×6=486. 1620+486=2106."
                 },
                 {
                     id: 6,
-                    text: "42² = ?",
-                    options: ["1664", "1764", "1864", "1564"],
+                    text: "37 × 42 = ?",
+                    options: ["1544", "1554", "1654", "1454"],
                     correct: 1, // B
-                    explanation: "Base 50 (-8). First part: 25 - 8 = 17. Second part: 8² = 64. Result: 1764."
+                    explanation: "Split Method: 37×40=1480, 37×2=74. 1480+74=1554."
                 },
                 {
                     id: 7,
-                    text: "63² = ?",
-                    options: ["3869", "3969", "3769", "4069"],
-                    correct: 1, // B
-                    explanation: "Base 50 (+13). 25 + 13 = 38. 13² = 169 (carry 1). 38+1 = 39. Append 69. Result: 3969."
+                    text: "53 × 44 = ?",
+                    options: ["2332", "2432", "2322", "2232"],
+                    correct: 0, // A
+                    explanation: "Split Method: 53×40=2120, 53×4=212. 2120+212=2332."
                 },
                 {
                     id: 8,
-                    text: "38² = ?",
-                    options: ["1344", "1444", "1544", "1244"],
-                    correct: 1, // B
-                    explanation: "Base 50 (-12). 25 - 12 = 13. 12² = 144 (carry 1). 13+1 = 14. Append 44. Result: 1444."
+                    text: "29 × 61 = ?",
+                    options: ["1769", "1779", "1669", "1869"],
+                    correct: 0, // A
+                    explanation: "Rounding Method: 30×61=1830, subtract 1×61=61. 1830-61=1769."
                 },
-                // Type 3: Base 100 Method (Number ± Diff)
                 {
                     id: 9,
-                    text: "96² = ?",
-                    options: ["9216", "9116", "9316", "9416"],
+                    text: "92 × 14 = ?",
+                    options: ["1288", "1278", "1388", "1188"],
                     correct: 0, // A
-                    explanation: "Base 100 (-4). First part: 96 - 4 = 92. Second part: 4² = 16. Result: 9216."
+                    explanation: "Split Method: 92×10=920, 92×4=368. 920+368=1288."
                 },
                 {
                     id: 10,
-                    text: "108² = ?",
-                    options: ["11564", "11464", "11664", "11764"],
-                    correct: 2, // C
-                    explanation: "Base 100 (+8). First part: 108 + 8 = 116. Second part: 8² = 64. Result: 11664."
-                },
-                {
-                    id: 11,
-                    text: "89² = ?",
-                    options: ["7821", "7721", "7921", "7621"],
-                    correct: 2, // C
-                    explanation: "Base 100 (-11). 89 - 11 = 78. 11² = 121 (carry 1). 78+1=79. Append 21. Result: 7921."
-                },
-                {
-                    id: 12,
-                    text: "114² = ?",
-                    options: ["12896", "12796", "12996", "12696"],
-                    correct: 2, // C
-                    explanation: "Base 100 (+14). 114 + 14 = 128. 14² = 196 (carry 1). 128+1=129. Append 96. Result: 12996."
-                },
-                // Type 4: Advanced Bases (or Mixed)
-                {
-                    id: 13,
-                    text: "74² = ?",
-                    options: ["5376", "5476", "5576", "5276"],
+                    text: "48 × 36 = ?",
+                    options: ["1718", "1728", "1628", "1828"],
                     correct: 1, // B
-                    explanation: "Base 50 (+24). 25+24=49. 24²=576. 49+5=54. Result: 5476."
-                },
-                {
-                    id: 14,
-                    text: "29² = ?",
-                    options: ["841", "831", "821", "851"],
-                    correct: 0, // A
-                    explanation: "Base 50 (-21). 25-21=4. 21²=441. 4+4=8. Result: 841."
-                },
-                {
-                    id: 15,
-                    text: "124² = ?",
-                    options: ["15376", "14376", "15476", "15276"],
-                    correct: 0, // A
-                    explanation: "Base 100 (+24). 124+24=148. 24²=576. 148+5=153. Result: 15376."
-                },
-                // Type 5: Base 200, 300, 1000
-                {
-                    id: 16,
-                    text: "206² = ?",
-                    options: ["42436", "41436", "42036", "43436"],
-                    correct: 0, // A
-                    explanation: "Base 200 (+6). (206+6)×2 = 424. 6² = 36. Result: 42436."
-                },
-                {
-                    id: 17,
-                    text: "309² = ?",
-                    options: ["95481", "94581", "95581", "96481"],
-                    correct: 0, // A
-                    explanation: "Base 300 (+9). (309+9)×3 = 954. 9² = 81. Result: 95481."
-                },
-                {
-                    id: 18,
-                    text: "998² = ?",
-                    options: ["996004", "994004", "998004", "992004"],
-                    correct: 0, // A
-                    explanation: "Base 1000 (-2). 998-2 = 996. 2² = 004 (Base 1000 needs 3 digits). Result: 996004."
-                },
-                // Type 6: Misc
-                {
-                    id: 19,
-                    text: "57² = ?",
-                    options: ["3249", "3349", "3149", "3449"],
-                    correct: 0, // A
-                    explanation: "Base 50 (+7). 25+7=32. 7²=49. Result: 3249."
-                },
-                {
-                    id: 20,
-                    text: "11.1² = ?",
-                    options: ["123.21", "121.21", "122.21", "124.21"],
-                    correct: 0, // A
-                    explanation: "Pattern 111² = 12321. Shift decimal 2 places. Result: 123.21."
+                    explanation: "Split Method: 48×30=1440, 48×6=288. 1440+288=1728."
                 }
             ]
         };
