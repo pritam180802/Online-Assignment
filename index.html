@@ -4,7 +4,641 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mega Mock Test: Vedic Maths</title>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Mock Test: Vedic Maths</title>
     
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* --- Animation Keyframes --- */
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
+        @keyframes rise {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(-120vh) translateX(20px) rotate(10deg); opacity: 0; }
+        }
+
+        /* --- Particle Classes --- */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        .confetti { animation-name: fall; animation-timing-function: linear; }
+
+        .coin {
+            animation-name: fall;
+            animation-timing-function: ease-in;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #78350f;
+            border: 2px solid #b45309;
+            background: radial-gradient(circle at 30% 30%, #fcd34d, #f59e0b);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .balloon {
+            animation-name: rise;
+            animation-timing-function: ease-out;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* Circular Progress Chart */
+        .circular-chart {
+            display: block;
+            margin: 0 auto;
+            max-width: 80%;
+            max-height: 250px;
+        }
+        .circle-bg {
+            fill: none;
+            stroke: #eee;
+            stroke-width: 3.8;
+        }
+        .circle {
+            fill: none;
+            stroke-width: 2.8;
+            stroke-linecap: round;
+            animation: progress 1s ease-out forwards;
+        }
+        @keyframes progress {
+            0% { stroke-dasharray: 0 100; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+    <!-- Global Header with Timer -->
+    <div class="bg-blue-900 text-white p-3 shadow-md z-20 sticky top-0 flex justify-between items-center px-4 md:px-8">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="resetQuiz()">
+            <i data-lucide="building-2" class="w-6 h-6 text-yellow-400"></i>
+            <div>
+                <h1 class="text-sm md:text-lg font-bold leading-tight">Banking Mock Test</h1>
+                <p class="text-xs text-blue-200">Candidate: Mallika Naiya</p>
+            </div>
+        </div>
+        
+        <!-- Timer Display -->
+        <div id="timer-box" class="flex items-center gap-2 bg-blue-800 px-3 py-1.5 rounded-lg border border-blue-700">
+            <i data-lucide="clock" class="w-4 h-4 text-yellow-400"></i>
+            <span id="timer-text" class="font-mono font-bold text-lg">60:00</span>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div id="app-container" class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-6 pb-24">
+        <!-- Dynamic Content will be injected here -->
+    </div>
+
+    <!-- Footer Navigation -->
+    <div id="footer-nav" class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 z-10 hidden">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <button id="btn-prev" onclick="prevQuestion()" class="text-slate-500 font-medium px-4 py-2 rounded-lg hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed">
+                Previous
+            </button>
+            <button id="btn-next" onclick="nextQuestion()" class="bg-blue-900 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-800 transition-colors flex items-center gap-2 hidden">
+                Next Question <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+            <button id="btn-submit" onclick="calculateScore()" class="bg-green-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-green-700 transition-colors shadow-lg hidden">
+                Submit Test
+            </button>
+            <button id="btn-back-result" onclick="showResult()" class="bg-slate-800 text-white px-8 py-3 rounded-xl font-bold hover:bg-slate-900 transition-colors shadow-lg hidden">
+                View Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Animation Container -->
+    <div id="animation-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden hidden"></div>
+
+    <script>
+        // --- DATA SECTION: 50 QUESTIONS ---
+        const quizData = {
+            title: "Mega Mock Test: Vedic Maths",
+            totalTimeSeconds: 120 * 60, // 120 Minutes
+            questions: [
+                { id: 1, text: "56² = ?", options: ["3036", "3136", "3236", "3146"], correct: 1 }, // B
+                { id: 2, text: "96 × 92 = ?", options: ["8832", "8932", "8732", "8842"], correct: 0 }, // A
+                { id: 3, text: "1000 - 648 = ?", options: ["362", "352", "452", "342"], correct: 1 }, // B
+                { id: 4, text: "43 × 11 = ?", options: ["463", "473", "483", "453"], correct: 1 }, // B
+                { id: 5, text: "5 + 55 + 555 + 5555 = ?", options: ["6175", "6165", "6170", "6270"], correct: 2 }, // C
+                { id: 6, text: "65² = ?", options: ["4225", "4125", "4325", "4025"], correct: 0 }, // A
+                { id: 7, text: "105 × 109 = ?", options: ["11345", "11445", "11545", "11435"], correct: 1 }, // B
+                { id: 8, text: "0.6 + 0.66 + 0.666 + 0.6666 = ?", options: ["2.5926", "2.6926", "2.4926", "2.5826"], correct: 0 }, // A
+                { id: 9, text: "14 × 15 = ?", options: ["210", "225", "240", "220"], correct: 0 }, // A
+                { id: 10, text: "94² = ?", options: ["8836", "8936", "8736", "8846"], correct: 0 }, // A
+                { id: 11, text: "196 × 198 = ?", options: ["38808", "38608", "38818", "39808"], correct: 0 }, // A
+                { id: 12, text: "10000 - 3254 = ?", options: ["6746", "6756", "6646", "6736"], correct: 0 }, // A
+                { id: 13, text: "51 × 48 = ?", options: ["2448", "2348", "2548", "2458"], correct: 0 }, // A
+                { id: 14, text: "115² = ?", options: ["13225", "12225", "14225", "13125"], correct: 0 }, // A
+                { id: 15, text: "68 × 7 = ?", options: ["466", "476", "486", "456"], correct: 1 }, // B
+                { id: 16, text: "88 × 96 = ?", options: ["8448", "8348", "8548", "8458"], correct: 0 }, // A
+                { id: 17, text: "3 + 33 + 333 + 3333 + 33333 = ?", options: ["37035", "36035", "37135", "37025"], correct: 0 }, // A
+                { id: 18, text: "42² = ?", options: ["1764", "1664", "1864", "1564"], correct: 0 }, // A
+                { id: 19, text: "15 × 64 = ?", options: ["960", "940", "980", "920"], correct: 0 }, // A
+                { id: 20, text: "100 - 43 = ?", options: ["67", "57", "47", "53"], correct: 1 }, // B
+                { id: 21, text: "106² = ?", options: ["11236", "11336", "11136", "11246"], correct: 0 }, // A
+                { id: 22, text: "235 × 11 = ?", options: ["2585", "2485", "2575", "2685"], correct: 0 }, // A
+                { id: 23, text: "112 × 104 = ?", options: ["11648", "11548", "11658", "11748"], correct: 0 }, // A
+                { id: 24, text: "1666 × 4 = ?", options: ["6664", "6666", "6646", "6464"], correct: 0 }, // A
+                { id: 25, text: "2 + 4 + 6 + ... + 40 = ?", options: ["400", "420", "410", "440"], correct: 1 }, // B
+                { id: 26, text: "49² = ?", options: ["2401", "2301", "2501", "2411"], correct: 0 }, // A
+                { id: 27, text: "428 × 5 = ?", options: ["2140", "2240", "2150", "2040"], correct: 0 }, // A
+                { id: 28, text: "304 × 305 = ?", options: ["92720", "91720", "92620", "93720"], correct: 0 }, // A
+                { id: 29, text: "0.4 + 0.44 + ... + 0.44444 = ?", options: ["2.1605", "1.9605", "2.0605", "2.1722"], correct: 3 }, // D
+                { id: 30, text: "91² = ?", options: ["8281", "8181", "8381", "8291"], correct: 0 }, // A
+                { id: 31, text: "53 × 34 = ?", options: ["1802", "1792", "1812", "1702"], correct: 0 }, // A
+                { id: 32, text: "1000 - 79 = ?", options: ["921", "931", "821", "911"], correct: 0 }, // A
+                { id: 33, text: "32² = ?", options: ["1024", "1124", "1044", "1014"], correct: 0 }, // A
+                { id: 34, text: "24 × 25 = ?", options: ["575", "625", "600", "550"], correct: 2 }, // C
+                { id: 35, text: "19999 × 5 = ?", options: ["99995", "99999", "95999", "99955"], correct: 0 }, // A
+                { id: 36, text: "644 × 25 = ?", options: ["16200", "16100", "15100", "16000"], correct: 1 }, // B
+                { id: 37, text: "3 + 6 + 9 + ... + 60 = ?", options: ["610", "630", "600", "660"], correct: 1 }, // B
+                { id: 38, text: "95 × 104 = ?", options: ["9880", "9980", "9780", "9860"], correct: 0 }, // A
+                { id: 39, text: "74² = ?", options: ["5476", "5376", "5576", "5676"], correct: 0 }, // A
+                { id: 40, text: "19 × 21 = ?", options: ["398", "400", "399", "401"], correct: 2 }, // C
+                { id: 41, text: "93 × 6 = ?", options: ["548", "568", "558", "538"], correct: 2 }, // C
+                { id: 42, text: "1.5² = ?", options: ["2.25", "2.15", "2.35", "2.45"], correct: 0 }, // A
+                { id: 43, text: "1000 - 246 - 154 = ?", options: ["500", "600", "400", "700"], correct: 1 }, // B
+                { id: 44, text: "29 × 31 = ?", options: ["899", "901", "891", "999"], correct: 0 }, // A
+                { id: 45, text: "51 × 23 = ?", options: ["1173", "1163", "1273", "1153"], correct: 0 }, // A
+                { id: 46, text: "83² = ?", options: ["6889", "6789", "6989", "6689"], correct: 0 }, // A
+                { id: 47, text: "4.44 + 44.4 + 444 = ?", options: ["492.84", "488.84", "490.84", "502.84"], correct: 0 }, // A
+                { id: 48, text: "32 × 41 = ?", options: ["1302", "1312", "1212", "1412"], correct: 1 }, // B
+                { id: 49, text: "11.1² = ?", options: ["123.21", "121.21", "122.21", "124.21"], correct: 0 }, // A
+                { id: 50, text: "44 × 24 = ?", options: ["1056", "1046", "1066", "1156"], correct: 0 }  // A
+            ]
+        };
+
+        // --- MOTIVATIONAL QUOTES POOL ---
+        const motivationalQuotes = [
+            "Believe in yourself, Mallika! That Bank Manager's cabin is waiting for you.",
+            "Success doesn't come from what you do occasionally, it comes from what you do consistently.",
+            "Your dream of becoming a Banking PO is valid and reachable. Keep pushing!",
+            "Mistakes are proof that you are trying. Analyze, learn, and conquer the next test!",
+            "The distance between your dreams and reality is called action. You are taking action!",
+            "Don't stop until you're proud. The banking world needs your leadership.",
+            "Every mock test is a step closer to your final selection. Keep the momentum going!",
+            "You are capable of more than you know. Trust your preparation, Mallika!",
+            "Focus on the process, and the results will follow. You are building a strong foundation.",
+            "Difficult roads often lead to beautiful destinations. Your journey to Manager starts here."
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let currentState = {
+            mode: 'quiz',
+            currentIndex: 0,
+            answers: {}, 
+            score: 0,
+            timeLeft: quizData.totalTimeSeconds,
+            timerId: null,
+            timeTaken: 0,
+            currentMotivation: "" // To store the random quote
+        };
+
+        // --- DOM ELEMENTS ---
+        const container = document.getElementById('app-container');
+        const footer = document.getElementById('footer-nav');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnSubmit = document.getElementById('btn-submit');
+        const btnBackResult = document.getElementById('btn-back-result');
+        const animBox = document.getElementById('animation-container');
+        const timerText = document.getElementById('timer-text');
+        const timerBox = document.getElementById('timer-box');
+
+        // --- INITIALIZATION ---
+        function init() {
+            lucide.createIcons();
+            startTimer();
+            render();
+        }
+
+        function resetQuiz() {
+            clearInterval(currentState.timerId);
+            currentState = {
+                mode: 'quiz',
+                currentIndex: 0,
+                answers: {},
+                score: 0,
+                timeLeft: quizData.totalTimeSeconds,
+                timerId: null,
+                timeTaken: 0,
+                currentMotivation: ""
+            };
+            stopRewardAnimation();
+            startTimer();
+            render();
+        }
+
+        function startTimer() {
+            updateTimerDisplay();
+            currentState.timerId = setInterval(() => {
+                currentState.timeLeft--;
+                currentState.timeTaken++;
+                updateTimerDisplay();
+                if (currentState.timeLeft <= 0) {
+                    calculateScore(true);
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(currentState.timeLeft / 60);
+            const seconds = currentState.timeLeft % 60;
+            timerText.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            if (currentState.timeLeft < 60) {
+                timerBox.classList.replace('bg-blue-800', 'bg-red-600');
+                timerBox.classList.add('animate-pulse');
+            } else {
+                timerBox.classList.replace('bg-red-600', 'bg-blue-800');
+                timerBox.classList.remove('animate-pulse');
+            }
+        }
+
+        // --- LOGIC ---
+        function selectAnswer(qIndex, optIndex) {
+            if (currentState.mode === 'review') return;
+            currentState.answers[qIndex] = optIndex;
+            render(); 
+        }
+
+        function nextQuestion() {
+            if (currentState.currentIndex < quizData.questions.length - 1) {
+                currentState.currentIndex++;
+                render();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentState.currentIndex > 0) {
+                currentState.currentIndex--;
+                render();
+            }
+        }
+
+        function calculateScore(autoSubmit = false) {
+            clearInterval(currentState.timerId);
+            let s = 0;
+            quizData.questions.forEach((q, idx) => {
+                if (currentState.answers[idx] === q.correct) s += 2;
+            });
+            currentState.score = s;
+            currentState.mode = 'result';
+            
+            // Pick a random motivational quote
+            const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
+            currentState.currentMotivation = motivationalQuotes[randomIndex];
+            
+            if(autoSubmit) alert("Time's up! Your test has been automatically submitted.");
+            
+            render();
+        }
+
+        function startReview() {
+            currentState.mode = 'review';
+            currentState.currentIndex = 0;
+            render();
+        }
+
+        function showResult() {
+            currentState.mode = 'result';
+            render();
+        }
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            return `${m}m ${s}s`;
+        }
+
+        // --- RENDERING ---
+        function render() {
+            container.innerHTML = '';
+            footer.classList.remove('hidden');
+            stopRewardAnimation();
+
+            if (currentState.mode === 'quiz' || currentState.mode === 'review') {
+                renderQuestionView();
+            } else if (currentState.mode === 'result') {
+                renderResultView();
+            }
+            
+            lucide.createIcons();
+        }
+
+        function renderQuestionView() {
+            const q = quizData.questions[currentState.currentIndex];
+            const isReview = currentState.mode === 'review';
+            const progress = ((currentState.currentIndex + 1) / quizData.questions.length) * 100;
+            const selectedAnswer = currentState.answers[currentState.currentIndex];
+            const isAnswered = selectedAnswer !== undefined;
+
+            const headerHtml = `
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-slate-800">${isReview ? 'Review Mode' : 'Question ' + (currentState.currentIndex + 1)}</span>
+                            ${isReview ? '<span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-bold">SOLUTIONS</span>' : ''}
+                        </div>
+                        <div class="text-sm font-medium text-slate-500">
+                            ${currentState.currentIndex + 1}/${quizData.questions.length}
+                        </div>
+                    </div>
+                    <div class="h-1 bg-slate-100 w-full rounded-full overflow-hidden">
+                        <div class="h-full bg-blue-600 transition-all duration-300" style="width: ${progress}%"></div>
+                    </div>
+                </div>
+            `;
+
+            let optionsHtml = '';
+            q.options.forEach((opt, idx) => {
+                const isSelected = selectedAnswer === idx;
+                const isCorrect = q.correct === idx;
+                
+                let btnClass = "border-slate-200 hover:bg-slate-50";
+                let badgeClass = "border-slate-300 text-slate-500";
+                let icon = '';
+
+                if (isReview) {
+                    if (isCorrect) {
+                        btnClass = "bg-green-100 border-green-500 text-green-800 font-bold ring-1 ring-green-500";
+                        badgeClass = "bg-green-600 border-green-600 text-white";
+                        icon = '<i data-lucide="check-circle-2" class="w-5 h-5 text-green-600"></i>';
+                    } else if (isSelected && !isCorrect) {
+                        btnClass = "bg-red-50 border-red-500 text-red-700 font-medium";
+                        badgeClass = "border-red-500 text-red-500";
+                        icon = '<i data-lucide="x-circle" class="w-5 h-5 text-red-500"></i>';
+                    } else {
+                        btnClass = "border-slate-100 opacity-60";
+                    }
+                } else {
+                    if (isSelected) {
+                        btnClass = "border-blue-500 bg-blue-50 ring-1 ring-blue-500";
+                        badgeClass = "border-blue-500 text-blue-600";
+                    }
+                }
+
+                optionsHtml += `
+                    <button 
+                        onclick="selectAnswer(${currentState.currentIndex}, ${idx})"
+                        ${isReview ? 'disabled' : ''}
+                        class="w-full text-left p-4 rounded-xl border-2 transition-all flex items-center justify-between group mb-3 ${btnClass}"
+                    >
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border ${badgeClass}">
+                                ${String.fromCharCode(65 + idx)}
+                            </span>
+                            <span>${opt}</span>
+                        </div>
+                        ${icon}
+                    </button>
+                `;
+            });
+
+            container.innerHTML = `
+                ${headerHtml}
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                    <h3 class="text-lg md:text-xl font-medium text-slate-800 leading-relaxed mb-6">Q${currentState.currentIndex+1}. ${q.text}</h3>
+                    <div>${optionsHtml}</div>
+                </div>
+            `;
+
+            btnPrev.disabled = currentState.currentIndex === 0;
+            btnNext.classList.add('hidden');
+            btnSubmit.classList.add('hidden');
+            btnBackResult.classList.add('hidden');
+
+            if (currentState.currentIndex < quizData.questions.length - 1) {
+                btnNext.classList.remove('hidden');
+            } else {
+                if (isReview) {
+                    btnBackResult.classList.remove('hidden');
+                } else {
+                    btnSubmit.classList.remove('hidden');
+                }
+            }
+        }
+
+        function renderResultView() {
+            footer.classList.add('hidden'); 
+            
+            const totalQuestions = quizData.questions.length;
+            const maxMarks = totalQuestions * 2;
+            const attemptedCount = Object.keys(currentState.answers).length;
+            const correctCount = currentState.score / 2;
+            const wrongCount = attemptedCount - correctCount;
+            const skippedCount = totalQuestions - attemptedCount;
+            const percentage = (currentState.score / maxMarks) * 100;
+            const accuracy = attemptedCount > 0 ? Math.round((correctCount / attemptedCount) * 100) : 0;
+            const speedPerQ = attemptedCount > 0 ? Math.round(currentState.timeTaken / attemptedCount) : 0;
+
+            let grade, animationType;
+            if (percentage >= 80) {
+                grade = { title: "Banking Wizard", color: "text-yellow-600", icon: "crown" };
+                animationType = 'coins';
+            } else if (percentage >= 60) {
+                grade = { title: "Probationary Officer (PO)", color: "text-blue-600", icon: "zap" };
+                animationType = 'confetti';
+            } else {
+                grade = { title: "Banking Aspirant", color: "text-gray-600", icon: "book-open" };
+                animationType = 'balloons';
+            }
+
+            startRewardAnimation(animationType);
+
+            const circleCircumference = 2 * Math.PI * 15.9155;
+            const accuracyDash = (accuracy / 100) * circleCircumference;
+
+            container.innerHTML = `
+                <div class="flex flex-col gap-6">
+                    
+                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+                         <div class="p-6 ${percentage >= 80 ? 'bg-gradient-to-r from-yellow-500 to-amber-600' : 'bg-gradient-to-r from-blue-800 to-blue-900'} text-white text-center relative overflow-hidden">
+                            <div class="relative z-10">
+                                <i data-lucide="${grade.icon}" class="w-12 h-12 mx-auto mb-2 text-white opacity-90"></i>
+                                <h2 class="text-3xl font-bold">${currentState.score} <span class="text-lg opacity-75">/ ${maxMarks}</span></h2>
+                                <p class="text-sm font-medium opacity-90 tracking-wide uppercase mt-1">Total Marks</p>
+                            </div>
+                        </div>
+                        <div class="p-4 text-center border-b border-slate-100">
+                            <h3 class="text-xl font-bold ${grade.color}">${grade.title}</h3>
+                        </div>
+                        
+                        <!-- CUSTOM NOTE SECTION -->
+                        <div class="p-6 bg-slate-50 text-center relative overflow-hidden group">
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500"></div>
+                            
+                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-widest rounded-full mb-3">
+                                A Special Note for You from Pritam
+                            </span>
+                            
+                            <div class="relative">
+                                <i data-lucide="quote" class="w-8 h-8 text-slate-200 absolute -top-4 -left-2 opacity-50"></i>
+                                <p class="text-slate-800 font-serif italic text-lg md:text-xl leading-relaxed px-6">
+                                    ${currentState.currentMotivation}
+                                </p>
+                                <i data-lucide="quote" class="w-8 h-8 text-slate-200 absolute -bottom-4 -right-2 opacity-50 rotate-180"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center">
+                            <div class="relative w-16 h-16 mb-2">
+                                <svg viewBox="0 0 36 36" class="circular-chart text-blue-500">
+                                    <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="circle" stroke-dasharray="${accuracyDash}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke="currentColor"/>
+                                </svg>
+                                <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-slate-700">${accuracy}%</div>
+                            </div>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Accuracy</span>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mb-2">
+                                <i data-lucide="clock" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-lg font-bold text-slate-800">${formatTime(currentState.timeTaken)}</span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Time Taken</span>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center mb-2">
+                                <i data-lucide="edit-3" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-lg font-bold text-slate-800">${attemptedCount} <span class="text-xs text-slate-400">/ ${totalQuestions}</span></span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Attempted</span>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center mb-2">
+                                <i data-lucide="zap" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-lg font-bold text-slate-800">${speedPerQ}s</span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Avg Speed</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                        <h4 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5 text-blue-600"></i> Detailed Analysis
+                        </h4>
+                        
+                        <div class="flex h-4 rounded-full overflow-hidden mb-4 bg-slate-100">
+                            <div style="width: ${(correctCount/totalQuestions)*100}%" class="bg-green-500"></div>
+                            <div style="width: ${(wrongCount/totalQuestions)*100}%" class="bg-red-500"></div>
+                            <div style="width: ${(skippedCount/totalQuestions)*100}%" class="bg-slate-300"></div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div>
+                                <span class="block text-2xl font-bold text-green-600">${correctCount}</span>
+                                <span class="text-xs font-medium text-slate-500">Correct</span>
+                            </div>
+                            <div class="border-l border-r border-slate-100">
+                                <span class="block text-2xl font-bold text-red-600">${wrongCount}</span>
+                                <span class="text-xs font-medium text-slate-500">Incorrect</span>
+                            </div>
+                            <div>
+                                <span class="block text-2xl font-bold text-slate-400">${skippedCount}</span>
+                                <span class="text-xs font-medium text-slate-500">Skipped</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <button onclick="startReview()" class="w-full bg-blue-100 text-blue-900 py-4 rounded-xl font-bold hover:bg-blue-200 transition-colors flex items-center justify-center gap-2">
+                            <i data-lucide="eye" class="w-5 h-5"></i> Review Question-wise Solutions
+                        </button>
+
+                        <button onclick="resetQuiz()" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-slate-800 transition-colors">
+                            Retake Mock Test
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- REWARD ANIMATION SYSTEM ---
+        let animationInterval;
+        
+        function startRewardAnimation(type) {
+            animBox.classList.remove('hidden');
+            if (animationInterval) clearInterval(animationInterval);
+            for(let i=0; i<15; i++) createParticle(type);
+            let intervalTime = 300;
+            if(type === 'coins') intervalTime = 200; 
+            animationInterval = setInterval(() => { createParticle(type); }, intervalTime);
+        }
+
+        function stopRewardAnimation() {
+            animBox.classList.add('hidden');
+            animBox.innerHTML = '';
+            if (animationInterval) clearInterval(animationInterval);
+        }
+
+        function createParticle(type) {
+            const el = document.createElement('div');
+            el.classList.add('particle');
+            const randomX = Math.random() * 100;
+            if (type === 'coins') {
+                el.classList.add('coin');
+                el.textContent = '₹';
+                el.style.left = randomX + '%';
+                el.style.top = '-10vh'; 
+                el.style.width = '32px';
+                el.style.height = '32px';
+                el.style.fontSize = '20px';
+                el.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+            } else if (type === 'confetti') {
+                el.classList.add('confetti');
+                el.style.left = randomX + '%';
+                el.style.top = '-10vh'; 
+                el.style.width = (Math.random() * 10 + 5) + 'px';
+                el.style.height = (Math.random() * 10 + 5) + 'px';
+                el.style.backgroundColor = ['#EF4444', '#3B82F6', '#10B981', '#F59E0B', '#8B5CF6'][Math.floor(Math.random() * 5)];
+                el.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                el.style.transform = `rotate(${Math.random() * 360}deg)`;
+            } else {
+                el.classList.add('balloon');
+                el.style.left = randomX + '%';
+                el.style.top = '110vh'; 
+                el.style.width = '30px';
+                el.style.height = '40px';
+                el.style.backgroundColor = ['#FCA5A5', '#93C5FD', '#6EE7B7', '#FDE047'][Math.floor(Math.random() * 4)];
+                el.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            }
+            animBox.appendChild(el);
+            setTimeout(() => { el.remove(); }, 8000);
+        }
+
+        init();
+    </script>
+</body>
+</html>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -633,3 +1267,4 @@
     </script>
 </body>
 </html>
+
