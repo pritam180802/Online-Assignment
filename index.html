@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reasoning Mock: Circular Seating Arrangement</title>
+    <title>English Grammar Mock: Nouns & Gender</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -104,7 +104,7 @@
                 <i data-lucide="building-2" class="w-6 h-6 text-amber-400"></i>
             </div>
             <div>
-                <h1 class="text-sm md:text-lg font-extrabold leading-tight tracking-wide">Banking PO Reasoning Mock</h1>
+                <h1 class="text-sm md:text-lg font-extrabold leading-tight tracking-wide">Banking PO English Mock</h1>
                 <p class="text-xs text-blue-200 font-medium">Candidate: <span class="text-white font-semibold">Mallika Naiya</span></p>
             </div>
         </div>
@@ -112,7 +112,7 @@
         <!-- Countdown Timer -->
         <div id="timer-box" class="flex items-center gap-2 bg-blue-900 px-3.5 py-2 rounded-xl border border-blue-700 shadow-inner transition-colors duration-300">
             <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
-            <span id="timer-text" class="font-mono font-bold text-base md:text-lg tracking-wider">45:00</span>
+            <span id="timer-text" class="font-mono font-bold text-base md:text-lg tracking-wider">30:00</span>
         </div>
     </header>
 
@@ -150,307 +150,117 @@
     <div id="animation-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden hidden"></div>
 
     <script>
-        // --- QUIZ DATA: 12 CIRCULAR SEATING ARRANGEMENT QUESTIONS ---
+        // --- QUIZ DATA: 10 ENGLISH GRAMMAR QUESTIONS (NOUNS: PLURALS & GENDER) ---
         const quizData = {
-            title: "Circular Seating Arrangement (4 Sets)",
-            totalTimeSeconds: 45 * 60, // 45 Minutes
+            title: "English Grammar: Nouns & Gender",
+            totalTimeSeconds: 30 * 60, // 30 Minutes
             marksPerQuestion: 2,
             questions: [
-                // SET 1 (Q1 - Q3)
                 {
                     id: 1,
-                    setLabel: "Set 1 (Q1–Q3)",
-                    context: `
-                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                            <span>Directions (Q1–Q3): Study the following information carefully and answer the given questions.</span>
-                        </div>
-                        <p class="mb-2">Six persons – A, B, C, D, E, and F are sitting around a circular table such that all of them are facing towards the centre, but not necessarily in the same order.</p>
-                        <ul class="list-disc list-inside space-y-1 text-slate-700">
-                            <li>C sits second to the left of B.</li>
-                            <li>Both B and D are immediate neighbours.</li>
-                            <li>The number of persons sitting between D and C is the same as the number of persons sitting between B and F.</li>
-                            <li>E neither sits adjacent to F nor A.</li>
-                        </ul>
-                    `,
-                    text: "Who sits to the immediate right of A?",
-                    options: ["D", "E", "F", "C", "B"],
-                    correct: 2, // (c) F
-                    explanation: "Final Arrangement (Clockwise): C – F – A – D – B – E. Since everyone faces the centre, F sits to the immediate right of A."
+                    setLabel: "Plural Rules",
+                    context: "",
+                    text: "Which of the following is the correct plural form of a word ending in \"-z\" or \"-ch\" according to the plural formation rules?",
+                    options: ["Quizs", "Quizzes", "Benchs", "Taxs"],
+                    correct: 1, // B) Quizzes
+                    explanation: "Words ending with -s, -ss, -sh, -ch, -x, and -z take -es to form plurals (e.g., quizzes, benches, taxes)."
                 },
                 {
                     id: 2,
-                    setLabel: "Set 1 (Q1–Q3)",
-                    context: `
-                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                            <span>Directions (Q1–Q3): Study the following information carefully and answer the given questions.</span>
-                        </div>
-                        <p class="mb-2">Six persons – A, B, C, D, E, and F are sitting around a circular table such that all of them are facing towards the centre, but not necessarily in the same order.</p>
-                        <ul class="list-disc list-inside space-y-1 text-slate-700">
-                            <li>C sits second to the left of B.</li>
-                            <li>Both B and D are immediate neighbours.</li>
-                            <li>The number of persons sitting between D and C is the same as the number of persons sitting between B and F.</li>
-                            <li>E neither sits adjacent to F nor A.</li>
-                        </ul>
-                    `,
-                    text: "Which of the following statement(s) is/are true with respect to the final arrangement?<br><span class='block mt-2 text-base font-medium text-slate-700'>I. E sits second to the left of D.<br>II. Two persons sit between A and E.<br>III. F and D are immediate neighbours.</span>",
-                    options: ["Only I", "Only II", "Only I and II", "Only II and III", "All I, II, and III"],
-                    correct: 2, // (c) Only I and II
-                    explanation: "Final Arrangement (Clockwise): C – F – A – D – B – E. Statement I is true (D → B → E clockwise/left), Statement II is true (opposite seats in a 6-person circle), and Statement III is false (A sits between F and D)."
+                    setLabel: "Plural Rules",
+                    context: "",
+                    text: "Which of the following words ending in \"-o\" forms its plural by adding only \"-s\" as an exception?",
+                    options: ["Mango", "Potato", "Piano", "Hero"],
+                    correct: 2, // C) Piano
+                    explanation: "While words ending in -o generally take -es (mangoes, potatoes, heroes), exceptions like pianos, photos, logos, and videos take -s."
                 },
                 {
                     id: 3,
-                    setLabel: "Set 1 (Q1–Q3)",
-                    context: `
-                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                            <span>Directions (Q1–Q3): Study the following information carefully and answer the given questions.</span>
-                        </div>
-                        <p class="mb-2">Six persons – A, B, C, D, E, and F are sitting around a circular table such that all of them are facing towards the centre, but not necessarily in the same order.</p>
-                        <ul class="list-disc list-inside space-y-1 text-slate-700">
-                            <li>C sits second to the left of B.</li>
-                            <li>Both B and D are immediate neighbours.</li>
-                            <li>The number of persons sitting between D and C is the same as the number of persons sitting between B and F.</li>
-                            <li>E neither sits adjacent to F nor A.</li>
-                        </ul>
-                    `,
-                    text: "Four of the following five are alike in a certain way based on their seating positions and thus form a group. Which one does not belong to that group?",
-                    options: ["C - D", "F - B", "A - E", "C - A", "D - C"],
-                    correct: 3, // (d) C - A
-                    explanation: "Final Arrangement (Clockwise): C – F – A – D – B – E. All other pairs sit directly opposite to each other except C - A."
+                    setLabel: "Plural Rules",
+                    context: "",
+                    text: "Which noun changes its ending from \"-f\" or \"-fe\" to \"-ves\" in the plural form?",
+                    options: ["Roof", "Chief", "Calf", "Proof"],
+                    correct: 2, // C) Calf
+                    explanation: "Words ending in -f/-fe like calf, wife, knife, and leaf change to -ves (calves), whereas roofs, chiefs, and proofs are exceptions that take -s."
                 },
-
-                // SET 2 (Q4 - Q6)
                 {
                     id: 4,
-                    setLabel: "Set 2 (Q4–Q6)",
-                    context: `
-                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                            <span>Directions (Q4–Q6): Study the following information carefully and answer the given questions.</span>
-                        </div>
-                        <p class="mb-2">Eight persons – P, Q, R, S, T, U, V, and W are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
-                        <ul class="list-disc list-inside space-y-1 text-slate-700">
-                            <li>U sits third to the left of P.</li>
-                            <li>One person sits between P and V.</li>
-                            <li>The number of persons sitting between V and P is the same as the number of persons sitting between P and R.</li>
-                            <li>W and R are immediate neighbours.</li>
-                            <li>Q sits second to the right of S.</li>
-                            <li>Neither Q nor T sits adjacent to P.</li>
-                        </ul>
-                    `,
-                    text: "Who among the following sits exactly opposite to S?",
-                    options: ["R", "The one who sits immediate left of R", "W", "T", "The one who sits second to the right of Q"],
-                    correct: 1, // (b) The one who sits immediate left of R
-                    explanation: "Final Arrangement (Clockwise): T – Q – V – S – P – W – R – U. U sits directly opposite to S, and U is sitting to the immediate left (clockwise) of R."
+                    setLabel: "Plural Rules",
+                    context: "",
+                    text: "Select the correct plural noun to complete the sentence: \"The bank keeps all important documents inside metal _______.\"",
+                    options: ["saves", "safes", "safe", "safes'"],
+                    correct: 1, // B) safes
+                    explanation: "Safe is a noun whose plural form is safes, whereas saves is a verb."
                 },
                 {
                     id: 5,
-                    setLabel: "Set 2 (Q4–Q6)",
-                    context: `
-                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                            <span>Directions (Q4–Q6): Study the following information carefully and answer the given questions.</span>
-                        </div>
-                        <p class="mb-2">Eight persons – P, Q, R, S, T, U, V, and W are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
-                        <ul class="list-disc list-inside space-y-1 text-slate-700">
-                            <li>U sits third to the left of P.</li>
-                            <li>One person sits between P and V.</li>
-                            <li>The number of persons sitting between V and P is the same as the number of persons sitting between P and R.</li>
-                            <li>W and R are immediate neighbours.</li>
-                            <li>Q sits second to the right of S.</li>
-                            <li>Neither Q nor T sits adjacent to P.</li>
-                        </ul>
-                    `,
-                    text: "If all the persons are made to sit in alphabetical order starting from P in clockwise direction, how many persons remain unchanged in their original positions (excluding P)?",
-                    options: ["None", "One", "Two", "Three", "Four"],
-                    correct: 3, // (d) Three
-                    explanation: "Original (Clockwise from P): P, W, R, U, T, Q, V, S. Alphabetical: P, Q, R, S, T, U, V, W. Three persons (R, T, and V) remain unchanged."
+                    setLabel: "Foreign Plurals",
+                    context: "",
+                    text: "What is the correct plural form of the word \"Hypothesis\"?",
+                    options: ["Hypothesises", "Hypothesi", "Hypotheses", "Hypothesa"],
+                    correct: 2, // C) Hypotheses
+                    explanation: "Words ending with -sis change to -ses in the plural form (e.g., hypothesis → hypotheses, crisis → crises, analysis → analyses)."
                 },
                 {
                     id: 6,
-                    setLabel: "Set 2 (Q4–Q6)",
-                    context: `
-                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                            <span>Directions (Q4–Q6): Study the following information carefully and answer the given questions.</span>
-                        </div>
-                        <p class="mb-2">Eight persons – P, Q, R, S, T, U, V, and W are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
-                        <ul class="list-disc list-inside space-y-1 text-slate-700">
-                            <li>U sits third to the left of P.</li>
-                            <li>One person sits between P and V.</li>
-                            <li>The number of persons sitting between V and P is the same as the number of persons sitting between P and R.</li>
-                            <li>W and R are immediate neighbours.</li>
-                            <li>Q sits second to the right of S.</li>
-                            <li>Neither Q nor T sits adjacent to P.</li>
-                        </ul>
-                    `,
-                    text: "How many persons sit between T and W when counted from the right of T?",
-                    options: ["One", "Two", "Three", "Four", "None"],
-                    correct: 1, // (b) Two
-                    explanation: "Final Arrangement (Clockwise): T – Q – V – S – P – W – R – U. Counting to the right (anti-clockwise) of T, two persons (U and R) sit between T and W."
+                    setLabel: "Foreign Plurals",
+                    context: "",
+                    text: "Which of the following is the correct plural form of \"Criterion\"?",
+                    options: ["Criterions", "Criteria", "Criterias", "Criterii"],
+                    correct: 1, // B) Criteria
+                    explanation: "Words ending with -um or -on change to -a to form plurals (e.g., criterion → criteria, phenomenon → phenomena, datum → data)."
                 },
-
-                // SET 3 (Q7 - Q9)
                 {
                     id: 7,
-                    setLabel: "Set 3 (Q7–Q9)",
-                    context: `
-                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                            <span>Directions (Q7–Q9): Study the following information carefully and answer the given questions.</span>
-                        </div>
-                        <p class="mb-2">Eight persons – A, B, C, D, E, F, G, and H are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
-                        <ul class="list-disc list-inside space-y-1 text-slate-700">
-                            <li>B sits third to the right of A.</li>
-                            <li>Only two persons sit between B and C.</li>
-                            <li>D sits second to the left of C.</li>
-                            <li>E sits immediate right of D.</li>
-                            <li>Two persons sit between E and F.</li>
-                            <li>G does not sit adjacent to F.</li>
-                        </ul>
-                    `,
-                    text: "Who sits second to the right of G?",
-                    options: ["F", "B", "H", "E", "D"],
-                    correct: 2, // (c) H
-                    explanation: "Final Arrangement (Clockwise): A – G – C – E – D – B – F – H. Moving right (anti-clockwise) from G: A (1st), H (2nd)."
+                    setLabel: "Foreign Plurals",
+                    context: "",
+                    text: "According to the plural rules for words ending in \"-us\", what is the plural form of \"Radius\"?",
+                    options: ["Radiuses", "Radia", "Radii", "Radises"],
+                    correct: 2, // C) Radii
+                    explanation: "Words ending with -us change to -i to form plurals (e.g., radius → radii, focus → foci, syllabus → syllabi)."
                 },
                 {
                     id: 8,
-                    setLabel: "Set 3 (Q7–Q9)",
-                    context: `
-                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                            <span>Directions (Q7–Q9): Study the following information carefully and answer the given questions.</span>
-                        </div>
-                        <p class="mb-2">Eight persons – A, B, C, D, E, F, G, and H are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
-                        <ul class="list-disc list-inside space-y-1 text-slate-700">
-                            <li>B sits third to the right of A.</li>
-                            <li>Only two persons sit between B and C.</li>
-                            <li>D sits second to the left of C.</li>
-                            <li>E sits immediate right of D.</li>
-                            <li>Two persons sit between E and F.</li>
-                            <li>G does not sit adjacent to F.</li>
-                        </ul>
-                    `,
-                    text: "What is the position of D with respect to H?",
-                    options: ["Second to the left", "Third to the right", "Fourth to the left", "Immediate right", "Third to the left"],
-                    correct: 1, // (b) Third to the right
-                    explanation: "Final Arrangement (Clockwise): A – G – C – E – D – B – F – H. Moving anti-clockwise (right) from H: F (1st), B (2nd), D (3rd to the right)."
+                    setLabel: "Gender Rules",
+                    context: "",
+                    text: "Which of the following words is categorized under Common Gender in the class notes?",
+                    options: ["Nephew", "Niece", "Lawyer", "Infant"],
+                    correct: 2, // C) Lawyer
+                    explanation: "Lawyer (along with teacher, doctor, friend, and student) represents Common Gender, whereas infant is placed under Neuter Gender."
                 },
                 {
                     id: 9,
-                    setLabel: "Set 3 (Q7–Q9)",
-                    context: `
-                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                            <span>Directions (Q7–Q9): Study the following information carefully and answer the given questions.</span>
-                        </div>
-                        <p class="mb-2">Eight persons – A, B, C, D, E, F, G, and H are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
-                        <ul class="list-disc list-inside space-y-1 text-slate-700">
-                            <li>B sits third to the right of A.</li>
-                            <li>Only two persons sit between B and C.</li>
-                            <li>D sits second to the left of C.</li>
-                            <li>E sits immediate right of D.</li>
-                            <li>Two persons sit between E and F.</li>
-                            <li>G does not sit adjacent to F.</li>
-                        </ul>
-                    `,
-                    text: "If all the persons sit in alphabetical order starting from A in anti-clockwise direction, how many persons remain unchanged in their position (excluding A)?",
-                    options: ["None", "One", "Two", "Three", "Four"],
-                    correct: 0, // (a) None
-                    explanation: "Original (Anti-clockwise from A): A, H, F, B, D, E, C, G. Alphabetical: A, B, C, D, E, F, G, H. None of the persons remain unchanged."
+                    setLabel: "Gender Rules",
+                    context: "",
+                    text: "Fill in the blank according to the gender preference rule: \"I met a friend after a long time. _______ was very excited for our trip.\"",
+                    options: ["It", "He", "They", "Which"],
+                    correct: 1, // B) He
+                    explanation: "When the gender of a common gender noun (friend) is unclear, Masculine Gender (He) is given preference."
                 },
-
-                // SET 4 (Q10 - Q12)
                 {
                     id: 10,
-                    setLabel: "Set 4 (Q10–Q12)",
-                    context: `
-                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                            <span>Directions (Q10–Q12): Study the following information carefully and answer the given questions.</span>
-                        </div>
-                        <p class="mb-2">Nine persons – J, K, L, M, N, O, P, Q, and R are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
-                        <ul class="list-disc list-inside space-y-1 text-slate-700">
-                            <li>M sits fourth to the left of J.</li>
-                            <li>Two persons sit between J and L.</li>
-                            <li>One person sits between L and K.</li>
-                            <li>O sits third to the right of K.</li>
-                            <li>The number of persons sitting between O and L is the same as between L and P.</li>
-                            <li>N sits adjacent to neither M nor J.</li>
-                            <li>Q sits immediate left of N.</li>
-                        </ul>
-                    `,
-                    text: "Who among the following sits immediate right of R?",
-                    options: ["N", "J", "K", "Q", "P"],
-                    correct: 1, // (b) J
-                    explanation: "Final Arrangement (Clockwise): O – L – P – K – J – R – N – Q – M. Facing the centre, J sits to the immediate right (anti-clockwise) of R."
-                },
-                {
-                    id: 11,
-                    setLabel: "Set 4 (Q10–Q12)",
-                    context: `
-                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                            <span>Directions (Q10–Q12): Study the following information carefully and answer the given questions.</span>
-                        </div>
-                        <p class="mb-2">Nine persons – J, K, L, M, N, O, P, Q, and R are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
-                        <ul class="list-disc list-inside space-y-1 text-slate-700">
-                            <li>M sits fourth to the left of J.</li>
-                            <li>Two persons sit between J and L.</li>
-                            <li>One person sits between L and K.</li>
-                            <li>O sits third to the right of K.</li>
-                            <li>The number of persons sitting between O and L is the same as between L and P.</li>
-                            <li>N sits adjacent to neither M nor J.</li>
-                            <li>Q sits immediate left of N.</li>
-                        </ul>
-                    `,
-                    text: "How many persons sit between M and K when counted from the left of M?",
-                    options: ["One", "Two", "Three", "Four", "Five"],
-                    correct: 2, // (c) Three
-                    explanation: "Final Arrangement (Clockwise): O – L – P – K – J – R – N – Q – M. Counting clockwise (left) from M, three persons (O, L, and P) sit between M and K."
-                },
-                {
-                    id: 12,
-                    setLabel: "Set 4 (Q10–Q12)",
-                    context: `
-                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                            <span>Directions (Q10–Q12): Study the following information carefully and answer the given questions.</span>
-                        </div>
-                        <p class="mb-2">Nine persons – J, K, L, M, N, O, P, Q, and R are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
-                        <ul class="list-disc list-inside space-y-1 text-slate-700">
-                            <li>M sits fourth to the left of J.</li>
-                            <li>Two persons sit between J and L.</li>
-                            <li>One person sits between L and K.</li>
-                            <li>O sits third to the right of K.</li>
-                            <li>The number of persons sitting between O and L is the same as between L and P.</li>
-                            <li>N sits adjacent to neither M nor J.</li>
-                            <li>Q sits immediate left of N.</li>
-                        </ul>
-                    `,
-                    text: "Who sits third to the left of P?",
-                    options: ["R", "N", "Q", "M", "O"],
-                    correct: 0, // (a) R
-                    explanation: "Final Arrangement (Clockwise): O – L – P – K – J – R – N – Q – M. Moving clockwise (left) from P: K (1st), J (2nd), R (3rd to the left)."
+                    setLabel: "Gender Rules",
+                    context: "",
+                    text: "Choose the correct singular pronoun to complete the sentence: \"An animal entered our premises last night. _______ destroyed the fencing.\"",
+                    options: ["He", "She", "It", "Who"],
+                    correct: 2, // C) It
+                    explanation: "Kid, baby, animal, child, infant, insect, and plants are treated as Neuter Gender and take It in the singular form."
                 }
             ]
         };
 
-        // --- ROMANTIC + MOTIVATIONAL QUOTES FROM PRITAM ---
+        // --- FRESH ROMANTIC + MOTIVATIONAL QUOTES FROM PRITAM ---
         const motivationalQuotes = [
-            "Seeing you work so hard for your Bank Manager dream makes me fall in love with your dedication every single day. Keep shining, Mallika!",
-            "No matter what the scorecard says today, to me, you are already a winner. Keep chasing that Banking PO cabin—I'll always be right beside you cheering you on.",
-            "Every puzzle you solve brings you one step closer to your dream, and every moment I watch you strive makes me prouder to call you mine. You've got this, Mallika!",
-            "Your determination is the most attractive thing about you. Keep pushing forward, my future Bank Manager—your biggest fan is always in your corner.",
-            "Even on tough days, remember how capable, brilliant, and unstoppable you are. Take a deep breath, smile, and conquer the next challenge, Mallika!",
-            "I believe in your Banking PO dream almost as much as I believe in us. Stay focused, stay confident, and let the world see the magic you carry.",
-            "Behind every great future Bank Manager is endless hard work—and behind you is Pritam, endlessly proud and loving you through every step of this journey.",
-            "Don't ever doubt your potential, Mallika. Your mind is sharp, your heart is gold, and that Bank Manager chair has your name written all over it!",
-            "Every mock test is just a stepping stone toward the day I get to celebrate your PO selection with the biggest hug. Keep going, my love!",
-            "Success looks so good on you, and your hard work is inspiring. Keep believing in yourself the way I believe in you—unconditionally and always."
+            "Every grammar rule you master today is writing the success story of our tomorrow, Mallika. Keep going, my future Bank Manager!",
+            "Watching you stay focused on your Banking PO dream makes my heart swell with pride. No matter the score, you are already my greatest inspiration.",
+            "Just like the perfect sentence needs the right words, my life feels complete watching you chase your dreams with such grace and grit. Proud of you always!",
+            "One day soon, you'll be signing important documents inside your own Bank Manager cabin—and I'll be right there smiling, knowing how hard you earned it.",
+            "Even if a question feels tricky today, remember that your determination is unstoppable. Take a breath, trust yourself, and remember Pritam is always cheering for you!",
+            "Your hard work has a quiet magic to it, Mallika. Keep believing in your Banking PO journey the same way I believe in you—completely and endlessly.",
+            "Every mock test brings us one step closer to celebrating your selection together. Keep shining bright, my love—you've got this!",
+            "Success isn't built in a single day, it's built in every quiet hour you dedicate to your dreams. And through every single hour, my heart is right beside you.",
+            "Whether you score high or learn something new today, nothing changes how proud I am of the woman you are becoming. Keep conquering, future PO!",
+            "You have the sharpest mind and the warmest heart, Mallika. That Bank Manager chair doesn't stand a chance against your dedication!"
         ];
 
         // --- APPLICATION STATE ---
@@ -745,7 +555,7 @@
                 <div class="mt-6 bg-amber-50/90 p-5 rounded-2xl border border-amber-200 text-amber-950 text-sm md:text-base leading-relaxed">
                     <div class="font-bold text-amber-800 flex items-center gap-2 mb-1.5">
                         <i data-lucide="lightbulb" class="w-4 h-4 text-amber-600"></i>
-                        <span>Final Seating Arrangement & Solution</span>
+                        <span>Grammar Rule & Solution</span>
                     </div>
                     <p>${q.explanation}</p>
                 </div>
@@ -917,7 +727,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <button onclick="startReview()" class="w-full bg-white text-blue-700 border-2 border-blue-200 py-4 rounded-2xl font-bold hover:bg-blue-50 transition-all flex items-center justify-center gap-2 shadow-sm">
                             <i data-lucide="eye" class="w-5 h-5"></i>
-                            <span>Review Arrangements & Solutions</span>
+                            <span>Review Rules & Solutions</span>
                         </button>
 
                         <button onclick="resetQuiz()" class="w-full bg-slate-900 text-white border-2 border-slate-900 py-4 rounded-2xl font-bold hover:bg-slate-800 transition-all shadow-lg flex items-center justify-center gap-2">
