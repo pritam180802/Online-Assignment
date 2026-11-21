@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reasoning Mock: Seating Arrangement</title>
+    <title>Reasoning Mock: Circular Seating Arrangement</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,27 +15,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        
-        /* --- Animation Keyframes --- */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* --- Reward Particle Keyframes --- */
         @keyframes fall {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+            100% { transform: translateY(115vh) rotate(720deg); opacity: 0; }
         }
 
         @keyframes rise {
-            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.8; }
-            100% { transform: translateY(-120vh) translateX(20px) rotate(10deg); opacity: 0; }
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.85; }
+            100% { transform: translateY(-120vh) translateX(24px) rotate(12deg); opacity: 0; }
         }
 
-        /* --- Particle Classes --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        /* --- Particle Elements --- */
         .particle {
             position: absolute;
             pointer-events: none;
             z-index: 50;
         }
 
-        .confetti { animation-name: fall; animation-timing-function: linear; }
+        .confetti {
+            animation-name: fall;
+            animation-timing-function: linear;
+        }
 
         .coin {
             animation-name: fall;
@@ -48,21 +62,21 @@
             color: #78350f;
             border: 2px solid #b45309;
             background: radial-gradient(circle at 30% 30%, #fcd34d, #f59e0b);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
         }
 
         .balloon {
             animation-name: rise;
             animation-timing-function: ease-out;
             border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
+            box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.12);
         }
-        
-        /* Circular Progress Chart */
+
+        /* --- Circular Accuracy Gauge --- */
         .circular-chart {
             display: block;
             margin: 0 auto;
-            max-width: 80%;
+            max-width: 100%;
             max-height: 250px;
         }
         .circle-bg {
@@ -74,206 +88,386 @@
             fill: none;
             stroke-width: 2.8;
             stroke-linecap: round;
-            animation: progress 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: progress 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         @keyframes progress {
             0% { stroke-dasharray: 0 100; }
         }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-    <!-- Global Header with Timer -->
-    <div class="bg-blue-900 text-white p-3 shadow-md z-40 sticky top-0 flex justify-between items-center px-4 md:px-8">
-        <div class="flex items-center gap-3 cursor-pointer" onclick="resetQuiz()">
-            <div class="bg-white/10 p-2 rounded-lg">
-                <i data-lucide="building-2" class="w-6 h-6 text-yellow-400"></i>
+    <!-- Top Navigation Bar -->
+    <header class="bg-blue-950 text-white p-3.5 shadow-lg z-40 sticky top-0 flex justify-between items-center px-4 md:px-8 border-b border-blue-900">
+        <div class="flex items-center gap-3 cursor-pointer group" onclick="resetQuiz()" title="Click to restart exam">
+            <div class="bg-white/10 group-hover:bg-white/20 transition-colors p-2 rounded-xl border border-white/10">
+                <i data-lucide="building-2" class="w-6 h-6 text-amber-400"></i>
             </div>
             <div>
-                <h1 class="text-sm md:text-lg font-bold leading-tight tracking-wide">Banking Mock Test</h1>
-                <p class="text-xs text-blue-200 font-medium">Candidate: Mallika Naiya</p>
+                <h1 class="text-sm md:text-lg font-extrabold leading-tight tracking-wide">Banking PO Reasoning Mock</h1>
+                <p class="text-xs text-blue-200 font-medium">Candidate: <span class="text-white font-semibold">Mallika Naiya</span></p>
             </div>
         </div>
         
-        <!-- Timer Display -->
-        <div id="timer-box" class="flex items-center gap-2 bg-blue-800 px-4 py-2 rounded-xl border border-blue-700 shadow-inner transition-colors duration-300">
-            <i data-lucide="clock" class="w-4 h-4 text-yellow-400"></i>
-            <span id="timer-text" class="font-mono font-bold text-lg tracking-wider">100:00</span>
+        <!-- Countdown Timer -->
+        <div id="timer-box" class="flex items-center gap-2 bg-blue-900 px-3.5 py-2 rounded-xl border border-blue-700 shadow-inner transition-colors duration-300">
+            <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
+            <span id="timer-text" class="font-mono font-bold text-base md:text-lg tracking-wider">45:00</span>
         </div>
-    </div>
+    </header>
 
-    <!-- Main Content Container -->
-    <div id="app-container" class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-8 pb-32">
-        <!-- Dynamic Content will be injected here -->
-    </div>
+    <!-- Main Dynamic View Container -->
+    <main id="app-container" class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-8 pb-32">
+        <!-- Rendered dynamically by JS -->
+    </main>
 
-    <!-- Footer Navigation -->
-    <div id="footer-nav" class="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-4 z-30 hidden shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)]">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <button id="btn-prev" onclick="prevQuestion()" class="text-slate-600 font-semibold px-5 py-2.5 rounded-xl hover:bg-slate-100 transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
-                <div class="flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Previous</div>
+    <!-- Bottom Fixed Action Bar -->
+    <footer id="footer-nav" class="fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-slate-200 p-3.5 md:p-4 z-30 shadow-[0_-10px_30px_-10px_rgba(0,0,0,0.08)]">
+        <div class="max-w-4xl mx-auto flex justify-between items-center gap-3">
+            <button id="btn-prev" onclick="prevQuestion()" class="text-slate-600 font-semibold px-4 md:px-5 py-2.5 rounded-xl hover:bg-slate-100 transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none flex items-center gap-2">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                <span>Previous</span>
             </button>
-            <button id="btn-next" onclick="nextQuestion()" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-600/30 transition-all active:scale-95 flex items-center gap-2 hidden">
-                Next Question <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
-            <button id="btn-submit" onclick="calculateScore()" class="bg-emerald-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-emerald-600 shadow-lg shadow-emerald-500/30 transition-all active:scale-95 hidden">
-                Submit Test
-            </button>
-            <button id="btn-back-result" onclick="showResult()" class="bg-slate-800 text-white px-8 py-3 rounded-xl font-bold hover:bg-slate-900 shadow-lg shadow-slate-800/30 transition-all active:scale-95 hidden">
-                View Report
-            </button>
+
+            <div class="flex items-center gap-3">
+                <button id="btn-next" onclick="nextQuestion()" class="bg-blue-600 text-white px-5 md:px-6 py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-600/25 transition-all active:scale-95 flex items-center gap-2">
+                    <span>Next Question</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+
+                <button id="btn-submit" onclick="calculateScore(false)" class="bg-emerald-600 text-white px-6 md:px-8 py-3 rounded-xl font-bold hover:bg-emerald-700 shadow-lg shadow-emerald-600/25 transition-all active:scale-95 hidden">
+                    Submit Test
+                </button>
+
+                <button id="btn-back-result" onclick="showResult()" class="bg-slate-900 text-white px-6 md:px-8 py-3 rounded-xl font-bold hover:bg-slate-800 shadow-lg shadow-slate-900/25 transition-all active:scale-95 hidden">
+                    View Report
+                </button>
+            </div>
         </div>
-    </div>
+    </footer>
 
-    <!-- Animation Container -->
+    <!-- Celebration Particle Overlay -->
     <div id="animation-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden hidden"></div>
 
     <script>
-        // --- DATA SECTION: REASONING PUZZLES ---
+        // --- QUIZ DATA: 12 CIRCULAR SEATING ARRANGEMENT QUESTIONS ---
         const quizData = {
-            title: "Reasoning: Circular Seating Arrangement",
-            totalTimeSeconds: 100 * 60, // 100 Minutes
+            title: "Circular Seating Arrangement (4 Sets)",
+            totalTimeSeconds: 45 * 60, // 45 Minutes
+            marksPerQuestion: 2,
             questions: [
-                // PUZZLE 1 (Q1-Q5)
-                { 
-                    id: 1, 
-                    context: "<strong>Directions (Q1-Q5):</strong> Eight people M, N, O, P, Q, R, S, and T are sitting around a circular table, all of them facing the center.<br><br>• M is sitting third to the right of P.<br>• There are two people sitting between M and S.<br>• O is sitting second to the left of S.<br>• Q is an immediate neighbor of O but not of P.<br>• R is sitting second to the right of Q.<br>• N is not an immediate neighbor of M.",
-                    text: "Who sits second to the right of N?", 
-                    options: ["T", "P", "M", "O", "R"], 
-                    correct: 2 
+                // SET 1 (Q1 - Q3)
+                {
+                    id: 1,
+                    setLabel: "Set 1 (Q1–Q3)",
+                    context: `
+                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>Directions (Q1–Q3): Study the following information carefully and answer the given questions.</span>
+                        </div>
+                        <p class="mb-2">Six persons – A, B, C, D, E, and F are sitting around a circular table such that all of them are facing towards the centre, but not necessarily in the same order.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li>C sits second to the left of B.</li>
+                            <li>Both B and D are immediate neighbours.</li>
+                            <li>The number of persons sitting between D and C is the same as the number of persons sitting between B and F.</li>
+                            <li>E neither sits adjacent to F nor A.</li>
+                        </ul>
+                    `,
+                    text: "Who sits to the immediate right of A?",
+                    options: ["D", "E", "F", "C", "B"],
+                    correct: 2, // (c) F
+                    explanation: "Final Arrangement (Clockwise): C – F – A – D – B – E. Since everyone faces the centre, F sits to the immediate right of A."
                 },
-                { 
-                    id: 2, 
-                    context: "<strong>Directions (Q1-Q5):</strong> Eight people M, N, O, P, Q, R, S, and T are sitting around a circular table, all of them facing the center.<br><br>• M is sitting third to the right of P.<br>• There are two people sitting between M and S.<br>• O is sitting second to the left of S.<br>• Q is an immediate neighbor of O but not of P.<br>• R is sitting second to the right of Q.<br>• N is not an immediate neighbor of M.",
-                    text: "How many people are sitting between R and M when counted from the left of M?", 
-                    options: ["One", "Two", "Three", "Four", "None"], 
-                    correct: 2 
+                {
+                    id: 2,
+                    setLabel: "Set 1 (Q1–Q3)",
+                    context: `
+                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>Directions (Q1–Q3): Study the following information carefully and answer the given questions.</span>
+                        </div>
+                        <p class="mb-2">Six persons – A, B, C, D, E, and F are sitting around a circular table such that all of them are facing towards the centre, but not necessarily in the same order.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li>C sits second to the left of B.</li>
+                            <li>Both B and D are immediate neighbours.</li>
+                            <li>The number of persons sitting between D and C is the same as the number of persons sitting between B and F.</li>
+                            <li>E neither sits adjacent to F nor A.</li>
+                        </ul>
+                    `,
+                    text: "Which of the following statement(s) is/are true with respect to the final arrangement?<br><span class='block mt-2 text-base font-medium text-slate-700'>I. E sits second to the left of D.<br>II. Two persons sit between A and E.<br>III. F and D are immediate neighbours.</span>",
+                    options: ["Only I", "Only II", "Only I and II", "Only II and III", "All I, II, and III"],
+                    correct: 2, // (c) Only I and II
+                    explanation: "Final Arrangement (Clockwise): C – F – A – D – B – E. Statement I is true (D → B → E clockwise/left), Statement II is true (opposite seats in a 6-person circle), and Statement III is false (A sits between F and D)."
                 },
-                { 
-                    id: 3, 
-                    context: "<strong>Directions (Q1-Q5):</strong> Eight people M, N, O, P, Q, R, S, and T are sitting around a circular table, all of them facing the center.<br><br>• M is sitting third to the right of P.<br>• There are two people sitting between M and S.<br>• O is sitting second to the left of S.<br>• Q is an immediate neighbor of O but not of P.<br>• R is sitting second to the right of Q.<br>• N is not an immediate neighbor of M.",
-                    text: "Who sits exactly opposite to T in the circular arrangement?", 
-                    options: ["S", "Q", "P", "R", "O"], 
-                    correct: 0 
-                },
-                { 
-                    id: 4, 
-                    context: "<strong>Directions (Q1-Q5):</strong> Eight people M, N, O, P, Q, R, S, and T are sitting around a circular table, all of them facing the center.<br><br>• M is sitting third to the right of P.<br>• There are two people sitting between M and S.<br>• O is sitting second to the left of S.<br>• Q is an immediate neighbor of O but not of P.<br>• R is sitting second to the right of Q.<br>• N is not an immediate neighbor of M.",
-                    text: "Four of the following five are alike in a certain way based on their seating positions and so form a group. Which is the one that does not belong to that group?", 
-                    options: ["P, O", "N, Q", "T, S", "M, R", "R, N"], 
-                    correct: 4 
-                },
-                { 
-                    id: 5, 
-                    context: "<strong>Directions (Q1-Q5):</strong> Eight people M, N, O, P, Q, R, S, and T are sitting around a circular table, all of them facing the center.<br><br>• M is sitting third to the right of P.<br>• There are two people sitting between M and S.<br>• O is sitting second to the left of S.<br>• Q is an immediate neighbor of O but not of P.<br>• R is sitting second to the right of Q.<br>• N is not an immediate neighbor of M.",
-                    text: "What is the position of Q with respect to P?", 
-                    options: ["Second to the right", "Third to the left", "Fourth to the right", "Immediate left", "Third to the right"], 
-                    correct: 1 
-                },
-
-                // PUZZLE 2 (Q6-Q10)
-                { 
-                    id: 6, 
-                    context: "<strong>Directions (Q6-Q10):</strong> Eight friends A, B, C, D, E, F, G, and H are sitting around a circular table, all of them facing the center.<br><br>• A sits third to the left of C.<br>• Only two people sit between A and G.<br>• B sits second to the right of G.<br>• D sits immediately to the left of B.<br>• E is an immediate neighbor of A but not of G.<br>• F sits second to the right of H.",
-                    text: "Who sits second to the left of D?", 
-                    options: ["H", "A", "E", "F", "C"], 
-                    correct: 3 
-                },
-                { 
-                    id: 7, 
-                    context: "<strong>Directions (Q6-Q10):</strong> Eight friends A, B, C, D, E, F, G, and H are sitting around a circular table, all of them facing the center.<br><br>• A sits third to the left of C.<br>• Only two people sit between A and G.<br>• B sits second to the right of G.<br>• D sits immediately to the left of B.<br>• E is an immediate neighbor of A but not of G.<br>• F sits second to the right of H.",
-                    text: "How many people sit between C and E when counted from the right of C?", 
-                    options: ["One", "Two", "Three", "Four", "Five"], 
-                    correct: 4 
-                },
-                { 
-                    id: 8, 
-                    context: "<strong>Directions (Q6-Q10):</strong> Eight friends A, B, C, D, E, F, G, and H are sitting around a circular table, all of them facing the center.<br><br>• A sits third to the left of C.<br>• Only two people sit between A and G.<br>• B sits second to the right of G.<br>• D sits immediately to the left of B.<br>• E is an immediate neighbor of A but not of G.<br>• F sits second to the right of H.",
-                    text: "Who sits exactly opposite to F in the circular arrangement?", 
-                    options: ["D", "B", "A", "G", "E"], 
-                    correct: 2 
-                },
-                { 
-                    id: 9, 
-                    context: "<strong>Directions (Q6-Q10):</strong> Eight friends A, B, C, D, E, F, G, and H are sitting around a circular table, all of them facing the center.<br><br>• A sits third to the left of C.<br>• Only two people sit between A and G.<br>• B sits second to the right of G.<br>• D sits immediately to the left of B.<br>• E is an immediate neighbor of A but not of G.<br>• F sits second to the right of H.",
-                    text: "Four of the following five are alike in a certain way based on their seating positions and so form a group. Which is the one that does not belong to that group?", 
-                    options: ["C, B", "F, A", "G, E", "D, H", "A, D"], 
-                    correct: 4 
-                },
-                { 
-                    id: 10, 
-                    context: "<strong>Directions (Q6-Q10):</strong> Eight friends A, B, C, D, E, F, G, and H are sitting around a circular table, all of them facing the center.<br><br>• A sits third to the left of C.<br>• Only two people sit between A and G.<br>• B sits second to the right of G.<br>• D sits immediately to the left of B.<br>• E is an immediate neighbor of A but not of G.<br>• F sits second to the right of H.",
-                    text: "What is the position of H with respect to G?", 
-                    options: ["Second to the right", "Third to the right", "Third to the left", "Second to the left", "Immediate right"], 
-                    correct: 2 
+                {
+                    id: 3,
+                    setLabel: "Set 1 (Q1–Q3)",
+                    context: `
+                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>Directions (Q1–Q3): Study the following information carefully and answer the given questions.</span>
+                        </div>
+                        <p class="mb-2">Six persons – A, B, C, D, E, and F are sitting around a circular table such that all of them are facing towards the centre, but not necessarily in the same order.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li>C sits second to the left of B.</li>
+                            <li>Both B and D are immediate neighbours.</li>
+                            <li>The number of persons sitting between D and C is the same as the number of persons sitting between B and F.</li>
+                            <li>E neither sits adjacent to F nor A.</li>
+                        </ul>
+                    `,
+                    text: "Four of the following five are alike in a certain way based on their seating positions and thus form a group. Which one does not belong to that group?",
+                    options: ["C - D", "F - B", "A - E", "C - A", "D - C"],
+                    correct: 3, // (d) C - A
+                    explanation: "Final Arrangement (Clockwise): C – F – A – D – B – E. All other pairs sit directly opposite to each other except C - A."
                 },
 
-                // PUZZLE 3 (Q11-Q15)
-                { 
-                    id: 11, 
-                    context: "<strong>Directions (Q11-Q15):</strong> Eight persons J, K, L, M, N, O, P and Q are sitting around a circular table facing the centre, but not necessarily in the same order.<br><br>• Only two persons sit between J and N.<br>• K sits second to the left of J.<br>• M sits second to the right of N.<br>• O sits third to the right of M.<br>• L sits to the immediate left of P.<br>• Q is not an immediate neighbour of N.",
-                    text: "Who sits second to the right of Q?", 
-                    options: ["L", "N", "P", "J", "K"], 
-                    correct: 0 
+                // SET 2 (Q4 - Q6)
+                {
+                    id: 4,
+                    setLabel: "Set 2 (Q4–Q6)",
+                    context: `
+                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>Directions (Q4–Q6): Study the following information carefully and answer the given questions.</span>
+                        </div>
+                        <p class="mb-2">Eight persons – P, Q, R, S, T, U, V, and W are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li>U sits third to the left of P.</li>
+                            <li>One person sits between P and V.</li>
+                            <li>The number of persons sitting between V and P is the same as the number of persons sitting between P and R.</li>
+                            <li>W and R are immediate neighbours.</li>
+                            <li>Q sits second to the right of S.</li>
+                            <li>Neither Q nor T sits adjacent to P.</li>
+                        </ul>
+                    `,
+                    text: "Who among the following sits exactly opposite to S?",
+                    options: ["R", "The one who sits immediate left of R", "W", "T", "The one who sits second to the right of Q"],
+                    correct: 1, // (b) The one who sits immediate left of R
+                    explanation: "Final Arrangement (Clockwise): T – Q – V – S – P – W – R – U. U sits directly opposite to S, and U is sitting to the immediate left (clockwise) of R."
                 },
-                { 
-                    id: 12, 
-                    context: "<strong>Directions (Q11-Q15):</strong> Eight persons J, K, L, M, N, O, P and Q are sitting around a circular table facing the centre, but not necessarily in the same order.<br><br>• Only two persons sit between J and N.<br>• K sits second to the left of J.<br>• M sits second to the right of N.<br>• O sits third to the right of M.<br>• L sits to the immediate left of P.<br>• Q is not an immediate neighbour of N.",
-                    text: "How many persons sit between M and O when counted from the left of M?", 
-                    options: ["One", "Two", "Three", "Four", "None"], 
-                    correct: 3 
+                {
+                    id: 5,
+                    setLabel: "Set 2 (Q4–Q6)",
+                    context: `
+                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>Directions (Q4–Q6): Study the following information carefully and answer the given questions.</span>
+                        </div>
+                        <p class="mb-2">Eight persons – P, Q, R, S, T, U, V, and W are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li>U sits third to the left of P.</li>
+                            <li>One person sits between P and V.</li>
+                            <li>The number of persons sitting between V and P is the same as the number of persons sitting between P and R.</li>
+                            <li>W and R are immediate neighbours.</li>
+                            <li>Q sits second to the right of S.</li>
+                            <li>Neither Q nor T sits adjacent to P.</li>
+                        </ul>
+                    `,
+                    text: "If all the persons are made to sit in alphabetical order starting from P in clockwise direction, how many persons remain unchanged in their original positions (excluding P)?",
+                    options: ["None", "One", "Two", "Three", "Four"],
+                    correct: 3, // (d) Three
+                    explanation: "Original (Clockwise from P): P, W, R, U, T, Q, V, S. Alphabetical: P, Q, R, S, T, U, V, W. Three persons (R, T, and V) remain unchanged."
                 },
-                { 
-                    id: 13, 
-                    context: "<strong>Directions (Q11-Q15):</strong> Eight persons J, K, L, M, N, O, P and Q are sitting around a circular table facing the centre, but not necessarily in the same order.<br><br>• Only two persons sit between J and N.<br>• K sits second to the left of J.<br>• M sits second to the right of N.<br>• O sits third to the right of M.<br>• L sits to the immediate left of P.<br>• Q is not an immediate neighbour of N.",
-                    text: "Who sits exactly opposite to J in the circular arrangement?", 
-                    options: ["L", "O", "P", "N", "Q"], 
-                    correct: 2 
+                {
+                    id: 6,
+                    setLabel: "Set 2 (Q4–Q6)",
+                    context: `
+                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>Directions (Q4–Q6): Study the following information carefully and answer the given questions.</span>
+                        </div>
+                        <p class="mb-2">Eight persons – P, Q, R, S, T, U, V, and W are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li>U sits third to the left of P.</li>
+                            <li>One person sits between P and V.</li>
+                            <li>The number of persons sitting between V and P is the same as the number of persons sitting between P and R.</li>
+                            <li>W and R are immediate neighbours.</li>
+                            <li>Q sits second to the right of S.</li>
+                            <li>Neither Q nor T sits adjacent to P.</li>
+                        </ul>
+                    `,
+                    text: "How many persons sit between T and W when counted from the right of T?",
+                    options: ["One", "Two", "Three", "Four", "None"],
+                    correct: 1, // (b) Two
+                    explanation: "Final Arrangement (Clockwise): T – Q – V – S – P – W – R – U. Counting to the right (anti-clockwise) of T, two persons (U and R) sit between T and W."
                 },
-                { 
-                    id: 14, 
-                    context: "<strong>Directions (Q11-Q15):</strong> Eight persons J, K, L, M, N, O, P and Q are sitting around a circular table facing the centre, but not necessarily in the same order.<br><br>• Only two persons sit between J and N.<br>• K sits second to the left of J.<br>• M sits second to the right of N.<br>• O sits third to the right of M.<br>• L sits to the immediate left of P.<br>• Q is not an immediate neighbour of N.",
-                    text: "Four of the following five are alike in a certain way based on their seating positions and so form a group. Which is the one that does not belong to that group?", 
-                    options: ["J, K", "N, L", "M, N", "Q, J", "P, O"], 
-                    correct: 3 
+
+                // SET 3 (Q7 - Q9)
+                {
+                    id: 7,
+                    setLabel: "Set 3 (Q7–Q9)",
+                    context: `
+                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>Directions (Q7–Q9): Study the following information carefully and answer the given questions.</span>
+                        </div>
+                        <p class="mb-2">Eight persons – A, B, C, D, E, F, G, and H are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li>B sits third to the right of A.</li>
+                            <li>Only two persons sit between B and C.</li>
+                            <li>D sits second to the left of C.</li>
+                            <li>E sits immediate right of D.</li>
+                            <li>Two persons sit between E and F.</li>
+                            <li>G does not sit adjacent to F.</li>
+                        </ul>
+                    `,
+                    text: "Who sits second to the right of G?",
+                    options: ["F", "B", "H", "E", "D"],
+                    correct: 2, // (c) H
+                    explanation: "Final Arrangement (Clockwise): A – G – C – E – D – B – F – H. Moving right (anti-clockwise) from G: A (1st), H (2nd)."
                 },
-                { 
-                    id: 15, 
-                    context: "<strong>Directions (Q11-Q15):</strong> Eight persons J, K, L, M, N, O, P and Q are sitting around a circular table facing the centre, but not necessarily in the same order.<br><br>• Only two persons sit between J and N.<br>• K sits second to the left of J.<br>• M sits second to the right of N.<br>• O sits third to the right of M.<br>• L sits to the immediate left of P.<br>• Q is not an immediate neighbour of N.",
-                    text: "What is the position of K with respect to L?", 
-                    options: ["Second to the left", "Third to the right", "Fourth to the right", "Immediate left", "Second to the right"], 
-                    correct: 1 
+                {
+                    id: 8,
+                    setLabel: "Set 3 (Q7–Q9)",
+                    context: `
+                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>Directions (Q7–Q9): Study the following information carefully and answer the given questions.</span>
+                        </div>
+                        <p class="mb-2">Eight persons – A, B, C, D, E, F, G, and H are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li>B sits third to the right of A.</li>
+                            <li>Only two persons sit between B and C.</li>
+                            <li>D sits second to the left of C.</li>
+                            <li>E sits immediate right of D.</li>
+                            <li>Two persons sit between E and F.</li>
+                            <li>G does not sit adjacent to F.</li>
+                        </ul>
+                    `,
+                    text: "What is the position of D with respect to H?",
+                    options: ["Second to the left", "Third to the right", "Fourth to the left", "Immediate right", "Third to the left"],
+                    correct: 1, // (b) Third to the right
+                    explanation: "Final Arrangement (Clockwise): A – G – C – E – D – B – F – H. Moving anti-clockwise (right) from H: F (1st), B (2nd), D (3rd to the right)."
+                },
+                {
+                    id: 9,
+                    setLabel: "Set 3 (Q7–Q9)",
+                    context: `
+                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>Directions (Q7–Q9): Study the following information carefully and answer the given questions.</span>
+                        </div>
+                        <p class="mb-2">Eight persons – A, B, C, D, E, F, G, and H are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li>B sits third to the right of A.</li>
+                            <li>Only two persons sit between B and C.</li>
+                            <li>D sits second to the left of C.</li>
+                            <li>E sits immediate right of D.</li>
+                            <li>Two persons sit between E and F.</li>
+                            <li>G does not sit adjacent to F.</li>
+                        </ul>
+                    `,
+                    text: "If all the persons sit in alphabetical order starting from A in anti-clockwise direction, how many persons remain unchanged in their position (excluding A)?",
+                    options: ["None", "One", "Two", "Three", "Four"],
+                    correct: 0, // (a) None
+                    explanation: "Original (Anti-clockwise from A): A, H, F, B, D, E, C, G. Alphabetical: A, B, C, D, E, F, G, H. None of the persons remain unchanged."
+                },
+
+                // SET 4 (Q10 - Q12)
+                {
+                    id: 10,
+                    setLabel: "Set 4 (Q10–Q12)",
+                    context: `
+                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>Directions (Q10–Q12): Study the following information carefully and answer the given questions.</span>
+                        </div>
+                        <p class="mb-2">Nine persons – J, K, L, M, N, O, P, Q, and R are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li>M sits fourth to the left of J.</li>
+                            <li>Two persons sit between J and L.</li>
+                            <li>One person sits between L and K.</li>
+                            <li>O sits third to the right of K.</li>
+                            <li>The number of persons sitting between O and L is the same as between L and P.</li>
+                            <li>N sits adjacent to neither M nor J.</li>
+                            <li>Q sits immediate left of N.</li>
+                        </ul>
+                    `,
+                    text: "Who among the following sits immediate right of R?",
+                    options: ["N", "J", "K", "Q", "P"],
+                    correct: 1, // (b) J
+                    explanation: "Final Arrangement (Clockwise): O – L – P – K – J – R – N – Q – M. Facing the centre, J sits to the immediate right (anti-clockwise) of R."
+                },
+                {
+                    id: 11,
+                    setLabel: "Set 4 (Q10–Q12)",
+                    context: `
+                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>Directions (Q10–Q12): Study the following information carefully and answer the given questions.</span>
+                        </div>
+                        <p class="mb-2">Nine persons – J, K, L, M, N, O, P, Q, and R are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li>M sits fourth to the left of J.</li>
+                            <li>Two persons sit between J and L.</li>
+                            <li>One person sits between L and K.</li>
+                            <li>O sits third to the right of K.</li>
+                            <li>The number of persons sitting between O and L is the same as between L and P.</li>
+                            <li>N sits adjacent to neither M nor J.</li>
+                            <li>Q sits immediate left of N.</li>
+                        </ul>
+                    `,
+                    text: "How many persons sit between M and K when counted from the left of M?",
+                    options: ["One", "Two", "Three", "Four", "Five"],
+                    correct: 2, // (c) Three
+                    explanation: "Final Arrangement (Clockwise): O – L – P – K – J – R – N – Q – M. Counting clockwise (left) from M, three persons (O, L, and P) sit between M and K."
+                },
+                {
+                    id: 12,
+                    setLabel: "Set 4 (Q10–Q12)",
+                    context: `
+                        <div class="font-bold text-blue-950 mb-2 flex items-center gap-2">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>Directions (Q10–Q12): Study the following information carefully and answer the given questions.</span>
+                        </div>
+                        <p class="mb-2">Nine persons – J, K, L, M, N, O, P, Q, and R are sitting around a circular table facing the centre, but not necessarily in the same order.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li>M sits fourth to the left of J.</li>
+                            <li>Two persons sit between J and L.</li>
+                            <li>One person sits between L and K.</li>
+                            <li>O sits third to the right of K.</li>
+                            <li>The number of persons sitting between O and L is the same as between L and P.</li>
+                            <li>N sits adjacent to neither M nor J.</li>
+                            <li>Q sits immediate left of N.</li>
+                        </ul>
+                    `,
+                    text: "Who sits third to the left of P?",
+                    options: ["R", "N", "Q", "M", "O"],
+                    correct: 0, // (a) R
+                    explanation: "Final Arrangement (Clockwise): O – L – P – K – J – R – N – Q – M. Moving clockwise (left) from P: K (1st), J (2nd), R (3rd to the left)."
                 }
             ]
         };
 
-        // --- MOTIVATIONAL QUOTES POOL ---
+        // --- ROMANTIC + MOTIVATIONAL QUOTES FROM PRITAM ---
         const motivationalQuotes = [
-            "Believe in yourself, Mallika! That Bank Manager's cabin is waiting for you.",
-            "Success doesn't come from what you do occasionally, it comes from what you do consistently.",
-            "Your dream of becoming a Banking PO is valid and reachable. Keep pushing!",
-            "Mistakes are proof that you are trying. Analyze, learn, and conquer the next test!",
-            "The distance between your dreams and reality is called action. You are taking action!",
-            "Don't stop until you're proud. The banking world needs your leadership.",
-            "Every mock test is a step closer to your final selection. Keep the momentum going!",
-            "You are capable of more than you know. Trust your preparation, Mallika!",
-            "Focus on the process, and the results will follow. You are building a strong foundation.",
-            "Difficult roads often lead to beautiful destinations. Your journey to Manager starts here."
+            "Seeing you work so hard for your Bank Manager dream makes me fall in love with your dedication every single day. Keep shining, Mallika!",
+            "No matter what the scorecard says today, to me, you are already a winner. Keep chasing that Banking PO cabin—I'll always be right beside you cheering you on.",
+            "Every puzzle you solve brings you one step closer to your dream, and every moment I watch you strive makes me prouder to call you mine. You've got this, Mallika!",
+            "Your determination is the most attractive thing about you. Keep pushing forward, my future Bank Manager—your biggest fan is always in your corner.",
+            "Even on tough days, remember how capable, brilliant, and unstoppable you are. Take a deep breath, smile, and conquer the next challenge, Mallika!",
+            "I believe in your Banking PO dream almost as much as I believe in us. Stay focused, stay confident, and let the world see the magic you carry.",
+            "Behind every great future Bank Manager is endless hard work—and behind you is Pritam, endlessly proud and loving you through every step of this journey.",
+            "Don't ever doubt your potential, Mallika. Your mind is sharp, your heart is gold, and that Bank Manager chair has your name written all over it!",
+            "Every mock test is just a stepping stone toward the day I get to celebrate your PO selection with the biggest hug. Keep going, my love!",
+            "Success looks so good on you, and your hard work is inspiring. Keep believing in yourself the way I believe in you—unconditionally and always."
         ];
 
-        // --- STATE MANAGEMENT ---
+        // --- APPLICATION STATE ---
         let currentState = {
-            mode: 'quiz',
+            mode: 'quiz', // 'quiz' | 'result' | 'review'
             currentIndex: 0,
-            answers: {}, 
+            answers: {},
             score: 0,
             timeLeft: quizData.totalTimeSeconds,
             timerId: null,
             timeTaken: 0,
-            currentMotivation: "" 
+            wasAutoSubmitted: false,
+            currentMotivation: "",
+            lastQuoteIndex: -1
         };
 
-        // --- DOM ELEMENTS ---
+        // --- DOM REFERENCES ---
         const container = document.getElementById('app-container');
         const footer = document.getElementById('footer-nav');
         const btnPrev = document.getElementById('btn-prev');
@@ -284,15 +478,17 @@
         const timerText = document.getElementById('timer-text');
         const timerBox = document.getElementById('timer-box');
 
-        // --- INITIALIZATION ---
+        // --- INITIALIZATION & TIMER ---
         function init() {
-            lucide.createIcons();
             startTimer();
             render();
         }
 
         function resetQuiz() {
-            clearInterval(currentState.timerId);
+            if (currentState.timerId) {
+                clearInterval(currentState.timerId);
+            }
+            const prevQuoteIdx = currentState.lastQuoteIndex;
             currentState = {
                 mode: 'quiz',
                 currentIndex: 0,
@@ -301,7 +497,9 @@
                 timeLeft: quizData.totalTimeSeconds,
                 timerId: null,
                 timeTaken: 0,
-                currentMotivation: ""
+                wasAutoSubmitted: false,
+                currentMotivation: "",
+                lastQuoteIndex: prevQuoteIdx
             };
             stopRewardAnimation();
             startTimer();
@@ -321,26 +519,32 @@
         }
 
         function updateTimerDisplay() {
-            const minutes = Math.floor(currentState.timeLeft / 60);
-            const seconds = currentState.timeLeft % 60;
+            const safeTime = Math.max(0, currentState.timeLeft);
+            const minutes = Math.floor(safeTime / 60);
+            const seconds = safeTime % 60;
             timerText.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            
-            if (currentState.timeLeft < 300) { // Highlight red in last 5 mins
-                timerBox.classList.replace('bg-blue-800', 'bg-red-600');
-                timerBox.classList.replace('border-blue-700', 'border-red-500');
-                timerBox.classList.add('animate-pulse');
+
+            if (safeTime <= 60 && currentState.mode === 'quiz') {
+                timerBox.classList.remove('bg-blue-900', 'border-blue-700');
+                timerBox.classList.add('bg-red-600', 'border-red-400', 'animate-pulse');
             } else {
-                timerBox.classList.replace('bg-red-600', 'bg-blue-800');
-                timerBox.classList.replace('border-red-500', 'border-blue-700');
-                timerBox.classList.remove('animate-pulse');
+                timerBox.classList.remove('bg-red-600', 'border-red-400', 'animate-pulse');
+                timerBox.classList.add('bg-blue-900', 'border-blue-700');
             }
         }
 
-        // --- LOGIC ---
+        // --- USER INTERACTIONS ---
         function selectAnswer(qIndex, optIndex) {
-            if (currentState.mode === 'review') return;
+            if (currentState.mode !== 'quiz') return;
             currentState.answers[qIndex] = optIndex;
-            render(); 
+            render();
+        }
+
+        function jumpToQuestion(index) {
+            if (index >= 0 && index < quizData.questions.length) {
+                currentState.currentIndex = index;
+                render();
+            }
         }
 
         function nextQuestion() {
@@ -357,21 +561,34 @@
             }
         }
 
+        function pickDifferentQuote() {
+            let idx = Math.floor(Math.random() * motivationalQuotes.length);
+            if (motivationalQuotes.length > 1 && idx === currentState.lastQuoteIndex) {
+                idx = (idx + 1) % motivationalQuotes.length;
+            }
+            currentState.lastQuoteIndex = idx;
+            return motivationalQuotes[idx];
+        }
+
         function calculateScore(autoSubmit = false) {
-            clearInterval(currentState.timerId);
-            let s = 0;
+            if (currentState.timerId) {
+                clearInterval(currentState.timerId);
+                currentState.timerId = null;
+            }
+
+            let totalScore = 0;
             quizData.questions.forEach((q, idx) => {
-                if (currentState.answers[idx] === q.correct) s += 2;
+                if (currentState.answers[idx] === q.correct) {
+                    totalScore += quizData.marksPerQuestion;
+                }
             });
-            currentState.score = s;
+
+            currentState.score = totalScore;
             currentState.mode = 'result';
-            
-            // Pick a random motivational quote
-            const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
-            currentState.currentMotivation = motivationalQuotes[randomIndex];
-            
-            if(autoSubmit) alert("Time's up! Your test has been automatically submitted.");
-            
+            currentState.wasAutoSubmitted = autoSubmit;
+            currentState.currentMotivation = pickDifferentQuote();
+
+            updateTimerDisplay();
             render();
         }
 
@@ -387,158 +604,202 @@
         }
 
         function formatTime(seconds) {
-            const h = Math.floor(seconds / 3600);
-            const m = Math.floor((seconds % 3600) / 60);
+            const m = Math.floor(seconds / 60);
             const s = seconds % 60;
-            if(h > 0) return `${h}h ${m}m`;
             return `${m}m ${s}s`;
         }
 
-        // --- RENDERING ---
+        // --- MAIN RENDER DISPATCHER ---
         function render() {
             container.innerHTML = '';
-            footer.classList.remove('hidden');
             stopRewardAnimation();
 
             if (currentState.mode === 'quiz' || currentState.mode === 'review') {
+                footer.classList.remove('hidden');
                 renderQuestionView();
-            } else if (currentState.mode === 'result') {
+            } else {
+                footer.classList.add('hidden');
                 renderResultView();
             }
-            
-            lucide.createIcons();
+
+            if (window.lucide) {
+                lucide.createIcons();
+            }
         }
 
+        // --- QUESTION & REVIEW VIEW ---
         function renderQuestionView() {
             const q = quizData.questions[currentState.currentIndex];
             const isReview = currentState.mode === 'review';
-            const progress = ((currentState.currentIndex + 1) / quizData.questions.length) * 100;
+            const totalQ = quizData.questions.length;
+            const progress = ((currentState.currentIndex + 1) / totalQ) * 100;
             const selectedAnswer = currentState.answers[currentState.currentIndex];
-            const isAnswered = selectedAnswer !== undefined;
 
+            // Question Palette Pills
+            let paletteHtml = '';
+            quizData.questions.forEach((item, idx) => {
+                const isCurrent = idx === currentState.currentIndex;
+                const ans = currentState.answers[idx];
+                let pillClass = 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200';
+
+                if (isReview) {
+                    if (ans === item.correct) {
+                        pillClass = 'bg-emerald-100 text-emerald-800 border-emerald-300';
+                    } else if (ans !== undefined) {
+                        pillClass = 'bg-rose-100 text-rose-800 border-rose-300';
+                    }
+                } else if (ans !== undefined) {
+                    pillClass = 'bg-blue-100 text-blue-800 border-blue-300 font-bold';
+                }
+
+                if (isCurrent) {
+                    pillClass += ' ring-2 ring-blue-600 ring-offset-1 font-extrabold';
+                }
+
+                paletteHtml += `
+                    <button onclick="jumpToQuestion(${idx})" class="w-8 h-8 rounded-lg text-xs border transition-all flex items-center justify-center ${pillClass}">
+                        ${idx + 1}
+                    </button>
+                `;
+            });
+
+            // Header Card
             const headerHtml = `
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6">
-                    <div class="flex items-center justify-between mb-3">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 md:p-5 mb-6">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <div class="flex items-center gap-2">
-                            <span class="font-bold text-slate-800 text-lg">${isReview ? 'Review Mode' : 'Question ' + (currentState.currentIndex + 1)}</span>
-                            ${isReview ? '<span class="text-xs bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-bold uppercase tracking-wide">Solutions</span>' : ''}
+                            <span class="font-extrabold text-slate-800">${quizData.title}</span>
+                            <span class="text-xs bg-blue-50 text-blue-700 border border-blue-100 px-2.5 py-0.5 rounded-full font-bold">${q.setLabel}</span>
+                            ${isReview ? '<span class="text-xs bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full font-bold">SOLUTIONS</span>' : ''}
                         </div>
-                        <div class="text-sm font-bold text-slate-400 bg-slate-100 px-3 py-1 rounded-lg">
-                            ${currentState.currentIndex + 1} / ${quizData.questions.length}
+                        <div class="text-sm font-bold text-slate-500">
+                            Question ${currentState.currentIndex + 1} of ${totalQ}
                         </div>
                     </div>
-                    <div class="h-1.5 bg-slate-100 w-full rounded-full overflow-hidden">
+                    <div class="h-1.5 bg-slate-100 w-full rounded-full overflow-hidden mb-4">
                         <div class="h-full bg-blue-600 transition-all duration-300" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5 pt-1">
+                        ${paletteHtml}
                     </div>
                 </div>
             `;
-            
-            // Puzzle Context Logic
-            let contextHtml = '';
-            if (q.context) {
-                contextHtml = `
-                    <div class="bg-blue-50/60 p-5 md:p-6 rounded-2xl border border-blue-100 mb-6 text-slate-700 text-sm md:text-base leading-relaxed shadow-sm">
-                        ${q.context}
-                    </div>
-                `;
-            }
 
+            // Puzzle Context Box
+            const contextHtml = q.context ? `
+                <div class="bg-blue-50/70 p-5 md:p-6 rounded-2xl border border-blue-100 mb-6 text-slate-700 text-sm md:text-base leading-relaxed">
+                    ${q.context}
+                </div>
+            ` : '';
+
+            // Options List
             let optionsHtml = '';
             q.options.forEach((opt, idx) => {
                 const isSelected = selectedAnswer === idx;
                 const isCorrect = q.correct === idx;
-                
-                let btnClass = "border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 hover:-translate-y-1 hover:shadow-md";
-                let badgeClass = "bg-slate-100 text-slate-500 group-hover:bg-blue-100 group-hover:text-blue-600";
-                let textClass = "text-slate-700";
-                let icon = '';
+
+                let btnClass = 'border-slate-200 hover:border-blue-300 hover:bg-blue-50/40';
+                let badgeClass = 'bg-slate-100 text-slate-600 border-slate-300 group-hover:bg-blue-100 group-hover:text-blue-700';
+                let textClass = 'text-slate-700';
+                let iconHtml = '';
 
                 if (isReview) {
                     if (isCorrect) {
-                        btnClass = "bg-emerald-50 border-emerald-500 ring-1 ring-emerald-500 shadow-sm";
-                        badgeClass = "bg-emerald-500 text-white shadow-md shadow-emerald-500/30";
-                        textClass = "text-emerald-900 font-bold";
-                        icon = '<i data-lucide="check-circle-2" class="w-6 h-6 text-emerald-500"></i>';
+                        btnClass = 'bg-emerald-50 border-emerald-500 ring-1 ring-emerald-500';
+                        badgeClass = 'bg-emerald-600 text-white border-emerald-600';
+                        textClass = 'text-emerald-950 font-bold';
+                        iconHtml = '<i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-600 shrink-0"></i>';
                     } else if (isSelected && !isCorrect) {
-                        btnClass = "bg-rose-50 border-rose-400";
-                        badgeClass = "bg-rose-100 text-rose-600";
-                        textClass = "text-rose-800 font-medium";
-                        icon = '<i data-lucide="x-circle" class="w-6 h-6 text-rose-400"></i>';
+                        btnClass = 'bg-rose-50 border-rose-400';
+                        badgeClass = 'bg-rose-500 text-white border-rose-500';
+                        textClass = 'text-rose-900 font-semibold';
+                        iconHtml = '<i data-lucide="x-circle" class="w-5 h-5 text-rose-500 shrink-0"></i>';
                     } else {
-                        btnClass = "border-slate-100 opacity-50 bg-slate-50";
+                        btnClass = 'border-slate-100 opacity-55 bg-slate-50/60';
                     }
-                } else {
-                    if (isSelected) {
-                        btnClass = "border-blue-500 bg-blue-50 ring-1 ring-blue-500 shadow-sm";
-                        badgeClass = "border-blue-500 text-blue-600 shadow-md shadow-blue-500/20";
-                        textClass = "font-semibold text-blue-900";
-                    }
+                } else if (isSelected) {
+                    btnClass = 'border-blue-600 bg-blue-50/80 ring-1 ring-blue-600 shadow-sm';
+                    badgeClass = 'bg-blue-600 text-white border-blue-600';
+                    textClass = 'text-blue-950 font-bold';
                 }
 
                 optionsHtml += `
                     <button 
                         onclick="selectAnswer(${currentState.currentIndex}, ${idx})"
                         ${isReview ? 'disabled' : ''}
-                        class="w-full text-left p-4 md:p-5 rounded-2xl border-2 transition-all duration-200 flex items-center justify-between group mb-3 ${btnClass}"
+                        class="w-full text-left p-4 rounded-2xl border-2 transition-all duration-150 flex items-center justify-between gap-3 group mb-3 ${btnClass}"
                     >
-                        <div class="flex items-center gap-4">
-                            <span class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border ${badgeClass} shrink-0 transition-colors">
+                        <div class="flex items-center gap-3.5">
+                            <span class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border shrink-0 transition-colors ${badgeClass}">
                                 ${String.fromCharCode(65 + idx)}
                             </span>
                             <span class="text-base md:text-lg ${textClass}">${opt}</span>
                         </div>
-                        ${icon}
+                        ${iconHtml}
                     </button>
                 `;
             });
 
+            // Solution Explanation (Review Mode Only)
+            const explanationHtml = (isReview && q.explanation) ? `
+                <div class="mt-6 bg-amber-50/90 p-5 rounded-2xl border border-amber-200 text-amber-950 text-sm md:text-base leading-relaxed">
+                    <div class="font-bold text-amber-800 flex items-center gap-2 mb-1.5">
+                        <i data-lucide="lightbulb" class="w-4 h-4 text-amber-600"></i>
+                        <span>Final Seating Arrangement & Solution</span>
+                    </div>
+                    <p>${q.explanation}</p>
+                </div>
+            ` : '';
+
+            // Inject Complete Question View
             container.innerHTML = `
                 ${headerHtml}
                 <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 md:p-8 animate-fade-in">
                     ${contextHtml}
-                    <h3 class="text-lg md:text-xl font-bold text-slate-800 leading-relaxed mb-6">Q${currentState.currentIndex+1}. ${q.text}</h3>
+                    <h2 class="text-lg md:text-xl font-bold text-slate-900 leading-relaxed mb-6">
+                        Q${currentState.currentIndex + 1}. ${q.text}
+                    </h2>
                     <div>${optionsHtml}</div>
+                    ${explanationHtml}
                 </div>
             `;
 
+            // Configure Footer Buttons
             btnPrev.disabled = currentState.currentIndex === 0;
             btnNext.classList.add('hidden');
             btnSubmit.classList.add('hidden');
             btnBackResult.classList.add('hidden');
 
-            if (currentState.currentIndex < quizData.questions.length - 1) {
+            if (currentState.currentIndex < totalQ - 1) {
                 btnNext.classList.remove('hidden');
+            } else if (isReview) {
+                btnBackResult.classList.remove('hidden');
             } else {
-                if (isReview) {
-                    btnBackResult.classList.remove('hidden');
-                } else {
-                    btnSubmit.classList.remove('hidden');
-                }
+                btnSubmit.classList.remove('hidden');
             }
         }
 
+        // --- RESULT & ANALYTICS VIEW ---
         function renderResultView() {
-            footer.classList.add('hidden'); 
-            
             const totalQuestions = quizData.questions.length;
-            const maxMarks = totalQuestions * 2;
+            const maxMarks = totalQuestions * quizData.marksPerQuestion;
             const attemptedCount = Object.keys(currentState.answers).length;
-            const correctCount = currentState.score / 2;
+            const correctCount = currentState.score / quizData.marksPerQuestion;
             const wrongCount = attemptedCount - correctCount;
             const skippedCount = totalQuestions - attemptedCount;
-            const percentage = (currentState.score / maxMarks) * 100;
+            const percentage = Math.round((currentState.score / maxMarks) * 100);
             const accuracy = attemptedCount > 0 ? Math.round((correctCount / attemptedCount) * 100) : 0;
             const speedPerQ = attemptedCount > 0 ? Math.round(currentState.timeTaken / attemptedCount) : 0;
 
             let grade, animationType;
             if (percentage >= 80) {
-                grade = { title: "Banking Wizard", color: "text-amber-500", icon: "crown" };
+                grade = { title: "Future Bank Manager!", color: "text-amber-600", icon: "crown" };
                 animationType = 'coins';
             } else if (percentage >= 60) {
-                grade = { title: "Probationary Officer (PO)", color: "text-blue-500", icon: "zap" };
+                grade = { title: "Probationary Officer (PO)", color: "text-blue-600", icon: "zap" };
                 animationType = 'confetti';
             } else {
-                grade = { title: "Banking Aspirant", color: "text-slate-600", icon: "book-open" };
+                grade = { title: "Banking Aspirant", color: "text-slate-700", icon: "book-open" };
                 animationType = 'balloons';
             }
 
@@ -550,172 +811,190 @@
             container.innerHTML = `
                 <div class="flex flex-col gap-6 animate-fade-in">
                     
-                    <div class="bg-white rounded-[2.5rem] shadow-xl overflow-hidden">
-                         <div class="p-8 ${percentage >= 80 ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-amber-600' : 'bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900'} text-white text-center relative overflow-hidden">
-                            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-                            
+                    <!-- Main Scorecard & Pritam's Note -->
+                    <div class="bg-white rounded-[2rem] shadow-xl border border-slate-100 overflow-hidden">
+                        <div class="p-8 ${percentage >= 80 ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-amber-600' : 'bg-gradient-to-br from-blue-800 via-blue-900 to-indigo-950'} text-white text-center relative overflow-hidden">
                             <div class="relative z-10">
-                                <div class="bg-white/20 w-20 h-20 mx-auto rounded-2xl flex items-center justify-center backdrop-blur-sm mb-4 border border-white/30">
-                                    <i data-lucide="${grade.icon}" class="w-10 h-10 text-white drop-shadow-md"></i>
+                                <div class="bg-white/20 w-16 h-16 mx-auto rounded-2xl flex items-center justify-center backdrop-blur-sm mb-3 border border-white/30">
+                                    <i data-lucide="${grade.icon}" class="w-9 h-9 text-white"></i>
                                 </div>
-                                <h2 class="text-5xl font-black tracking-tight drop-shadow-lg">${currentState.score} <span class="text-2xl opacity-75 font-semibold mix-blend-overlay">/ ${maxMarks}</span></h2>
-                                <p class="text-xs font-bold opacity-80 tracking-widest uppercase mt-3">Total Marks</p>
+                                <p class="text-xs font-bold uppercase tracking-widest opacity-90 mb-1">Scorecard for Mallika Naiya</p>
+                                <h2 class="text-5xl font-black tracking-tight">${currentState.score} <span class="text-2xl opacity-75 font-semibold">/ ${maxMarks}</span></h2>
+                                <p class="text-xs font-bold opacity-85 tracking-widest uppercase mt-2">Total Marks Obtained (${percentage}%)</p>
                             </div>
                         </div>
-                        <div class="p-5 text-center border-b border-slate-100 bg-slate-50/50">
-                            <h3 class="text-2xl font-extrabold ${grade.color} drop-shadow-sm">${grade.title}</h3>
+
+                        <div class="p-4 text-center border-b border-slate-100 bg-slate-50/70">
+                            ${currentState.wasAutoSubmitted ? '<span class="inline-block mb-1.5 px-3 py-0.5 bg-rose-100 text-rose-700 text-xs font-bold rounded-full">Time Up — Auto Submitted</span>' : ''}
+                            <h3 class="text-xl md:text-2xl font-extrabold ${grade.color}">${grade.title}</h3>
                         </div>
-                        
-                        <!-- CUSTOM NOTE SECTION -->
-                        <div class="p-8 bg-white text-center relative overflow-hidden group">
-                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500"></div>
+
+                        <!-- Romantic + Motivational Note from Pritam -->
+                        <div class="p-6 md:p-8 bg-gradient-to-b from-white to-rose-50/40 text-center relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-rose-400 via-pink-500 to-indigo-500"></div>
                             
-                            <span class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-700 text-xs font-black uppercase tracking-widest rounded-full mb-4 shadow-sm border border-indigo-100">
-                                A Special Note for You from Pritam
+                            <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-rose-50 text-rose-600 text-xs font-extrabold uppercase tracking-widest rounded-full mb-4 border border-rose-100 shadow-sm">
+                                <i data-lucide="heart" class="w-3.5 h-3.5 fill-rose-500 text-rose-500"></i>
+                                <span>A Special Note for You from Pritam</span>
                             </span>
                             
                             <div class="relative max-w-2xl mx-auto">
-                                <i data-lucide="quote" class="w-8 h-8 text-indigo-100 absolute -top-2 -left-4 opacity-50"></i>
-                                <p class="text-slate-700 font-serif italic text-lg md:text-xl leading-relaxed px-6 font-medium">
-                                    ${currentState.currentMotivation}
+                                <p class="text-slate-700 font-serif italic text-lg md:text-xl leading-relaxed px-4 font-medium">
+                                    "${currentState.currentMotivation}"
                                 </p>
-                                <i data-lucide="quote" class="w-8 h-8 text-indigo-100 absolute -bottom-4 -right-4 opacity-50 rotate-180"></i>
                             </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center hover:-translate-y-1 transition-transform">
-                            <div class="relative w-20 h-20 mb-3">
-                                <svg viewBox="0 0 36 36" class="circular-chart text-blue-500 drop-shadow-sm">
+                    <!-- 4-Card Metrics Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center">
+                            <div class="relative w-16 h-16 mb-2">
+                                <svg viewBox="0 0 36 36" class="circular-chart text-blue-600">
                                     <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                    <path class="circle" stroke-dasharray="${accuracyDash}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke="currentColor"/>
+                                    <path class="circle" stroke-dasharray="${accuracyDash}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke="currentColor" />
                                 </svg>
-                                <div class="absolute inset-0 flex items-center justify-center text-sm font-black text-slate-700">${accuracy}%</div>
+                                <div class="absolute inset-0 flex items-center justify-center text-xs font-black text-slate-800">${accuracy}%</div>
                             </div>
-                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Accuracy</span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Accuracy</span>
                         </div>
 
-                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center hover:-translate-y-1 transition-transform">
-                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-100 to-fuchsia-100 text-purple-600 flex items-center justify-center mb-3 border border-purple-200">
-                                <i data-lucide="clock" class="w-6 h-6"></i>
+                        <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center">
+                            <div class="w-11 h-11 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center mb-2">
+                                <i data-lucide="clock" class="w-5 h-5"></i>
                             </div>
-                            <span class="text-2xl font-black text-slate-800">${formatTime(currentState.timeTaken)}</span>
-                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Time Taken</span>
+                            <span class="text-xl font-black text-slate-800">${formatTime(currentState.timeTaken)}</span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-0.5">Time Taken</span>
                         </div>
 
-                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center hover:-translate-y-1 transition-transform">
-                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-100 to-amber-100 text-orange-600 flex items-center justify-center mb-3 border border-orange-200">
-                                <i data-lucide="edit-3" class="w-6 h-6"></i>
+                        <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center">
+                            <div class="w-11 h-11 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-2">
+                                <i data-lucide="edit-3" class="w-5 h-5"></i>
                             </div>
-                            <span class="text-2xl font-black text-slate-800">${attemptedCount} <span class="text-sm font-bold text-slate-400">/ ${totalQuestions}</span></span>
-                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Attempted</span>
+                            <span class="text-xl font-black text-slate-800">${attemptedCount} <span class="text-xs font-bold text-slate-400">/ ${totalQuestions}</span></span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-0.5">Attempted</span>
                         </div>
 
-                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center hover:-translate-y-1 transition-transform">
-                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-100 text-emerald-600 flex items-center justify-center mb-3 border border-emerald-200">
-                                <i data-lucide="zap" class="w-6 h-6"></i>
+                        <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center">
+                            <div class="w-11 h-11 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-2">
+                                <i data-lucide="zap" class="w-5 h-5"></i>
                             </div>
-                            <span class="text-2xl font-black text-slate-800">${speedPerQ}s</span>
-                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Avg Speed</span>
+                            <span class="text-xl font-black text-slate-800">${speedPerQ}s</span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-0.5">Avg Speed / Q</span>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-8">
-                        <h4 class="font-extrabold text-slate-800 mb-6 flex items-center gap-3 text-lg">
-                            <div class="bg-blue-100 p-2 rounded-lg"><i data-lucide="bar-chart-2" class="w-5 h-5 text-blue-600"></i></div> 
-                            Detailed Analysis
+                    <!-- Detailed Question Breakdown -->
+                    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 md:p-8">
+                        <h4 class="font-extrabold text-slate-800 mb-5 flex items-center gap-2.5 text-lg">
+                            <span class="bg-blue-100 p-2 rounded-xl text-blue-600"><i data-lucide="bar-chart-2" class="w-5 h-5"></i></span>
+                            <span>Detailed Performance Breakdown</span>
                         </h4>
                         
-                        <div class="flex h-5 rounded-xl overflow-hidden mb-6 bg-slate-100 shadow-inner">
-                            <div style="width: ${(correctCount/totalQuestions)*100}%" class="bg-emerald-500"></div>
-                            <div style="width: ${(wrongCount/totalQuestions)*100}%" class="bg-rose-500"></div>
-                            <div style="width: ${(skippedCount/totalQuestions)*100}%" class="bg-slate-300"></div>
+                        <div class="flex h-4 rounded-full overflow-hidden mb-6 bg-slate-100 shadow-inner">
+                            <div style="width: ${(correctCount / totalQuestions) * 100}%" class="bg-emerald-500 transition-all duration-500"></div>
+                            <div style="width: ${(wrongCount / totalQuestions) * 100}%" class="bg-rose-500 transition-all duration-500"></div>
+                            <div style="width: ${(skippedCount / totalQuestions) * 100}%" class="bg-slate-300 transition-all duration-500"></div>
                         </div>
 
-                        <div class="grid grid-cols-3 gap-4 text-center">
+                        <div class="grid grid-cols-3 gap-3 md:gap-4 text-center">
                             <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-100">
-                                <span class="block text-3xl font-black text-emerald-600">${correctCount}</span>
+                                <span class="block text-2xl md:text-3xl font-black text-emerald-600">${correctCount}</span>
                                 <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mt-1 block">Correct</span>
                             </div>
                             <div class="bg-rose-50 p-4 rounded-2xl border border-rose-100">
-                                <span class="block text-3xl font-black text-rose-600">${wrongCount}</span>
+                                <span class="block text-2xl md:text-3xl font-black text-rose-600">${wrongCount}</span>
                                 <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mt-1 block">Incorrect</span>
                             </div>
                             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                                <span class="block text-3xl font-black text-slate-500">${skippedCount}</span>
+                                <span class="block text-2xl md:text-3xl font-black text-slate-500">${skippedCount}</span>
                                 <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mt-1 block">Skipped</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                        <button onclick="startReview()" class="w-full bg-white text-blue-700 border-2 border-blue-100 py-4 rounded-2xl font-bold hover:bg-blue-50 hover:border-blue-200 transition-all flex items-center justify-center gap-2 hover:-translate-y-1 shadow-sm">
-                            <i data-lucide="eye" class="w-5 h-5"></i> Review Solutions
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <button onclick="startReview()" class="w-full bg-white text-blue-700 border-2 border-blue-200 py-4 rounded-2xl font-bold hover:bg-blue-50 transition-all flex items-center justify-center gap-2 shadow-sm">
+                            <i data-lucide="eye" class="w-5 h-5"></i>
+                            <span>Review Arrangements & Solutions</span>
                         </button>
 
-                        <button onclick="resetQuiz()" class="w-full bg-slate-900 text-white border-2 border-slate-900 py-4 rounded-2xl font-bold hover:bg-slate-800 transition-all shadow-lg hover:shadow-slate-900/30 hover:-translate-y-1">
-                            Retake Mock Test
+                        <button onclick="resetQuiz()" class="w-full bg-slate-900 text-white border-2 border-slate-900 py-4 rounded-2xl font-bold hover:bg-slate-800 transition-all shadow-lg flex items-center justify-center gap-2">
+                            <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                            <span>Retake Mock Test</span>
                         </button>
                     </div>
                 </div>
             `;
         }
 
-        // --- REWARD ANIMATION SYSTEM ---
-        let animationInterval;
-        
+        // --- CELEBRATION REWARD PARTICLES ---
+        let animationInterval = null;
+
         function startRewardAnimation(type) {
             animBox.classList.remove('hidden');
             if (animationInterval) clearInterval(animationInterval);
-            for(let i=0; i<20; i++) createParticle(type);
-            let intervalTime = 300;
-            if(type === 'coins') intervalTime = 200; 
-            animationInterval = setInterval(() => { createParticle(type); }, intervalTime);
+
+            for (let i = 0; i < 18; i++) {
+                createParticle(type);
+            }
+
+            const intervalTime = type === 'coins' ? 220 : 320;
+            animationInterval = setInterval(() => {
+                createParticle(type);
+            }, intervalTime);
         }
 
         function stopRewardAnimation() {
             animBox.classList.add('hidden');
             animBox.innerHTML = '';
-            if (animationInterval) clearInterval(animationInterval);
+            if (animationInterval) {
+                clearInterval(animationInterval);
+                animationInterval = null;
+            }
         }
 
         function createParticle(type) {
             const el = document.createElement('div');
             el.classList.add('particle');
-            const randomX = Math.random() * 100;
+            const randomX = Math.random() * 96;
+
             if (type === 'coins') {
                 el.classList.add('coin');
                 el.textContent = '₹';
                 el.style.left = randomX + '%';
-                el.style.top = '-10vh'; 
-                el.style.width = '36px';
-                el.style.height = '36px';
-                el.style.fontSize = '22px';
-                el.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+                el.style.top = '-8vh';
+                el.style.width = '34px';
+                el.style.height = '34px';
+                el.style.fontSize = '20px';
+                el.style.animationDuration = (Math.random() * 1.5 + 1.8) + 's';
             } else if (type === 'confetti') {
                 el.classList.add('confetti');
                 el.style.left = randomX + '%';
-                el.style.top = '-10vh'; 
-                el.style.width = (Math.random() * 12 + 6) + 'px';
-                el.style.height = (Math.random() * 12 + 6) + 'px';
+                el.style.top = '-8vh';
+                el.style.width = (Math.random() * 10 + 6) + 'px';
+                el.style.height = (Math.random() * 10 + 6) + 'px';
                 el.style.backgroundColor = ['#10B981', '#3B82F6', '#F59E0B', '#EC4899', '#8B5CF6'][Math.floor(Math.random() * 5)];
-                el.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                el.style.transform = `rotate(${Math.random() * 360}deg)`;
+                el.style.animationDuration = (Math.random() * 2.5 + 2.2) + 's';
             } else {
                 el.classList.add('balloon');
                 el.style.left = randomX + '%';
-                el.style.top = '110vh'; 
-                el.style.width = '35px';
-                el.style.height = '45px';
+                el.style.top = '105vh';
+                el.style.width = '32px';
+                el.style.height = '42px';
                 el.style.backgroundColor = ['#FCA5A5', '#93C5FD', '#6EE7B7', '#FDE047'][Math.floor(Math.random() * 4)];
                 el.style.animationDuration = (Math.random() * 3 + 4) + 's';
             }
+
             animBox.appendChild(el);
-            setTimeout(() => { el.remove(); }, 8000);
+            setTimeout(() => {
+                if (el.parentNode) el.remove();
+            }, 7500);
         }
 
-        init();
+        // Start Application on Load
+        window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
