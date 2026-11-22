@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banking PO English Mock — Mallika Naiya</title>
+    <title>Banking PO Reasoning Mock — Mallika Naiya</title>
 
     <style>
         /* =========================================================
@@ -326,6 +326,27 @@
             .question-card {
                 padding: 2rem;
             }
+        }
+
+        .passage-box {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-light);
+            border-left: 4px solid var(--blue-800);
+            border-radius: 12px;
+            padding: 1rem 1.15rem;
+            margin-bottom: 1.35rem;
+            font-size: 0.94rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        .passage-header {
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--blue-900);
+            margin-bottom: 0.4rem;
         }
 
         .question-text {
@@ -942,7 +963,7 @@
 
             <div id="timer-box" class="timer-pill">
                 <span id="header-clock-icon" style="display:flex;"></span>
-                <span id="timer-text">30:00</span>
+                <span id="timer-text">50:00</span>
             </div>
         </div>
     </header>
@@ -978,116 +999,150 @@
 
     <script>
         /* =========================================================
-           1. INLINE SVG ICON HELPER (ZERO EXTERNAL DEPENDENCIES)
+           1. INLINE SVG ICON SYSTEM (ZERO EXTERNAL DEPENDENCIES)
            ========================================================= */
         function getSvgIcon(name, size = 18) {
             const icons = {
-                building: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V7l6-4 6 4v14"/><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M9 14h.01"/><path d="M15 14h.01"/><path d="M10 21v-4h4v4"/></svg>`,
-                clock: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-                arrowLeft: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>`,
-                arrowRight: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
-                checkCircle: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
-                xCircle: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
-                lightbulb: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>`,
-                crown: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>`,
-                zap: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
-                bookOpen: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
-                heart: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
-                edit: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
-                barChart: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
-                eye: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
-                rotateCcw: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>`
+                building: '<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>',
+                clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+                arrowLeft: '<path d="m15 18-6-6 6-6"/>',
+                arrowRight: '<path d="m9 18 6-6-6-6"/>',
+                checkCircle: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+                xCircle: '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+                lightbulb: '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
+                crown: '<path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>',
+                zap: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+                bookOpen: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+                heart: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+                edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>',
+                barChart: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+                eye: '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+                rotateCcw: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>'
             };
-            return icons[name] || '';
+            const inner = icons[name] || '';
+            return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
         }
 
         /* =========================================================
-           2. QUIZ DATA: 10 ENGLISH GRAMMAR QUESTIONS (PERSONIFICATION & NOUNS)
+           2. QUIZ DATA: 12 CIRCULAR SEATING ARRANGEMENT QUESTIONS (4 SETS)
            ========================================================= */
+        const SET_1_DIRECTIONS = "Eight persons viz. A, B, C, D, E, F, G, and H are sitting around a circular table such that all of them are facing towards the centre, but not necessarily in the same order. H sits three persons away from B and sits to the immediate right of A. C sits third to the left of A. Only two persons sit between C and D, who sits to the immediate right of H. E sits to the immediate right of G. F does not sit adjacent to A.";
+        const SET_2_DIRECTIONS = "Eight persons viz. M, N, O, P, Q, R, T, and W are sitting around a circular table such that all of them are facing towards the centre, but not necessarily in the same order. N sits two persons away from M, who sits third to the left of O. M sits exactly in the middle of P and R. Q sits third to the right of P and is not adjacent to R. At least two persons sit between T and W when counted from both sides. T is not adjacent to Q.";
+        const SET_3_DIRECTIONS = "Eight persons viz. A, B, C, D, E, F, G, and H are sitting around a circular table facing the centre, but not necessarily in the same order. C sits third to the left of A. D sits two persons away from C. E sits opposite to A. F sits second to the right of D. B is not an immediate neighbour of A or C. G sits to the immediate right of C.";
+        const SET_4_DIRECTIONS = "Ten people viz. K, L, M, N, P, Q, R, S, T, and V are seated around a circular table such that all of them are facing towards the centre, but not necessarily in the same order. R sits third to the left of the one who faces towards L. Two persons sit between L and P. K faces towards L. M sits immediate right of P. T sits immediate left of R. Q sits second to the left of L. As many persons sit between P and K as between V and Q, when counted from the right of both P and V. S sits to the immediate right of V.";
+
         const quizData = {
-            title: "English Grammar: Nouns & Personification",
-            totalTimeSeconds: 30 * 60, // 30 Minutes
+            title: "Reasoning: Circular Seating Arrangement",
+            totalTimeSeconds: 50 * 60, // 50 Minutes
             marksPerQuestion: 2,
             questions: [
                 {
                     id: 1,
-                    setLabel: "Personification",
-                    text: "Fill in the blank according to the rules of Personification: \"The ocean roared with all _______ might and swallowed the ship.\"",
-                    options: ["its", "her", "his", "their"],
+                    setLabel: "Set 1 (Q1–Q3)",
+                    passage: SET_1_DIRECTIONS,
+                    text: "Who sits to the immediate left of C?",
+                    options: ["G", "E", "B", "F", "D"],
                     correct: 2,
-                    explanation: "Non-living entities showing power, strength, or violence (like ocean or death) are personified as Masculine Gender and take his or him."
+                    explanation: "Final Arrangement (Clockwise): A – E – G – C – B – F – D – H. Facing the centre, clockwise is to the left, so B sits to the immediate left of C."
                 },
                 {
                     id: 2,
-                    setLabel: "Personification",
-                    text: "Choose the correct possessive adjective based on Personification: \"The moon has hidden _______ face behind the clouds.\"",
-                    options: ["its", "his", "her", "their"],
-                    correct: 2,
-                    explanation: "Non-living entities showing shyness, beauty, grace, hope, or softness (like moon or nature) are personified as Feminine Gender and take her."
+                    setLabel: "Set 1 (Q1–Q3)",
+                    passage: SET_1_DIRECTIONS,
+                    text: "How many persons sit between G and H when counted from the right of G?",
+                    options: ["One", "Two", "Three", "Four", "None"],
+                    correct: 1,
+                    explanation: "Final Arrangement (Clockwise): A – E – G – C – B – F – D – H. Counting to the right (anti-clockwise) of G toward H, two persons (E and A) sit between them."
                 },
                 {
                     id: 3,
-                    setLabel: "Personification",
-                    text: "Select the correct option for a scientific fact or universal truth: \"The Earth revolves around the Sun in 365 1/4 days. Can you calculate _______ speed?\"",
-                    options: ["her", "his", "its", "their"],
-                    correct: 2,
-                    explanation: "When a sentence states a scientific fact or universal truth, no personification takes place, so the non-living noun takes Neuter Gender (it/its)."
+                    setLabel: "Set 1 (Q1–Q3)",
+                    passage: SET_1_DIRECTIONS,
+                    text: "Who among the following sits exactly opposite to E?",
+                    options: ["D", "B", "H", "F", "C"],
+                    correct: 3,
+                    explanation: "Final Arrangement (Clockwise): A – E – G – C – B – F – D – H. In this 8-person circle, F sits 4 places away (exactly opposite) from E."
                 },
                 {
                     id: 4,
-                    setLabel: "Personification",
-                    text: "Which of the following features is associated with Masculine Gender during Personification?",
-                    options: ["Grace", "Gentle", "Violence", "Hope"],
-                    correct: 2,
-                    explanation: "Violence, power, and strength represent Masculine traits in personification, whereas grace, gentle, and hope represent Feminine traits."
+                    setLabel: "Set 2 (Q4–Q6)",
+                    passage: SET_2_DIRECTIONS,
+                    text: "Who sits second to the right of O?",
+                    options: ["N", "W", "R", "P", "M"],
+                    correct: 1,
+                    explanation: "Final Arrangement (Clockwise): R – N – W – Q – O – T – P – M. Moving anti-clockwise (to the right) from O: Q is immediate right, and W is second to the right."
                 },
                 {
                     id: 5,
-                    setLabel: "Noun Types",
-                    text: "Fill in the blank when a Proper Noun is used as a Common Noun: \"Kalidas is _______ Shakespeare of India.\"",
-                    options: ["a", "an", "the", "no article"],
-                    correct: 2,
-                    explanation: "When a Proper Noun is used as a Common Noun to represent a category based on its features, the article 'the' is placed before it."
+                    setLabel: "Set 2 (Q4–Q6)",
+                    passage: SET_2_DIRECTIONS,
+                    text: "Who among the following sits opposite to N?",
+                    options: ["P", "Q", "O", "T", "M"],
+                    correct: 3,
+                    explanation: "Final Arrangement (Clockwise): R – N – W – Q – O – T – P – M. T sits directly opposite to N."
                 },
                 {
                     id: 6,
-                    setLabel: "Collective Nouns",
-                    text: "Choose the correct verb and pronoun pair: \"The jury _______ unanimous in _______ decision of his appointment.\"",
-                    options: ["are / their", "is / its", "are / its", "is / their"],
-                    correct: 1,
-                    explanation: "When a Collective Noun acts as a single unit (all members agreeing on one point), it takes a singular verb (is) and Neuter Gender pronoun (its)."
+                    setLabel: "Set 2 (Q4–Q6)",
+                    passage: SET_2_DIRECTIONS,
+                    text: "Which of the following pairs represents the immediate neighbours of Q?",
+                    options: ["W and O", "N and W", "O and T", "R and N", "P and M"],
+                    correct: 0,
+                    explanation: "Final Arrangement (Clockwise): R – N – W – Q – O – T – P – M. Q sits directly between W and O."
                 },
                 {
                     id: 7,
-                    setLabel: "Collective Nouns",
-                    text: "Select the correct option when a Collective Noun defines separation among its members: \"The jury _______ divided in _______ opinion of his appointment.\"",
-                    options: ["is / its", "has / its", "are / their", "was / its"],
+                    setLabel: "Set 3 (Q7–Q9)",
+                    passage: SET_3_DIRECTIONS,
+                    text: "Who sits third to the right of H?",
+                    options: ["G", "D", "C", "A", "F"],
                     correct: 2,
-                    explanation: "When a Collective Noun denotes separation or disagreement among members, it takes a plural verb (are) and Common Gender plural pronoun (their)."
+                    explanation: "Final Arrangement (Clockwise): A – D – G – C – E – B – H – F. Moving to the right (anti-clockwise) from H: B (1st), E (2nd), and C (3rd)."
                 },
                 {
                     id: 8,
-                    setLabel: "Units of Counting",
-                    text: "Identify the correct phrase when a definite number is used before a unit of counting: \"My sister bought _______ for the cake.\"",
-                    options: ["two dozens of eggs", "two dozen eggs", "two dozens egg", "two dozen of egg"],
-                    correct: 1,
-                    explanation: "When a number precedes a unit of counting, the unit remains in singular form (dozen) followed by a plural noun (eggs)."
+                    setLabel: "Set 3 (Q7–Q9)",
+                    passage: SET_3_DIRECTIONS,
+                    text: "How many persons sit between D and B when counted from the left of D?",
+                    options: ["One", "Two", "Three", "Four", "None"],
+                    correct: 2,
+                    explanation: "Final Arrangement (Clockwise): A – D – G – C – E – B – H – F. Counting clockwise (left) from D to B, three persons (G, C, and E) sit between them."
                 },
                 {
                     id: 9,
-                    setLabel: "Units of Counting",
-                    text: "According to the units of counting listed in the class notes, how many units does one \"Score\" equal?",
-                    options: ["10", "12", "20", "100"],
-                    correct: 2,
-                    explanation: "As noted in the counting units list, one Dozen equals 12 and one Score equals 20."
+                    setLabel: "Set 3 (Q7–Q9)",
+                    passage: SET_3_DIRECTIONS,
+                    text: "Four of the following five are alike in a certain way based on their seating positions and hence form a group. Which one does not belong to that group?",
+                    options: ["A - E", "D - B", "G - H", "C - F", "B - F"],
+                    correct: 4,
+                    explanation: "Final Arrangement (Clockwise): A – D – G – C – E – B – H – F. A-E, D-B, G-H, and C-F all sit directly opposite to each other, whereas B and F are not opposite."
                 },
                 {
                     id: 10,
-                    setLabel: "Units of Counting",
-                    text: "Fill in the blank when no number is used before a unit of counting: \"Radha has ordered _______ for your birthday.\"",
-                    options: ["score of book", "scores of book", "score of books", "scores of books"],
-                    correct: 3,
-                    explanation: "When there is no number before a unit of counting, the unit is used in plural form followed by 'of' and a plural noun (scores of books)."
+                    setLabel: "Set 4 (Q10–Q12)",
+                    passage: SET_4_DIRECTIONS,
+                    text: "Who among the following sits fifth to the left of M?",
+                    options: ["Q", "N", "L", "S", "R"],
+                    correct: 1,
+                    explanation: "Final Arrangement (Clockwise): K – M – P – R – T – L – N – Q – S – V. Counting 5 places clockwise (left) from M: P (1), R (2), T (3), L (4), N (5)."
+                },
+                {
+                    id: 11,
+                    setLabel: "Set 4 (Q10–Q12)",
+                    passage: SET_4_DIRECTIONS,
+                    text: "Who sits opposite to P?",
+                    options: ["S", "V", "Q", "N", "T"],
+                    correct: 2,
+                    explanation: "Final Arrangement (Clockwise): K – M – P – R – T – L – N – Q – S – V. In a 10-person circle, Q sits 5 places away (directly opposite) from P."
+                },
+                {
+                    id: 12,
+                    setLabel: "Set 4 (Q10–Q12)",
+                    passage: SET_4_DIRECTIONS,
+                    text: "How many persons sit between K and T when counted from the left of K?",
+                    options: ["One", "Two", "Three", "Four", "Five"],
+                    correct: 2,
+                    explanation: "Final Arrangement (Clockwise): K – M – P – R – T – L – N – Q – S – V. Counting clockwise (left) from K to T, three persons (M, P, and R) sit between them."
                 }
             ]
         };
@@ -1096,14 +1151,14 @@
            3. ROMANTIC + MOTIVATIONAL QUOTES FROM PRITAM
            ========================================================= */
         const motivationalQuotes = [
-            "Even if the whole world stands divided like a jury, my heart is always unanimous on one decision—believing in you, Mallika! Keep shining, future Bank Manager.",
-            "Like the moon shines softly through the clouds, your quiet dedication lights up every dream we share. Keep pushing toward your Banking PO goal, my love!",
-            "You don't need dozens of chances to prove your brilliance—your focus and hard work are already turning you into an unstoppable future Bank Manager.",
-            "Every single rule you practice today is building the empire of tomorrow. Remember, Pritam is always right beside you, cheering louder than anyone else!",
-            "No matter what the scorecard says today, my pride in watching you chase your Banking PO dream is endless. Take a deep breath—you are doing amazing, Mallika!",
-            "Strength, grace, and determination—you have every quality of a true leader. That Bank Manager's desk is waiting for you, and I can't wait to celebrate your success!",
-            "Scores of challenges may come your way, but none of them are stronger than your willpower. Keep going, my love—our best chapters are just ahead!",
-            "Watching you work so tirelessly for your dreams makes me fall for your spirit all over again. Trust your preparation, Mallika—victory is already yours!"
+            "No matter how complex the seating arrangement gets, my place in your life is permanently fixed right beside you—cheering you on to become a Bank Manager, Mallika!",
+            "You solve every puzzle with such calm brilliance, my love. That Banking PO badge is already waiting for your name—keep going, I believe in you endlessly!",
+            "Clockwise or anti-clockwise, every path in my life leads straight to admiring your hard work and dedication. Keep shining, future Bank Manager!",
+            "Even in a room full of ten people, my eyes will always search for you first. Keep conquering these mocks, Mallika—your dream job is closer every single day!",
+            "Every puzzle you crack today brings us one step closer to celebrating your Banking PO selection together. Stay confident, sweetheart—you've got this!",
+            "Your focus, grace, and determination make me fall in love with your spirit all over again. Never doubt yourself, Mallika—victory belongs to you!",
+            "Whether you score 100% or learn a tricky new pattern today, I am endlessly proud of the future Bank Manager you are becoming. Keep smiling and keep pushing!",
+            "Remember, Mallika: every minute you invest in your preparation today is building the beautiful future we dream of. Pritam is always in your corner!"
         ];
 
         /* =========================================================
@@ -1368,12 +1423,20 @@
                 `;
             });
 
+            // Passage / Directions Box
+            const passageHtml = q.passage ? `
+                <div class="passage-box">
+                    <div class="passage-header">Directions (${q.setLabel})</div>
+                    <div>${q.passage}</div>
+                </div>
+            ` : '';
+
             // Explanation in Review Mode
             const explanationHtml = (isReview && q.explanation) ? `
                 <div class="explanation-box">
                     <div class="explanation-header">
                         ${getSvgIcon('lightbulb', 17)}
-                        <span>Grammar Rule &amp; Solution</span>
+                        <span>Seating Arrangement &amp; Solution</span>
                     </div>
                     <p>${q.explanation}</p>
                 </div>
@@ -1382,6 +1445,7 @@
             container.innerHTML = `
                 ${headerHtml}
                 <div class="card question-card">
+                    ${passageHtml}
                     <h2 class="question-text">Q${currentState.currentIndex + 1}. ${q.text}</h2>
                     <div>${optionsHtml}</div>
                     ${explanationHtml}
