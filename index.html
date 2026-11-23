@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banking PO Reasoning Mock — Mallika Naiya</title>
+    <title>Banking PO English Mock — Mallika Naiya</title>
 
     <style>
         /* =========================================================
@@ -963,7 +963,7 @@
 
             <div id="timer-box" class="timer-pill">
                 <span id="header-clock-icon" style="display:flex;"></span>
-                <span id="timer-text">50:00</span>
+                <span id="timer-text">40:00</span>
             </div>
         </div>
     </header>
@@ -999,166 +999,148 @@
 
     <script>
         /* =========================================================
-           1. INLINE SVG ICON SYSTEM (ZERO EXTERNAL DEPENDENCIES)
+           2. QUIZ DATA: 15 ENGLISH GRAMMAR QUESTIONS (NOUNS & CASES)
            ========================================================= */
-        function getSvgIcon(name, size = 18) {
-            const icons = {
-                building: '<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>',
-                clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
-                arrowLeft: '<path d="m15 18-6-6 6-6"/>',
-                arrowRight: '<path d="m9 18 6-6-6-6"/>',
-                checkCircle: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
-                xCircle: '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
-                lightbulb: '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
-                crown: '<path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>',
-                zap: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
-                bookOpen: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
-                heart: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
-                edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>',
-                barChart: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
-                eye: '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
-                rotateCcw: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>'
-            };
-            const inner = icons[name] || '';
-            return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
-        }
-
-        /* =========================================================
-           2. QUIZ DATA: 12 CIRCULAR SEATING ARRANGEMENT QUESTIONS (4 SETS)
-           ========================================================= */
-        const SET_1_DIRECTIONS = "Eight persons viz. A, B, C, D, E, F, G, and H are sitting around a circular table such that all of them are facing towards the centre, but not necessarily in the same order. H sits three persons away from B and sits to the immediate right of A. C sits third to the left of A. Only two persons sit between C and D, who sits to the immediate right of H. E sits to the immediate right of G. F does not sit adjacent to A.";
-        const SET_2_DIRECTIONS = "Eight persons viz. M, N, O, P, Q, R, T, and W are sitting around a circular table such that all of them are facing towards the centre, but not necessarily in the same order. N sits two persons away from M, who sits third to the left of O. M sits exactly in the middle of P and R. Q sits third to the right of P and is not adjacent to R. At least two persons sit between T and W when counted from both sides. T is not adjacent to Q.";
-        const SET_3_DIRECTIONS = "Eight persons viz. A, B, C, D, E, F, G, and H are sitting around a circular table facing the centre, but not necessarily in the same order. C sits third to the left of A. D sits two persons away from C. E sits opposite to A. F sits second to the right of D. B is not an immediate neighbour of A or C. G sits to the immediate right of C.";
-        const SET_4_DIRECTIONS = "Ten people viz. K, L, M, N, P, Q, R, S, T, and V are seated around a circular table such that all of them are facing towards the centre, but not necessarily in the same order. R sits third to the left of the one who faces towards L. Two persons sit between L and P. K faces towards L. M sits immediate right of P. T sits immediate left of R. Q sits second to the left of L. As many persons sit between P and K as between V and Q, when counted from the right of both P and V. S sits to the immediate right of V.";
-
         const quizData = {
-            title: "Reasoning: Circular Seating Arrangement",
-            totalTimeSeconds: 50 * 60, // 50 Minutes
+            title: "English Grammar: Nouns & Possessive Rules",
+            totalTimeSeconds: 40 * 60, // 40 Minutes
             marksPerQuestion: 2,
             questions: [
                 {
                     id: 1,
-                    setLabel: "Set 1 (Q1–Q3)",
-                    passage: SET_1_DIRECTIONS,
-                    text: "Who sits to the immediate left of C?",
-                    options: ["G", "E", "B", "F", "D"],
-                    correct: 2,
-                    explanation: "Final Arrangement (Clockwise): A – E – G – C – B – F – D – H. Facing the centre, clockwise is to the left, so B sits to the immediate left of C."
+                    setLabel: "Material Nouns",
+                    text: "Fill in the blank according to the Material Noun rule: \"This furniture is made of steel and _______.\"",
+                    options: ["woods", "wood", "a wood", "wooden"],
+                    correct: 1,
+                    explanation: "Material nouns do not form plurals when referring to raw materials; 'wood' means timber/log, whereas 'woods' means a jungle or forest."
                 },
                 {
                     id: 2,
-                    setLabel: "Set 1 (Q1–Q3)",
-                    passage: SET_1_DIRECTIONS,
-                    text: "How many persons sit between G and H when counted from the right of G?",
-                    options: ["One", "Two", "Three", "Four", "None"],
-                    correct: 1,
-                    explanation: "Final Arrangement (Clockwise): A – E – G – C – B – F – D – H. Counting to the right (anti-clockwise) of G toward H, two persons (E and A) sit between them."
+                    setLabel: "Material Nouns",
+                    text: "Choose the correct word to complete the sentence: \"The C.M. has ordered to clean the _______ of the city.\"",
+                    options: ["water", "a water", "waters", "watering"],
+                    correct: 2,
+                    explanation: "When 'water' is used in the plural form 'waters', its meaning changes to water bodies."
                 },
                 {
                     id: 3,
-                    setLabel: "Set 1 (Q1–Q3)",
-                    passage: SET_1_DIRECTIONS,
-                    text: "Who among the following sits exactly opposite to E?",
-                    options: ["D", "B", "H", "F", "C"],
+                    setLabel: "General vs Particularised",
+                    text: "Select the correct verb for a noun used in its generalised form: \"Politics _______ a dirty game.\"",
+                    options: ["are", "were", "have", "is"],
                     correct: 3,
-                    explanation: "Final Arrangement (Clockwise): A – E – G – C – B – F – D – H. In this 8-person circle, F sits 4 places away (exactly opposite) from E."
+                    explanation: "Nouns that look plural in form (such as Politics) take a singular verb when used in a generalised sense."
                 },
                 {
                     id: 4,
-                    setLabel: "Set 2 (Q4–Q6)",
-                    passage: SET_2_DIRECTIONS,
-                    text: "Who sits second to the right of O?",
-                    options: ["N", "W", "R", "P", "M"],
+                    setLabel: "General vs Particularised",
+                    text: "Fill in the blank with the appropriate verb: \"Mathematics _______ always troubled me.\"",
+                    options: ["have", "has", "are", "were"],
                     correct: 1,
-                    explanation: "Final Arrangement (Clockwise): R – N – W – Q – O – T – P – M. Moving anti-clockwise (to the right) from O: Q is immediate right, and W is second to the right."
+                    explanation: "When Mathematics is used as a general subject name, it takes a singular verb ('has')."
                 },
                 {
                     id: 5,
-                    setLabel: "Set 2 (Q4–Q6)",
-                    passage: SET_2_DIRECTIONS,
-                    text: "Who among the following sits opposite to N?",
-                    options: ["P", "Q", "O", "T", "M"],
-                    correct: 3,
-                    explanation: "Final Arrangement (Clockwise): R – N – W – Q – O – T – P – M. T sits directly opposite to N."
+                    setLabel: "General vs Particularised",
+                    text: "Choose the correct verb when the subject is particularised: \"The mathematics of my sister _______ not been really good.\"",
+                    options: ["has", "is", "have", "was"],
+                    correct: 2,
+                    explanation: "When nouns like mathematics are possessed or particularised ('the mathematics of my sister'), they take a plural verb ('have')."
                 },
                 {
                     id: 6,
-                    setLabel: "Set 2 (Q4–Q6)",
-                    passage: SET_2_DIRECTIONS,
-                    text: "Which of the following pairs represents the immediate neighbours of Q?",
-                    options: ["W and O", "N and W", "O and T", "R and N", "P and M"],
-                    correct: 0,
-                    explanation: "Final Arrangement (Clockwise): R – N – W – Q – O – T – P – M. Q sits directly between W and O."
+                    setLabel: "General vs Particularised",
+                    text: "Select the right verb to complete the sentence: \"All the economics of the region _______ not in good hands.\"",
+                    options: ["is", "has", "was", "are"],
+                    correct: 3,
+                    explanation: "Because economics is particularised here ('the economics of the region'), it takes a plural verb ('are')."
                 },
                 {
                     id: 7,
-                    setLabel: "Set 3 (Q7–Q9)",
-                    passage: SET_3_DIRECTIONS,
-                    text: "Who sits third to the right of H?",
-                    options: ["G", "D", "C", "A", "F"],
+                    setLabel: "Pair Nouns",
+                    text: "Identify the correct noun form for items made of two identical parts: \"He gave me _______ on my birthday.\"",
+                    options: ["jean", "a jean", "jeans", "a jeans"],
                     correct: 2,
-                    explanation: "Final Arrangement (Clockwise): A – D – G – C – E – B – H – F. Moving to the right (anti-clockwise) from H: B (1st), E (2nd), and C (3rd)."
+                    explanation: "Nouns made with two pairs of the same thing (like jeans and spectacles) are always used in plural form."
                 },
                 {
                     id: 8,
-                    setLabel: "Set 3 (Q7–Q9)",
-                    passage: SET_3_DIRECTIONS,
-                    text: "How many persons sit between D and B when counted from the left of D?",
-                    options: ["One", "Two", "Three", "Four", "None"],
-                    correct: 2,
-                    explanation: "Final Arrangement (Clockwise): A – D – G – C – E – B – H – F. Counting clockwise (left) from D to B, three persons (G, C, and E) sit between them."
+                    setLabel: "Pair Nouns",
+                    text: "Choose the correct singular usage to complete the sentence: \"_______ belongs to our tailor.\"",
+                    options: ["This scissor", "This pair of scissors", "These scissor", "A scissors"],
+                    correct: 1,
+                    explanation: "To make pair nouns singular, add 'a pair of' or 'this pair of' before the plural noun ('scissors')."
                 },
                 {
                     id: 9,
-                    setLabel: "Set 3 (Q7–Q9)",
-                    passage: SET_3_DIRECTIONS,
-                    text: "Four of the following five are alike in a certain way based on their seating positions and hence form a group. Which one does not belong to that group?",
-                    options: ["A - E", "D - B", "G - H", "C - F", "B - F"],
-                    correct: 4,
-                    explanation: "Final Arrangement (Clockwise): A – D – G – C – E – B – H – F. A-E, D-B, G-H, and C-F all sit directly opposite to each other, whereas B and F are not opposite."
+                    setLabel: "Noun + Prep + Noun",
+                    text: "Fill in the blank following the Noun + Preposition + Same Noun rule: \"The price of petrol is rising _______.\"",
+                    options: ["days by days", "day by days", "day by day", "days by day"],
+                    correct: 2,
+                    explanation: "When the same noun is repeated before and after a preposition (Noun + Preposition + Noun), both nouns remain in singular form ('day by day')."
                 },
                 {
                     id: 10,
-                    setLabel: "Set 4 (Q10–Q12)",
-                    passage: SET_4_DIRECTIONS,
-                    text: "Who among the following sits fifth to the left of M?",
-                    options: ["Q", "N", "L", "S", "R"],
-                    correct: 1,
-                    explanation: "Final Arrangement (Clockwise): K – M – P – R – T – L – N – Q – S – V. Counting 5 places clockwise (left) from M: P (1), R (2), T (3), L (4), N (5)."
+                    setLabel: "Noun + Prep + Noun",
+                    text: "Select the correct verb to complete the sentence: \"Row after row _______ devastated during the flood.\"",
+                    options: ["were", "are", "have", "was"],
+                    correct: 3,
+                    explanation: "The structure Noun + Preposition + Same Noun ('Row after row') takes a singular verb ('was')."
                 },
                 {
                     id: 11,
-                    setLabel: "Set 4 (Q10–Q12)",
-                    passage: SET_4_DIRECTIONS,
-                    text: "Who sits opposite to P?",
-                    options: ["S", "V", "Q", "N", "T"],
-                    correct: 2,
-                    explanation: "Final Arrangement (Clockwise): K – M – P – R – T – L – N – Q – S – V. In a 10-person circle, Q sits 5 places away (directly opposite) from P."
+                    setLabel: "Noun Placement",
+                    text: "Choose the correct word based on the Article + Noun + Preposition placement rule: \"The _______ of these monuments can only be known by an architect.\"",
+                    options: ["significant", "significance", "significantly", "signify"],
+                    correct: 1,
+                    explanation: "Following the placement rule Article + Noun + Preposition, the noun 'significance' is needed between 'The' and 'of'."
                 },
                 {
                     id: 12,
-                    setLabel: "Set 4 (Q10–Q12)",
-                    passage: SET_4_DIRECTIONS,
-                    text: "How many persons sit between K and T when counted from the left of K?",
-                    options: ["One", "Two", "Three", "Four", "Five"],
+                    setLabel: "Noun Placement",
+                    text: "Fill in the blank following the Article + Adjective + Noun pattern: \"A beautiful _______ is visible from my balcony.\"",
+                    options: ["seen", "seeing", "scene", "scenic"],
                     correct: 2,
-                    explanation: "Final Arrangement (Clockwise): K – M – P – R – T – L – N – Q – S – V. Counting clockwise (left) from K to T, three persons (M, P, and R) sit between them."
+                    explanation: "Following the placement rule Article + Adjective + Noun, the noun 'scene' is placed after the adjective 'beautiful'."
+                },
+                {
+                    id: 13,
+                    setLabel: "Possessive Structure",
+                    text: "Select the correct noun to complete the Noun's + Noun structure: \"World's _______ is rising with each passing day.\"",
+                    options: ["populated", "populate", "population", "populating"],
+                    correct: 2,
+                    explanation: "Following the structure Noun's + Noun, a noun ('population') is required after 'World's'."
+                },
+                {
+                    id: 14,
+                    setLabel: "Possessive Case",
+                    text: "Choose the correct possessive form for a name ending in \"-s\": \"_______ car is parked in my slot.\"",
+                    options: ["Vikas's", "Vikas'", "Vikas", "Vikases'"],
+                    correct: 1,
+                    explanation: "To show ownership for a word ending with 's' (like Vikas or Paras), only an apostrophe (') is added."
+                },
+                {
+                    id: 15,
+                    setLabel: "Possessive Case",
+                    text: "Select the correct possessive form referring to all the boys: \"The _______ hostel is closed for summer break.\"",
+                    options: ["boy's", "boys's", "boys'", "boy"],
+                    correct: 2,
+                    explanation: "To show belongingness for a plural noun ending with 's' ('boys'), only an apostrophe (') is added after 's'."
                 }
             ]
         };
 
         /* =========================================================
-           3. ROMANTIC + MOTIVATIONAL QUOTES FROM PRITAM
+           3. ROMANTIC + MOTIVATIONAL QUOTES (FOR PRITAM & MALLIKA)
            ========================================================= */
         const motivationalQuotes = [
-            "No matter how complex the seating arrangement gets, my place in your life is permanently fixed right beside you—cheering you on to become a Bank Manager, Mallika!",
-            "You solve every puzzle with such calm brilliance, my love. That Banking PO badge is already waiting for your name—keep going, I believe in you endlessly!",
-            "Clockwise or anti-clockwise, every path in my life leads straight to admiring your hard work and dedication. Keep shining, future Bank Manager!",
-            "Even in a room full of ten people, my eyes will always search for you first. Keep conquering these mocks, Mallika—your dream job is closer every single day!",
-            "Every puzzle you crack today brings us one step closer to celebrating your Banking PO selection together. Stay confident, sweetheart—you've got this!",
-            "Your focus, grace, and determination make me fall in love with your spirit all over again. Never doubt yourself, Mallika—victory belongs to you!",
-            "Whether you score 100% or learn a tricky new pattern today, I am endlessly proud of the future Bank Manager you are becoming. Keep smiling and keep pushing!",
-            "Remember, Mallika: every minute you invest in your preparation today is building the beautiful future we dream of. Pritam is always in your corner!"
+            "Just like a singular noun and a singular verb belong together in perfect harmony, Pritam and Mallika belong together through every step of your Banking PO journey!",
+            "Day by day, step by step, your dedication is turning our biggest dream into reality. Keep shining, Mallika—Pritam is endlessly proud of his future Bank Manager!",
+            "Some things in life are inseparable—like a pair of stars in the night sky, or Pritam cheering tirelessly for Mallika until you sit in that Bank Manager's chair!",
+            "You master every grammar rule with grace and brilliance, my love. Never doubt your strength—Pritam believes in you more than words could ever express!",
+            "Whether the question is general or particularised, one truth is always constant: Pritam's love and faith in Mallika's Banking PO success will never waver!",
+            "Every mock you finish today brings us one step closer to celebrating your selection hand-in-hand. Keep pushing forward, sweetheart—victory is yours!",
+            "Look how far you have come, Mallika! With your sharp mind and Pritam's endless support by your side, no Banking exam can stand in your way.",
+            "From late-night revisions to the day you sign your appointment letter as a Bank Officer, Pritam is right beside you—loving you and believing in every dream you chase!"
         ];
 
         /* =========================================================
@@ -1188,8 +1170,30 @@
         const timerBox = document.getElementById('timer-box');
 
         /* =========================================================
-           5. INITIALIZATION & TIMER CONTROL
+           5. INLINE SVG ICONS & INITIALIZATION
            ========================================================= */
+        function getSvgIcon(name, size = 24) {
+            const icons = {
+                building: '<rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/>',
+                clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+                arrowLeft: '<path d="m15 18-6-6 6-6"/>',
+                arrowRight: '<path d="m9 18 6-6-6-6"/>',
+                checkCircle: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+                xCircle: '<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>',
+                lightbulb: '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
+                crown: '<path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>',
+                zap: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+                bookOpen: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+                heart: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" fill="currentColor"/>',
+                edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+                barChart: '<line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/>',
+                eye: '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+                rotateCcw: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>'
+            };
+            const body = icons[name] || '';
+            return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+        }
+
         function initStaticIcons() {
             document.getElementById('header-bank-icon').innerHTML = getSvgIcon('building', 22);
             document.getElementById('header-clock-icon').innerHTML = getSvgIcon('clock', 16);
@@ -1436,7 +1440,7 @@
                 <div class="explanation-box">
                     <div class="explanation-header">
                         ${getSvgIcon('lightbulb', 17)}
-                        <span>Seating Arrangement &amp; Solution</span>
+                        <span>Grammar Rule &amp; Solution</span>
                     </div>
                     <p>${q.explanation}</p>
                 </div>
