@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banking PO English Mock — Mallika Naiya</title>
+    <title>Banking PO Reasoning Mock — Mallika Naiya</title>
 
     <style>
         /* =========================================================
@@ -963,7 +963,7 @@
 
             <div id="timer-box" class="timer-pill">
                 <span id="header-clock-icon" style="display:flex;"></span>
-                <span id="timer-text">40:00</span>
+                <span id="timer-text">60:00</span>
             </div>
         </div>
     </header>
@@ -999,132 +999,93 @@
 
     <script>
         /* =========================================================
-           2. QUIZ DATA: 15 ENGLISH GRAMMAR QUESTIONS (NOUNS & CASES)
+           2. QUIZ DATA: 9 CIRCULAR SEATING ARRANGEMENT + VARIABLE QUESTIONS
            ========================================================= */
         const quizData = {
-            title: "English Grammar: Nouns & Possessive Rules",
-            totalTimeSeconds: 40 * 60, // 40 Minutes
+            title: "Reasoning: Circular Seating + Variables",
+            totalTimeSeconds: 60 * 60, // 60 Minutes
             marksPerQuestion: 2,
             questions: [
                 {
                     id: 1,
-                    setLabel: "Material Nouns",
-                    text: "Fill in the blank according to the Material Noun rule: \"This furniture is made of steel and _______.\"",
-                    options: ["woods", "wood", "a wood", "wooden"],
+                    setLabel: "Set 1: Circular + City",
+                    passage: "Six persons – P, Q, R, S, T, and U are sitting around a circular table facing the centre, but not necessarily in the same order. Each of them belongs to a different city viz. Pune, Delhi, Mumbai, Kolkata, Chennai, and Jaipur.<br><br>One person sits between R and the one who belongs to Pune. The one who belongs to Chennai faces the one who sits immediate right of the one who belongs to Pune. Q sits adjacent to the one who belongs to Chennai and sits opposite to the one who belongs to Pune. Q does not belong to Kolkata. T sits third to the right of R. The one who belongs to Kolkata sits immediate left of R. P sits second to the left of R. U does not belong to Chennai. Neither R nor T belongs to Delhi. T does not belong to Mumbai.",
+                    text: "Who among the following sits second to the left of the one who belongs to Chennai?",
+                    options: ["U", "The one who belongs to Mumbai", "T", "The one who belongs to Pune", "Q"],
                     correct: 1,
-                    explanation: "Material nouns do not form plurals when referring to raw materials; 'wood' means timber/log, whereas 'woods' means a jungle or forest."
+                    explanation: "Final Clockwise Order: R (Mumbai) – U (Kolkata) – P (Pune) – T (Jaipur) – S (Chennai) – Q (Delhi). Counting clockwise (left) from S (Chennai): 1st left is Q, 2nd left is R (The one who belongs to Mumbai)."
                 },
                 {
                     id: 2,
-                    setLabel: "Material Nouns",
-                    text: "Choose the correct word to complete the sentence: \"The C.M. has ordered to clean the _______ of the city.\"",
-                    options: ["water", "a water", "waters", "watering"],
+                    setLabel: "Set 1: Circular + City",
+                    passage: "Six persons – P, Q, R, S, T, and U are sitting around a circular table facing the centre, but not necessarily in the same order. Each of them belongs to a different city viz. Pune, Delhi, Mumbai, Kolkata, Chennai, and Jaipur.<br><br>One person sits between R and the one who belongs to Pune. The one who belongs to Chennai faces the one who sits immediate right of the one who belongs to Pune. Q sits adjacent to the one who belongs to Chennai and sits opposite to the one who belongs to Pune. Q does not belong to Kolkata. T sits third to the right of R. The one who belongs to Kolkata sits immediate left of R. P sits second to the left of R. U does not belong to Chennai. Neither R nor T belongs to Delhi. T does not belong to Mumbai.",
+                    text: "Who faces the one who sits immediate right of T?",
+                    options: ["The one who belongs to Jaipur", "S", "The one who belongs to Delhi", "R", "U"],
                     correct: 2,
-                    explanation: "When 'water' is used in the plural form 'waters', its meaning changes to water bodies."
+                    explanation: "Final Clockwise Order: R (Mumbai) – U (Kolkata) – P (Pune) – T (Jaipur) – S (Chennai) – Q (Delhi). Immediate right of T (anti-clockwise) is P (Pune), and Q (The one who belongs to Delhi) sits directly opposite P."
                 },
                 {
                     id: 3,
-                    setLabel: "General vs Particularised",
-                    text: "Select the correct verb for a noun used in its generalised form: \"Politics _______ a dirty game.\"",
-                    options: ["are", "were", "have", "is"],
-                    correct: 3,
-                    explanation: "Nouns that look plural in form (such as Politics) take a singular verb when used in a generalised sense."
+                    setLabel: "Set 1: Circular + City",
+                    passage: "Six persons – P, Q, R, S, T, and U are sitting around a circular table facing the centre, but not necessarily in the same order. Each of them belongs to a different city viz. Pune, Delhi, Mumbai, Kolkata, Chennai, and Jaipur.<br><br>One person sits between R and the one who belongs to Pune. The one who belongs to Chennai faces the one who sits immediate right of the one who belongs to Pune. Q sits adjacent to the one who belongs to Chennai and sits opposite to the one who belongs to Pune. Q does not belong to Kolkata. T sits third to the right of R. The one who belongs to Kolkata sits immediate left of R. P sits second to the left of R. U does not belong to Chennai. Neither R nor T belongs to Delhi. T does not belong to Mumbai.",
+                    text: "Which of the following combinations of person and city is definitely true?",
+                    options: ["T – Delhi", "R – Kolkata", "U – Kolkata", "S – Jaipur", "Q – Mumbai"],
+                    correct: 2,
+                    explanation: "Final Clockwise Order: R (Mumbai) – U (Kolkata) – P (Pune) – T (Jaipur) – S (Chennai) – Q (Delhi). Therefore, U – Kolkata is definitely true."
                 },
                 {
                     id: 4,
-                    setLabel: "General vs Particularised",
-                    text: "Fill in the blank with the appropriate verb: \"Mathematics _______ always troubled me.\"",
-                    options: ["have", "has", "are", "were"],
-                    correct: 1,
-                    explanation: "When Mathematics is used as a general subject name, it takes a singular verb ('has')."
+                    setLabel: "Set 2: Circular + Colour",
+                    passage: "Eight persons viz. A, B, C, D, E, F, G, and H are sitting around a circular table facing the centre, but not necessarily in the same order. Each of them likes a different colour viz. Red, Blue, Green, Yellow, Pink, White, Black, and Orange.<br><br>F, who likes Red, sits second to the right of the one who likes Blue. The one who likes Green is an immediate neighbour of the one who likes Blue. Two people sit between the one who likes Green and B. C and E are immediate neighbours of each other. Neither C nor E is an immediate neighbour of either B or the one who likes Yellow. The one who likes White sits second to the left of D. D likes neither Yellow nor Green. G and the one who likes Red are immediate neighbours of each other. Only one person sits between C and the one who likes Black. H sits second to the left of the one who likes Orange. The one who likes Pink sits second to the left of the one who likes Blue.",
+                    text: "Who sits third to the left of the one who sits opposite to the one who likes Yellow?",
+                    options: ["G", "D", "H", "B", "F"],
+                    correct: 2,
+                    explanation: "Final Clockwise Order: A (Yellow) – G (Black) – F (Red) – C (Green) – E (Blue) – D (Orange) – B (Pink) – H (White). Opposite to A (Yellow) is E (Blue); third to the left (clockwise) of E is H."
                 },
                 {
                     id: 5,
-                    setLabel: "General vs Particularised",
-                    text: "Choose the correct verb when the subject is particularised: \"The mathematics of my sister _______ not been really good.\"",
-                    options: ["has", "is", "have", "was"],
+                    setLabel: "Set 2: Circular + Colour",
+                    passage: "Eight persons viz. A, B, C, D, E, F, G, and H are sitting around a circular table facing the centre, but not necessarily in the same order. Each of them likes a different colour viz. Red, Blue, Green, Yellow, Pink, White, Black, and Orange.<br><br>F, who likes Red, sits second to the right of the one who likes Blue. The one who likes Green is an immediate neighbour of the one who likes Blue. Two people sit between the one who likes Green and B. C and E are immediate neighbours of each other. Neither C nor E is an immediate neighbour of either B or the one who likes Yellow. The one who likes White sits second to the left of D. D likes neither Yellow nor Green. G and the one who likes Red are immediate neighbours of each other. Only one person sits between C and the one who likes Black. H sits second to the left of the one who likes Orange. The one who likes Pink sits second to the left of the one who likes Blue.",
+                    text: "How many persons sit between G and the one who likes Orange when counted from the right of G?",
+                    options: ["One", "Two", "Three", "Four", "None"],
                     correct: 2,
-                    explanation: "When nouns like mathematics are possessed or particularised ('the mathematics of my sister'), they take a plural verb ('have')."
+                    explanation: "Final Clockwise Order: A (Yellow) – G (Black) – F (Red) – C (Green) – E (Blue) – D (Orange) – B (Pink) – H (White). Counting from the right (anti-clockwise) of G to D (Orange), there are Three persons: A, H, and B."
                 },
                 {
                     id: 6,
-                    setLabel: "General vs Particularised",
-                    text: "Select the right verb to complete the sentence: \"All the economics of the region _______ not in good hands.\"",
-                    options: ["is", "has", "was", "are"],
-                    correct: 3,
-                    explanation: "Because economics is particularised here ('the economics of the region'), it takes a plural verb ('are')."
+                    setLabel: "Set 2: Circular + Colour",
+                    passage: "Eight persons viz. A, B, C, D, E, F, G, and H are sitting around a circular table facing the centre, but not necessarily in the same order. Each of them likes a different colour viz. Red, Blue, Green, Yellow, Pink, White, Black, and Orange.<br><br>F, who likes Red, sits second to the right of the one who likes Blue. The one who likes Green is an immediate neighbour of the one who likes Blue. Two people sit between the one who likes Green and B. C and E are immediate neighbours of each other. Neither C nor E is an immediate neighbour of either B or the one who likes Yellow. The one who likes White sits second to the left of D. D likes neither Yellow nor Green. G and the one who likes Red are immediate neighbours of each other. Only one person sits between C and the one who likes Black. H sits second to the left of the one who likes Orange. The one who likes Pink sits second to the left of the one who likes Blue.",
+                    text: "Four of the following five are alike in a certain way based on their seating positions and thus form a group. Which one does not belong to that group?",
+                    options: ["A – E", "G – D", "F – B", "C – H", "A – F"],
+                    correct: 4,
+                    explanation: "Final Clockwise Order: A (Yellow) – G (Black) – F (Red) – C (Green) – E (Blue) – D (Orange) – B (Pink) – H (White). Pairs A–E, G–D, F–B, and C–H sit directly opposite each other, whereas A – F do not sit opposite."
                 },
                 {
                     id: 7,
-                    setLabel: "Pair Nouns",
-                    text: "Identify the correct noun form for items made of two identical parts: \"He gave me _______ on my birthday.\"",
-                    options: ["jean", "a jean", "jeans", "a jeans"],
-                    correct: 2,
-                    explanation: "Nouns made with two pairs of the same thing (like jeans and spectacles) are always used in plural form."
+                    setLabel: "Set 3: PYQ Circular + Fruit",
+                    passage: "Eight persons – P, Q, R, S, T, U, V, and W are sitting around a circular table facing the centre, but not necessarily in the same order. Each of them likes a different fruit viz. Apple, Mango, Banana, Orange, Grapes, Guava, Papaya, and Kiwi.<br><br>P sits third to the right of the one who likes Banana. Only two persons sit between P and S. S does not like Banana and does not sit adjacent to Q. The one who likes Orange sits immediate left of R. Q sits immediate left of the one who likes Orange. Only one person sits between Q and the one who likes Grapes. U sits third to the right of the one who likes Grapes. W sits immediate right of the one who likes Guava. P does not like Guava. The one who likes Apple sits immediate right of T. Neither P nor T likes Papaya. T does not like Mango.",
+                    text: "Who sits second to the right of the one who likes Papaya?",
+                    options: ["P", "The one who likes Orange", "U", "The one who likes Kiwi", "R"],
+                    correct: 1,
+                    explanation: "Final Clockwise Order: T (Kiwi) – P (Mango) – R (Grapes) – V (Orange) – Q (Banana) – W (Papaya) – S (Guava) – U (Apple). W likes Papaya; second to the right (anti-clockwise) of W is V (The one who likes Orange)."
                 },
                 {
                     id: 8,
-                    setLabel: "Pair Nouns",
-                    text: "Choose the correct singular usage to complete the sentence: \"_______ belongs to our tailor.\"",
-                    options: ["This scissor", "This pair of scissors", "These scissor", "A scissors"],
-                    correct: 1,
-                    explanation: "To make pair nouns singular, add 'a pair of' or 'this pair of' before the plural noun ('scissors')."
+                    setLabel: "Set 3: PYQ Circular + Fruit",
+                    passage: "Eight persons – P, Q, R, S, T, U, V, and W are sitting around a circular table facing the centre, but not necessarily in the same order. Each of them likes a different fruit viz. Apple, Mango, Banana, Orange, Grapes, Guava, Papaya, and Kiwi.<br><br>P sits third to the right of the one who likes Banana. Only two persons sit between P and S. S does not like Banana and does not sit adjacent to Q. The one who likes Orange sits immediate left of R. Q sits immediate left of the one who likes Orange. Only one person sits between Q and the one who likes Grapes. U sits third to the right of the one who likes Grapes. W sits immediate right of the one who likes Guava. P does not like Guava. The one who likes Apple sits immediate right of T. Neither P nor T likes Papaya. T does not like Mango.",
+                    text: "Which of the following fruits does T like?",
+                    options: ["Mango", "Papaya", "Kiwi", "Apple", "Guava"],
+                    correct: 2,
+                    explanation: "Final Clockwise Order: T (Kiwi) – P (Mango) – R (Grapes) – V (Orange) – Q (Banana) – W (Papaya) – S (Guava) – U (Apple). Therefore, T likes Kiwi."
                 },
                 {
                     id: 9,
-                    setLabel: "Noun + Prep + Noun",
-                    text: "Fill in the blank following the Noun + Preposition + Same Noun rule: \"The price of petrol is rising _______.\"",
-                    options: ["days by days", "day by days", "day by day", "days by day"],
-                    correct: 2,
-                    explanation: "When the same noun is repeated before and after a preposition (Noun + Preposition + Noun), both nouns remain in singular form ('day by day')."
-                },
-                {
-                    id: 10,
-                    setLabel: "Noun + Prep + Noun",
-                    text: "Select the correct verb to complete the sentence: \"Row after row _______ devastated during the flood.\"",
-                    options: ["were", "are", "have", "was"],
-                    correct: 3,
-                    explanation: "The structure Noun + Preposition + Same Noun ('Row after row') takes a singular verb ('was')."
-                },
-                {
-                    id: 11,
-                    setLabel: "Noun Placement",
-                    text: "Choose the correct word based on the Article + Noun + Preposition placement rule: \"The _______ of these monuments can only be known by an architect.\"",
-                    options: ["significant", "significance", "significantly", "signify"],
-                    correct: 1,
-                    explanation: "Following the placement rule Article + Noun + Preposition, the noun 'significance' is needed between 'The' and 'of'."
-                },
-                {
-                    id: 12,
-                    setLabel: "Noun Placement",
-                    text: "Fill in the blank following the Article + Adjective + Noun pattern: \"A beautiful _______ is visible from my balcony.\"",
-                    options: ["seen", "seeing", "scene", "scenic"],
-                    correct: 2,
-                    explanation: "Following the placement rule Article + Adjective + Noun, the noun 'scene' is placed after the adjective 'beautiful'."
-                },
-                {
-                    id: 13,
-                    setLabel: "Possessive Structure",
-                    text: "Select the correct noun to complete the Noun's + Noun structure: \"World's _______ is rising with each passing day.\"",
-                    options: ["populated", "populate", "population", "populating"],
-                    correct: 2,
-                    explanation: "Following the structure Noun's + Noun, a noun ('population') is required after 'World's'."
-                },
-                {
-                    id: 14,
-                    setLabel: "Possessive Case",
-                    text: "Choose the correct possessive form for a name ending in \"-s\": \"_______ car is parked in my slot.\"",
-                    options: ["Vikas's", "Vikas'", "Vikas", "Vikases'"],
-                    correct: 1,
-                    explanation: "To show ownership for a word ending with 's' (like Vikas or Paras), only an apostrophe (') is added."
-                },
-                {
-                    id: 15,
-                    setLabel: "Possessive Case",
-                    text: "Select the correct possessive form referring to all the boys: \"The _______ hostel is closed for summer break.\"",
-                    options: ["boy's", "boys's", "boys'", "boy"],
-                    correct: 2,
-                    explanation: "To show belongingness for a plural noun ending with 's' ('boys'), only an apostrophe (') is added after 's'."
+                    setLabel: "Set 3: PYQ Circular + Fruit",
+                    passage: "Eight persons – P, Q, R, S, T, U, V, and W are sitting around a circular table facing the centre, but not necessarily in the same order. Each of them likes a different fruit viz. Apple, Mango, Banana, Orange, Grapes, Guava, Papaya, and Kiwi.<br><br>P sits third to the right of the one who likes Banana. Only two persons sit between P and S. S does not like Banana and does not sit adjacent to Q. The one who likes Orange sits immediate left of R. Q sits immediate left of the one who likes Orange. Only one person sits between Q and the one who likes Grapes. U sits third to the right of the one who likes Grapes. W sits immediate right of the one who likes Guava. P does not like Guava. The one who likes Apple sits immediate right of T. Neither P nor T likes Papaya. T does not like Mango.",
+                    text: "If all the persons are made to sit in alphabetical order starting from P in clockwise direction, how many persons remain unchanged in their original positions (excluding P)?",
+                    options: ["None", "One", "Two", "Three", "Four"],
+                    correct: 0,
+                    explanation: "Original clockwise from P: P, R, V, Q, W, S, U, T. Alphabetical clockwise from P: P, Q, R, S, T, U, V, W. None of the positions match (excluding P)."
                 }
             ]
         };
@@ -1133,14 +1094,14 @@
            3. ROMANTIC + MOTIVATIONAL QUOTES (FOR PRITAM & MALLIKA)
            ========================================================= */
         const motivationalQuotes = [
-            "Just like a singular noun and a singular verb belong together in perfect harmony, Pritam and Mallika belong together through every step of your Banking PO journey!",
-            "Day by day, step by step, your dedication is turning our biggest dream into reality. Keep shining, Mallika—Pritam is endlessly proud of his future Bank Manager!",
-            "Some things in life are inseparable—like a pair of stars in the night sky, or Pritam cheering tirelessly for Mallika until you sit in that Bank Manager's chair!",
-            "You master every grammar rule with grace and brilliance, my love. Never doubt your strength—Pritam believes in you more than words could ever express!",
-            "Whether the question is general or particularised, one truth is always constant: Pritam's love and faith in Mallika's Banking PO success will never waver!",
-            "Every mock you finish today brings us one step closer to celebrating your selection hand-in-hand. Keep pushing forward, sweetheart—victory is yours!",
-            "Look how far you have come, Mallika! With your sharp mind and Pritam's endless support by your side, no Banking exam can stand in your way.",
-            "From late-night revisions to the day you sign your appointment letter as a Bank Officer, Pritam is right beside you—loving you and believing in every dream you chase!"
+            "No matter how complex the puzzle of life gets, Pritam and Mallika always fall right into place—and soon you'll take your rightful seat as a Bank Manager!",
+            "Every seating arrangement you crack today brings us closer to the day I proudly call you Officer Mallika. Keep going, my love—Pritam is cheering for you always!",
+            "You solve every tough clue with patience and grace, sweetheart. Never doubt how brilliant you are—Pritam believes in your Banking PO dream with all his heart!",
+            "Round after round of practice, your focus shines brighter every single day. Remember, Pritam is right beside you through every mock until we celebrate your selection!",
+            "Just like every clue connects to reveal the final arrangement, every hour of your hard work is connecting to build our dream future together, Mallika!",
+            "Even the trickiest PO Prelims puzzle bows down to your determination. Keep your head high, my future Bank Manager—Pritam is endlessly proud of you!",
+            "Through every late-night study session and every mock test, my heart beats with pride watching you chase your Banking PO goal. You've got this, Mallika!",
+            "When you finally sign your first document as a Bank Manager, I'll be smiling right next to you—the luckiest guy in the world. Keep shining, my love!"
         ];
 
         /* =========================================================
@@ -1440,7 +1401,7 @@
                 <div class="explanation-box">
                     <div class="explanation-header">
                         ${getSvgIcon('lightbulb', 17)}
-                        <span>Grammar Rule &amp; Solution</span>
+                        <span>Seating Arrangement &amp; Solution</span>
                     </div>
                     <p>${q.explanation}</p>
                 </div>
